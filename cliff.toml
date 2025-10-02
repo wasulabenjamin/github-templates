@@ -1,0 +1,110 @@
+# ───────────────────────────────────────────────
+# git-cliff configuration file
+# Docs: https://git-cliff.org/docs/configuration
+# https://spl.hevs.io/spl-docs/tools/git/git-cliff.html#examples
+# ───────────────────────────────────────────────
+
+[changelog]
+
+# -----------------------------------------------
+# HEADER
+# Appears once at the top of the changelog
+# -----------------------------------------------
+header = """
+# CHANGELOG\n
+All notable changes to this project will be documented in this file.\n
+"""
+
+# -----------------------------------------------
+# BODY
+# Defines how each version section is formatted
+# -----------------------------------------------
+body = """
+
+{% if version %}\
+    ## {{ version }} - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## Unreleased
+{% endif %}\
+{% if previous %}\
+    {% if previous.commit_id and commit_id %}
+        [{{ previous.commit_id | truncate(length=7, end="") }}]({{ previous.commit_id }})...\
+        [{{ commit_id | truncate(length=7, end="") }}]({{ commit_id }})
+    {% endif %}\
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | upper_first }}
+    {% for commit in commits %}
+        - {{ commit.message | split(pat="\n") | first | upper_first | trim }} ([{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }}))\
+        {% if commit.footers is defined and commit.footers %}\
+          {% for footer in commit.footers %}\
+            , {{ footer.token }}{{ footer.separator }}{{ footer.value }}\
+          {% endfor %}\
+        {% endif %}\
+    {% endfor %}
+{% endfor %}\n
+"""
+
+# -----------------------------------------------
+# FOOTER
+# Appended at the end of the changelog
+# -----------------------------------------------
+footer = """
+---
+
+> If it works, don’t touch it... 🤣 It works on my computer... 💀
+"""
+
+# Remove extra blank lines / spaces from the template
+trim = true
+
+[git]
+
+# Parse commit messages as Conventional Commits based on https://www.conventionalcommits.org
+conventional_commits = true
+
+# Ideally, if set to true, it filters out the commits that are not conventional (KEEPING THEM FOR NOW)
+filter_unconventional = false
+
+# Commit parsing and grouping rules for git-cliff
+# These determine how commits are grouped into sections in CHANGELOG.md
+commit_parsers = [
+    # Feature commits → MINOR version bump
+    { message = "^feat", group = "✨ Features" },
+
+    # Fix commits → PATCH version bump
+    { message = "^fix", group = "🐛 Bug Fixes" },
+
+    # Documentation updates
+    { message = "^docs", group = "📝 Documentation" },
+
+    # Performance improvements
+    { message = "^perf", group = "⚡ Performance" },
+
+    # Refactors (no functional change)
+    { message = "^refactor", group = "♻️ Refactor" },
+
+    # Styling / formatting (no logic change)
+    { message = "^style", group = "🎨 Styling" },
+
+    # Tests (unit, integration, etc.)
+    { message = "^test", group = "🧪 Testing" },
+
+    # Generic chores (non-functional updates)
+    { message = "^chore", group = "🧰 Chores" },
+
+    # Security-related commits
+    { body = ".*security", group = "🔒 Security" },
+
+    # Catch-all for any unclassified commits
+    { message = ".*", group = "🧹 Miscellaneous Tasks" },
+]
+
+# Ideally, if set to true, it filters out the commits that are not matched by commit parsers.
+filter_commits = false
+
+# Ideally, if set to true, it sorts the tags topologically
+topo_order = false
+
+# Sort the commits inside sections by the oldest → the newest order.
+sort_commits = "oldest"

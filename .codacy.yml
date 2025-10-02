@@ -1,0 +1,17 @@
+exclude_paths:
+  - '**.md'
+  - '**.min.css'
+  - '**.min.js'
+  - '**/vendor/**'
+  - '**/node_modules/**'
+  - '**/dist/**'        # Exclude distribution directories
+  - '**/build/**'       # Exclude build directories
+  - '**/tmp/**'         # Exclude temporary directories
+  - '**/coverage/**'    # Exclude coverage directories
+  - '**/log/**'         # Exclude log directories
+  - '**/logs/**'        # Exclude logs directories
+  - '**/e2e/**'         # Exclude end-to-end test directories
+  - '**/spec/**'        # Exclude spec directories
+  - '**/tests/**'       # Exclude tests directories (plural)
+  - '**/docs/**'        # Exclude documentation directories
+  - '**/test/**'        # Exclude test directories (singular)
