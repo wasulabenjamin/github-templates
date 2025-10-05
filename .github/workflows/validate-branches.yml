@@ -1,0 +1,180 @@
+name: 🔐 Enforce Allowed PR Source Branches       # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+  # If a new run starts for this same concurrency group, automatically cancel any currently running one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [develop]
+
+permissions:
+  pull-requests: read                  # Needed to read detailed PR metadata (branch names, repos, refs)
+  contents: read                       # Needed to read repository files.
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  validate-pr:                         # Defines a validate-pr job
+    name: Validate Branches            # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 2                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 📥 Step 1: Downloads the repository’s code into the runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0               # Required for full history (Sources & Ancestry)
+          ref: ${{ github.head_ref }}  # Checkout the source branch for ancestry validation
+
+      # 🧾 Step 2: Display detailed PR metadata (branch names, repos, refs) for debugging and audit clarity.
+      - name: Show PR info
+        run: |
+          echo "PR number : ${{ github.event.number }}"
+          echo "Head ref  : ${{ github.head_ref }}"
+          echo "Base ref  : ${{ github.event.pull_request.base.ref }}"
+          echo "Head repo : ${{ github.event.pull_request.head.repo.full_name }}"
+          echo "Base repo : ${{ github.event.pull_request.base.repo.full_name }}"
+
+      # 🔍 Step 3: Validate branches.
+      - name: Validate branch ancestry and rules
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "ℹ️ Push event detected — skipping validation."
+            exit 0
+          fi
+
+          TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
+          SOURCE_BRANCH="${{ github.head_ref }}"
+
+          echo "🔍 Validating: $SOURCE_BRANCH → $TARGET_BRANCH"
+
+          # Handle empty head_ref (forked PRs)
+          if [[ -z "$SOURCE_BRANCH" ]]; then
+            echo "❌ No head_ref available — possibly a fork PR or unusual event."
+            echo "🔒 For security, failing this check."
+            exit 1
+          fi
+
+          # Function to check if branch is descendant of another
+          check_ancestry() {
+            local source_branch="$1"
+            local target_branch="$2"
+
+            response=$(curl -s \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/compare/$target_branch...$source_branch")
+
+            status=$(echo "$response" | jq -r '.status // empty')
+
+            if [[ "$status" == "ahead" || "$status" == "identical" ]]; then
+              echo "✅ $source_branch is properly based on $target_branch"
+            else
+              echo "❌ $source_branch is NOT based on $target_branch (API Status: $status)"
+              echo "$response" | jq
+              exit 1
+            fi
+          }
+
+          # Function to check if branch exists
+          branch_exists() {
+            git show-ref --verify --quiet "refs/heads/$1" || \
+            git show-ref --verify --quiet "refs/remotes/origin/$1"
+          }
+
+          # MAIN BRANCH RULES
+          if [[ "$TARGET_BRANCH" == "main" ]]; then
+            if [[ "$SOURCE_BRANCH" =~ ^release/[A-Za-z0-9._-]+$ ]]; then
+              echo "📦 Validating release branch..."
+              if ! check_ancestry "$SOURCE_BRANCH" "develop"; then
+                echo "❌ RELEASE RULE VIOLATION: release/* must be descendant of develop"
+                exit 1
+              fi
+              echo "✅ Release branch validation passed"
+
+            elif [[ "$SOURCE_BRANCH" =~ ^hotfix/[A-Za-z0-9._-]+$ ]]; then
+              echo "🚑 Validating hotfix branch..."
+              if ! check_ancestry "$SOURCE_BRANCH" "main"; then
+                echo "❌ HOTFIX RULE VIOLATION: hotfix/* must be descendant of main"
+                exit 1
+              fi
+              echo "✅ Hotfix branch validation passed"
+
+            else
+              echo "❌ MAIN TARGET RULE: Only release/* or hotfix/* branches allowed to merge into main"
+              echo "📝 Found: $SOURCE_BRANCH"
+              exit 1
+            fi
+
+          # DEVELOP BRANCH RULES  
+          elif [[ "$TARGET_BRANCH" == "develop" ]]; then
+            if [[ "$SOURCE_BRANCH" =~ ^(feature|bugfix|chore)/[A-Za-z0-9._-]+$ ]]; then
+              echo "🔧 Validating $SOURCE_BRANCH branch..."
+              if ! check_ancestry "$SOURCE_BRANCH" "develop"; then
+                echo "❌ FEATURE RULE VIOLATION: $SOURCE_BRANCH must be descendant of develop"
+                exit 1
+              fi
+              echo "✅ $SOURCE_BRANCH validation passed"
+
+            elif [[ "$SOURCE_BRANCH" =~ ^hotfix/[A-Za-z0-9._-]+$ ]]; then
+              echo "❌ PROJECT RULES VIOLATION"
+              echo "💡 hotfix/* should only target main and will be automatically synced to develop by workflow"
+              exit 1
+
+            else
+              echo "❌ DEVELOP TARGET RULE: Only feature/*, bugfix/*, chore/*, or hotfix/* branches allowed"
+              echo "📝 Found: $SOURCE_BRANCH"
+              exit 1
+            fi
+
+          # RELEASE BRANCH RULES (as target)
+          elif [[ "$TARGET_BRANCH" =~ ^release/[A-Za-z0-9._-]+$ ]]; then
+            if [[ "$SOURCE_BRANCH" =~ ^hotfix/[A-Za-z0-9._-]+$ ]]; then
+              echo "🚑 Validating hotfix to release branch..."
+              # Hotfix to release must come from the same release branch
+              if ! check_ancestry "$SOURCE_BRANCH" "$TARGET_BRANCH"; then
+                echo "❌ RELEASE HOTFIX RULE: Hotfix to release must be descendant of the target release branch"
+                exit 1
+              fi
+              echo "✅ Hotfix to release validation passed"
+            else
+              echo "❌ RELEASE TARGET RULE: Only hotfix/* branches allowed to merge into release/*"
+              exit 1
+            fi
+
+          # UNSUPPORTED TARGET BRANCH
+          else
+            echo "❌ UNSUPPORTED TARGET: PRs only allowed to main, develop, or release/* branches"
+            echo "📝 Found target: $TARGET_BRANCH"
+            exit 1
+          fi
+
+          # FINAL VALIDATION: Reject any funny branch names
+          if [[ ! "$SOURCE_BRANCH" =~ ^(main|develop|release/|hotfix/|feature/|bugfix/|chore/)[A-Za-z0-9._-]*$ ]]; then
+            echo "❌ INVALID BRANCH NAME: '$SOURCE_BRANCH' doesn't follow naming conventions"
+            echo "💡 Allowed: main, develop, release/*, hotfix/*, feature/*, bugfix/*, chore/*"
+            exit 1
+          fi
+
+          echo "🎉 All branch validations passed!"
+
+      # 🧾 Step 4: Smart Summary
+      - name: PR Sources workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "✅ Validation job completed successfully"
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Validation job failed"
+          else
+            echo "⚠️ Validation job ended with status: ${{ job.status }}"
+            exit 1
+          fi

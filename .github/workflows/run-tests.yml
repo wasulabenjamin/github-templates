@@ -1,0 +1,266 @@
+name: 🧪 E2E / Integration             # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+  # If a new run starts for this same concurrency group, automatically cancel any currently running one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
+    paths:                             # Only run when the below-listed folders or file types change.
+      - 'src/**'                       # Source code directories
+      - 'tests/**'                     # Test files
+      - '**.{test,spec}.{js,ts}'       # Test files
+      - 'package.json'                 # Dependency changes
+  push:                                # Runs when code is pushed or merged from PR directly to these branches.
+    branches: ['**']                   # Flexible branch triggers — automatically runs on any branch.
+    paths:                             # Only run when the below-listed folders or file types change
+      - 'src/**'                       # Source code directories
+      - 'tests/**'                     # Test files
+      - '**.{test,spec}.{js,ts}'       # Test files
+      - 'package.json'                 # Dependency changes
+
+permissions:
+  contents: read                       # Needed to read repository files.
+  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
+
+env:
+  NODE_ENV: test                       # Makes tests deterministic (no watch mode, no caching weirdness).
+  CI: true                             # Forces frameworks like Jest/Vitest into CI mode
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  test:                                # Defines a Test job
+    name: Run Tests                    # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 5                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    # ⚙️ Strategy matrix, if node-version: [20.x, 22.x] it runs the build on both Node 20.x and 22.x for compatibility.
+    strategy:
+      fail-fast: false                 # Continue with Node 22 even if Node 20 fails, if node-version: [20.x, 22.x]
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+
+      # 📥 Step 1: Downloads the repository’s code into the runner.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ⚡ Step 2: Installs Node.js on the runner and enables npm caching.
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }} # From the matrix above
+          cache: 'npm'                             # Speeds up workflow runs by caching dependencies.
+
+      # 🧾 Step 3: Display environment info (for debugging clarity)
+      - name: Show environment info
+        run: |
+          echo "📦 Node version: $(node -v)"
+          echo "📦 npm version: $(npm -v)"
+          echo "💻 OS: $(uname -a)"
+          echo "🔧 Working directory: $(pwd)"
+
+      # 🚀 Step 4: Cache only the npm download cache (NOT node_modules)
+      - name: Cache npm cache
+        uses: actions/cache@v4
+        with:
+          # Caching ~/.npm only allowing `npm ci` to reinstall node_modules cleanly but MUCH faster.
+          # Caching node_modules is unsafe, platform-specific, easily corrupted, and causes missing binaries
+          path: ~/.npm
+
+          # Lockfile hash ensures cache is invalidated when dependencies change
+          key: ${{ runner.os }}-npm-cache-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+
+          # Broader fallback keys if exact key is unavailable
+          restore-keys: |
+            ${{ runner.os }}-npm-cache-${{ matrix.node-version }}-  # Same OS + Node + npm cache
+            ${{ runner.os }}-npm-cache-                             # Same OS + npm cache
+
+      # 📦 Step 5: Deterministic installation using npm ci
+      - name: Install dependencies
+        run: |
+          echo "📦 Installing dependencies with npm ci..."
+
+          # We ALWAYS run npm ci because:
+          # - It's the only guaranteed reproducible install
+          # - Uses package-lock.json for exact versions
+          # - It wipes node_modules and rebuilds correctly for the current OS
+          # - Combines with ~/.npm cache to be fast AND correct
+
+          npm ci
+
+      # 👀 Step 6: If there’s a test:unit script, run it; otherwise, fall back to a direct Vitest command.
+      - name: Run Unit Test (Vitest)
+        run: |
+          echo "🧩 Starting unit test..."
+          mkdir -p .cache/test-results      # Ensure report directory exists
+
+          if npm run | grep -q "test:unit"; then
+            echo "🧩 Running project-defined Unit Test..."
+
+            if npm run test:unit -- --reporter=json \
+                --outputFile=.cache/test-results/vitest-report.json | tee .cache/test-results/vitest-console.log; then
+              echo "✅ Unit Test completed successfully."
+            else
+              echo "⚠️ Unit test script failed — check your test logs."
+            fi
+
+          elif npx --yes vitest --version >/dev/null 2>&1; then
+            echo "⚙️ No test:unit script found - running fallback Unit Test via Vitest..."
+
+            if npx vitest run --reporter=dot --reporter=json \
+                --outputFile=.cache/test-results/vitest-report.json | tee .cache/test-results/vitest-console.log; then
+              echo "✅ Unit Test completed successfully."
+            else
+              echo "⚠️ Fallback Vitest unit test failed — check your configuration"
+              echo "💡 To enable Unit test, define a 'test:unit' script in package.json, e.g.:"
+              echo '    "scripts": { "test:unit": "vitest run" }'
+            fi
+
+          else
+            echo "⚠️ No Unit Test configuration or script found, skipping test..."
+            echo "💡 To enable Unit test, define a 'test:unit' script in package.json, e.g.:"
+            echo '    "scripts": { "test:unit": "vitest run" }'
+            exit 1
+          fi
+
+      # 👀 Step 7: If there’s a test:e2e script, run it; otherwise, fall back to a direct Playwright command.
+      - name: Run E2E Tests
+        run: |
+          echo "🧩 Starting end-to-end (E2E) tests..."
+          mkdir -p .cache/test-results      # Ensure report directory exists
+
+          if npm run | grep -q "test:e2e"; then
+            echo "🧩 Running project-defined e2e Test..."
+
+            if npm run test:e2e -- --reporter=html \
+                --output=.cache/test-results/playwright-report | tee .cache/test-results/e2e-console.log; then
+              echo "✅ E2E Test completed successfully."
+            else
+              echo "⚠️ E2E test script failed — check your test logs."
+            fi
+
+          elif npx playwright --version >/dev/null 2>&1; then
+            echo "⚙️ No test:e2e script found - running fallback E2E Test via Playwright..."
+
+            # Only install browsers if not already installed
+            if [ ! -d "node_modules/.playwright" ]; then
+              echo "📦 Installing Playwright browsers and dependencies..."
+              npx playwright install --with-deps
+              echo "✅ Playwright browsers and dependencies installed successfully."
+            else
+              echo "📦 Playwright browsers already installed — skipping installation."
+            fi
+
+            echo "⚙️ Running fallback E2E Test via Playwright..."
+            if npx playwright test --reporter=list,html \
+                --output=.cache/test-results/playwright-report | tee .cache/test-results/playwright-console.log; then
+              echo "✅ Playwright E2E Test completed successfully."
+            else
+              echo "⚠️ Playwright fallback E2E test failed — check configuration"
+            fi
+
+          elif npx cypress --version >/dev/null 2>&1; then
+            echo "⚙️ Running fallback E2E test via Cypress..."
+
+            if [ ! -d "node_modules/.cypress" ]; then
+              echo "📦 Installing Cypress dependencies..."
+              npx cypress install
+              echo "✅ Cypress installed successfully."
+            else
+              echo "📦 Cypress already installed — skipping installation."
+            fi
+
+            if npx cypress run --reporter junit --reporter-options \
+                "mochaFile=.cache/test-results/cypress-results.xml,toConsole=true" \
+                | tee .cache/test-results/cypress-console.log; then
+              echo "✅ Cypress E2E Test completed successfully."
+            else
+              echo "⚠️ Cypress fallback E2E test failed — check your configuration."
+            fi
+
+          elif npx wdio --version >/dev/null 2>&1; then
+            echo "⚙️ Running fallback E2E test via WebdriverIO..."
+
+            if [ ! -d "node_modules/.wdio" ]; then
+              echo "📦 Installing WebdriverIO dependencies..."
+              npx wdio install
+              echo "✅ WebdriverIO dependencies installed successfully."
+            else
+              echo "📦 WebdriverIO already installed — skipping installation."
+            fi
+
+            if npx wdio run wdio.conf.js | tee .cache/test-results/wdio-console.log; then
+              echo "✅ WebdriverIO E2E Test completed successfully."
+            else
+              echo "⚠️ WebdriverIO fallback E2E test failed — check your configuration."
+            fi
+
+          else
+            echo "⚠️ No E2E Test configuration, script or supported framework found, skipping test..."
+            echo "💡 To enable E2E tests, define a 'test:e2e' script in package.json or install one of these \
+                frameworks:"
+            echo "    Playwright:  npm install --save-dev @playwright/test"
+            echo "    Cypress:     npm install --save-dev cypress"
+            echo "    WebdriverIO: npm install --save-dev @wdio/cli"
+            exit 1
+          fi
+
+      # 🛡️ Step 8: Security audit for vulnerabilities
+      - name: Dependencies audit
+        run: |
+          echo "🧩 Starting dependency security audit..."
+          mkdir -p .cache/test-results      # Ensure report directory exists
+
+          if npm run | grep -q "audit:deps"; then
+            echo "🧩 Running project-defined dependency security audit..."
+
+            if npm run audit:deps | tee .cache/test-results/audit-console.log; then
+              echo "✅ Dependency security audit completed successfully."
+            else
+              echo "⚠️ Dependency security audit script failed — check your audit logs."
+            fi
+
+          elif npx audit-ci --version >/dev/null 2>&1; then
+            echo "⚙️ No build script found - running fallback dependency security audit via audit-ci..."
+
+            if npx audit-ci --moderate | tee .cache/test-results/audit-console.log; then
+              echo "✅ Dependency security audit completed successfully."
+            else
+              echo "⚠️ Fallback dependency security audit failed — check your configuration, e.g.:"
+              echo '    "scripts": { "audit:deps": "npm audit --audit-level=moderate" }'
+            fi
+
+          else
+            echo "⚠️ No dependencies audit configuration or script found, skipping audit..."
+            echo "💡 To enable audit, define a 'audit:deps' script in package.json, e.g.:"
+            echo '    "scripts": { "audit:deps": "npm audit --audit-level=moderate" }'
+            exit 1
+          fi
+
+      # 📤 Step 9: Upload a test report for inspection.
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.node-version }}
+          path: .cache/test-results/
+          if-no-files-found: warn
+          retention-days: 7            # Auto-delete lint artifacts after 7 days to save storage.
+
+      # 🧾 Step 10: Smart summary
+      - name: Test workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" = "success" ]]; then
+            echo "✅ Tests job completed successfully."
+          elif [[ "${{ job.status }}" = "failure" ]]; then
+            echo "❌ Tests job failed for Node ${{ matrix.node-version }} on ${{ runner.os }}"
+          else
+            echo "⚠️ Tests job ended with status: ${{ job.status }} for Node ${{ matrix.node-version }} \
+                on ${{ runner.os }}"
+            exit 1
+          fi

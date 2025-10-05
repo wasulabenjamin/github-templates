@@ -1,0 +1,217 @@
+name: 🧹 Lint & Code Quality           # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+  # If a new run starts for this same concurrency group, automatically cancel any currently running one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
+    paths:                             # Only run when the below-listed folders or file types change
+      - 'src/**'                       # Source code directories
+      - '**.{js,ts,jsx,tsx,vue}'       # All code files
+      - '**.{json,yml,yaml}'           # Config files
+      - '.eslintrc.*'                  # Lint configs
+      - '.prettierrc.*'
+      - 'vite.config.*'                # Build tool config
+      - 'vue.config.*'                 # Vue-specific config
+  push:                                # Runs when code is pushed or merged from PR directly to these branches.
+    branches: ['**']                   # Flexible branch triggers — automatically runs on any branch.
+    paths:                             # Only run when the below-listed folders or file types change
+      - 'src/**'                       # Source code directories
+      - '**.{js,ts,jsx,tsx,vue}'       # All code files
+      - '**.{json,yml,yaml}'           # Config files
+      - '.eslintrc.*'                  # Lint configs
+      - '.prettierrc.*'
+      - 'vite.config.*'                # Build tool config
+      - 'vue.config.*'                 # Vue-specific config
+
+permissions:
+  contents: read                       # Needed to read repository files.
+  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
+
+env:
+  NODE_ENV: development                # Ensures linter uses local dev rules.
+  ESLINT_USE_FLAT_CONFIG: true         # Enables modern config syntax if applicable.
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  lint:                                # Defines a Lint job
+    name: Lint Checks                  # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 5                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    # ⚙️ Strategy matrix, if node-version: [20.x, 22.x] it runs the build on both Node 20.x and 22.x for compatibility.
+    strategy:
+      fail-fast: false                 # Continue with Node 22 even if Node 20 fails, if node-version: [20.x, 22.x]
+      matrix:
+        node-version: [20.x]
+
+    steps:
+
+      # 📥 Step 1: Downloads the repository’s code into the runner.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ⚡ Step 2: Installs Node.js on the runner and enables npm caching.
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }} # From the matrix above
+          cache: 'npm'                             # Speeds up workflow runs by caching dependencies.
+
+      # 🧾 Step 3: Display environment info (for debugging clarity)
+      - name: Show environment info
+        run: |
+          echo "📦 Node version: $(node -v)"
+          echo "📦 npm version: $(npm -v)"
+          echo "💻 OS: $(uname -a)"
+          echo "🔧 Working directory: $(pwd)"
+
+      # 🚀 Step 4: Cache only the npm download cache (NOT node_modules)
+      - name: Cache npm cache
+        uses: actions/cache@v4
+        with:
+          # Caching ~/.npm only allowing `npm ci` to reinstall node_modules cleanly but MUCH faster.
+          # Caching node_modules is unsafe, platform-specific, easily corrupted, and causes missing binaries
+          path: ~/.npm
+
+          # Lockfile hash ensures cache is invalidated when dependencies change
+          key: ${{ runner.os }}-npm-cache-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+
+          # Broader fallback keys if exact key is unavailable
+          restore-keys: |
+            ${{ runner.os }}-npm-cache-${{ matrix.node-version }}-  # Same OS + Node + npm cache
+            ${{ runner.os }}-npm-cache-                             # Same OS + npm cache
+
+      # 📦 Step 5: Deterministic installation using npm ci
+      - name: Install dependencies
+        run: |
+          echo "📦 Installing dependencies with npm ci..."
+
+          # We ALWAYS run npm ci because:
+          # - It's the only guaranteed reproducible install
+          # - Uses package-lock.json for exact versions
+          # - It wipes node_modules and rebuilds correctly for the current OS
+          # - Combines with ~/.npm cache to be fast AND correct
+
+          npm ci
+
+      # 👀 Step 6: Run ESLint checks.
+      - name: Run ESLint
+        run: |
+          echo "🧩 Starting ESLint check..."
+          mkdir -p .cache/lint-results      # Ensure report directory exists
+
+          if npm run | grep -q "check:eslint"; then
+            echo "🧩 Running project-defined ESLint script..."
+
+            if npm run check:eslint -- --format json --output-file .cache/lint-results/eslint-report.json; then
+              echo "✅ ESLint completed successfully."
+            else
+              echo "⚠️ ESLint script failed — check your logs."
+            fi
+
+          elif npx --yes eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 >/dev/null 2>&1; then
+            echo "⚙️ No check:eslint script found - running fallback ESLint via npx..."
+
+            if npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 --format json \
+                --output-file .cache/lint-results/eslint-report.json; then
+              echo "✅ Fallback ESLint completed successfully."
+            else
+              echo "⚠️ Fallback ESLint failed — check your configuration."
+              echo "💡 To enable eslint checks, define a 'check:eslint' script in package.json or install eslint."
+            fi
+
+          else
+            echo "⚠️ No ESLint configuration found, skipping check..."
+            echo "💡 To enable eslint checks, define a 'check:eslint' script in package.json or install eslint."
+            exit 1
+          fi
+
+      # 👀 Step 7: Run Prettier checks.
+      - name: Prettier
+        run: |
+          echo "🧩 Starting Prettier check..."
+          mkdir -p .cache/lint-results      # Ensure report directory exists
+
+          if npm run | grep -q "check:prettier"; then
+            echo "🧩 Running project-defined Prettier script..."
+
+            if npm run check:prettier | tee .cache/lint-results/prettier-report.txt; then  # Capture logs
+              echo "✅ Prettier completed successfully."
+            else
+              echo "⚠️ Prettier script failed — check your logs."
+            fi
+
+          elif npx --yes prettier --check . >/dev/null 2>&1; then
+            echo "⚙️ No check:prettier script found - running fallback Prettier via npx..."
+
+            if npx prettier --check . | tee .cache/lint-results/prettier-report.txt; then  # Capture logs
+              echo "✅ Fallback Prettier completed successfully."
+            else
+              echo "⚠️ Fallback Prettier failed — check your configuration."
+              echo "💡 To enable prettier checks, define a 'check:prettier' script in package.json or install \
+                  prettier."
+            fi
+
+          else
+            echo "⚠️ No Prettier configuration found, skipping check..."
+            echo "💡 To enable prettier checks, define a 'check:prettier' script in package.json or install prettier."
+            exit 1
+          fi
+
+      # 👀 Step 8: Run TypeScript checks.
+      - name: Type check (if TypeScript)
+        run: |
+          echo "🧩 Starting TypeScript type check..."
+          mkdir -p .cache/lint-results      # Ensure report directory exists
+
+          if npm run | grep -q "check:typescript"; then
+            echo "🧩 Running project-defined TypeScript script..."
+
+            if npm run check:typescript | tee .cache/lint-results/ts-report.txt; then
+              echo "✅ TypeScript check completed successfully."
+            else
+              echo "⚠️ TypeScript script failed — check your logs."
+            fi
+
+          elif npx --yes tsc --noEmit >/dev/null 2>&1; then
+            echo "⚙️ No check:typescript script found - running fallback tsc via npx..."
+
+            if npx tsc --noEmit | tee .cache/lint-results/ts-report.txt; then
+              echo "✅ Fallback TypeScript check completed successfully."
+            else
+              echo "⚠️ Fallback TypeScript check failed — check your configuration."
+              echo "💡 To enable tsc checks, define a 'check:tsc' script in package.json or install tsc."
+            fi
+
+          else
+            echo "⚠️ No TypeScript configuration found, skipping check..."
+            echo "💡 To enable tsc checks, define a 'check:tsc' script in package.json or install tsc."
+            exit 1
+          fi
+
+      # 📤 Step 9: Upload a lint report for inspection.
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: .cache/lint-results/
+          if-no-files-found: warn
+          retention-days: 7            # Auto-delete lint artifacts after 7 days to save storage.
+
+      # 🧾 Step 10: Smart summary
+      - name: Lint workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "✅ Lint & Code Quality job completed successfully."
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Lint & Code Quality job failed"
+          else
+            echo "⚠️ Lint & Code Quality job ended with status: ${{ job.status }}"
+            exit 1
+          fi
