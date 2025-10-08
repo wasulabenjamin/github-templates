@@ -1,0 +1,59 @@
+- name: blocked
+  description: Waiting for something external (dependency, info)
+  color: b60205
+
+- name: bug
+  description: A confirmed or suspected defect in functionality
+  color: d73a4a
+
+- name: documentation
+  description: Improvements or additions to documentation
+  color: 0075ca
+
+- name: duplicate
+  description: This issue or pull request already exists
+  color: cfd3d7
+
+- name: enhancement
+  description: An improvement to existing feature
+  color: a2eeef
+
+- name: feature
+  description: New feature or request
+  color: 0e8a16
+
+- name: good first issue
+  description: Beginner-friendly for on-boarding contributors
+  color: 7057ff
+
+- name: help wanted
+  description: Extra attention is needed
+  color: 008672
+
+- name: invalid
+  description: This doesn't seem right
+  color: e4e669
+
+- name: needs triage
+  description: Unreviewed, awaiting team assignment or confirmation
+  color: fbca04
+
+- name: question
+  description: Further information is requested
+  color: d876e3
+
+- name: security
+  description: Vulnerability or risk issue
+  color: e11d21
+
+- name: wontfix
+  description: This will not be worked on
+  color: d2dae1
+
+- name: chore
+  description: Routine maintenance, dependency updates, or build process changes
+  color: d2dae1
+
+- name: work in progress
+  description: Currently being worked on
+  color: d4c5f9
