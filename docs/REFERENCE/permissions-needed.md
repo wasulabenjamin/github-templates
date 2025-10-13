@@ -12,20 +12,21 @@ management, and environment protections.
 
 ### Basic Permission Requirements
 
-| Workflow                     | Minimum Permission | Why Required                              |
-|------------------------------|--------------------|-------------------------------------------|
-| `stale.yml`                  | Write              | Close issues and PRs                      |
-| `sync-labels.yml`            | Write              | Overwrites default labels with custom     |
-| `lint-checks.yml`            | Read (or higher)   | Access source files for linting           |
-| `run-tests.yml`              | Read (or higher)   | Run tests, access test files              |
-| `validate-branches.yml`      | Read (or higher)   | Read PRs sources                          |
-| `update-changelog.yml`       | Write              | Update CHANGELOG.md file                  |
-| `sync-main-to-develop.yml`   | Write              | push to `develop` changes from `main`     |
-| `ci.yml`                     | Read (or higher)   | Checkout code, read repository contents   |
-| `semantic-release.yml`       | Write              | Create tags, generate releases            |
-| `deploy-netlify.yml`         | Write              | Deployment operations, environment access |
+| Workflow                        | Minimum Permission | Why Required                              |
+|---------------------------------|--------------------|-------------------------------------------|
+| `stale.yml`                     | Write              | Close issues and PRs                      |
+| `sync-labels.yml`               | Write              | Overwrites default labels with custom     |
+| `lint-checks.yml`               | Read (or higher)   | Access source files for linting           |
+| `run-tests.yml`                 | Read (or higher)   | Run tests, access test files              |
+| `validate-branches.yml`         | Read (or higher)   | Read PRs sources                          |
+| `auto-close-issues-develop.yml` | Read and Write     | Read repo files and close issues          |
+| `update-changelog.yml`          | Write              | Update CHANGELOG.md file                  |
+| `sync-main-to-develop.yml`      | Write              | push to `develop` changes from `main`     |
+| `ci.yml`                        | Read (or higher)   | Checkout code, read repository contents   |
+| `semantic-release.yml`          | Write              | Create tags, generate releases            |
+| `deploy-netlify.yml`            | Write              | Deployment operations, environment access |
 
-### Recommended Permission Model
+### Recommended Permission Model   
 
 ```yaml
 # Example: Minimal permissions for CI workflow

@@ -6,18 +6,19 @@ focused YAML snippets are included — workflows are intentionally well-commente
 
 ## Available Workflows
 
-| Workflow                     | Purpose                                            | Trigger                                              |
-|------------------------------|----------------------------------------------------|------------------------------------------------------|
-| **stale.yml**                | Close inactive issues/PRs                          | Scheduled (`cron`)                                   |
-| **sync-labels.yml**          | Synchronizes customs labels with GitHub            | Changes to `.github/LABELS.yml`                      |
-| **lint-checks.yml**          | Run ESLint and Prettier checks                     | `push`, specified file types and folders             |
-| **run-tests.yml**            | Run Vitest/Playwright test suites                  | `push`, specified file types and folders             |
-| **validate-branches.yml**    | Only allow `release/*` or `hotfix/*` PRs to `main` | On every pull request                                |
-| **update-changelog.yml**     | Update `CHANGELOG.md` via git-cliff                | `push`, non-docs changes                             |
-| **sync-main-to-develop.yml** | Keeps `main` and `develop` in sync                 | `workflow_run:` run after changelog-workflow on main |
-| **ci.yml**                   | Run tests and linters then builds project          | `push`, `pull_request`,                              |
-| **semantic-release.yml**     | Generate changelog + semantic release              | `workflow_run:` run after ci-workflow on main        |
-| **deploy-netlify.yml**       | Auto-deploy app to hosting provider Netlify        | `workflow_run:` run after ci-workflow on main        |
+| Workflow                          | Purpose                                            | Trigger                                              |
+|-----------------------------------|----------------------------------------------------|------------------------------------------------------|
+| **stale.yml**                     | Close inactive issues/PRs                          | Scheduled (`cron`)                                   |
+| **sync-labels.yml**               | Synchronizes customs labels with GitHub            | Changes to `.github/LABELS.yml`                      |
+| **lint-checks.yml**               | Run ESLint and Prettier checks                     | `push`, specified file types and folders             |
+| **run-tests.yml**                 | Run Vitest/Playwright test suites                  | `push`, specified file types and folders             |
+| **validate-branches.yml**         | Only allow `release/*` or `hotfix/*` PRs to `main` | On every pull request                                |
+| **auto-close-issues-develop.yml** | Read repo files and close issues from `develop`    | Successful PR merge to `develop`                     |
+| **update-changelog.yml**          | Update `CHANGELOG.md` via git-cliff                | `push`, non-docs changes                             |
+| **sync-main-to-develop.yml**      | Keeps `main` and `develop` in sync                 | `workflow_run:` run after changelog-workflow on main |
+| **ci.yml**                        | Run tests and linters then builds project          | `push`, `pull_request`,                              |
+| **semantic-release.yml**          | Generate changelog + semantic release              | `workflow_run:` run after ci-workflow on main        |
+| **deploy-netlify.yml**            | Auto-deploy app to hosting provider Netlify        | `workflow_run:` run after ci-workflow on main        |
 
 Each file under `.github/workflows/` defines one automation process.
 
@@ -116,6 +117,21 @@ accidental or unsafe merges (e.g., feature branches or random personal branches 
   * `hotfix/ → release/` : Must be descendant of target release
   * Funny names all rejected automatically
 - Output a pass/fail decision visible in GitHub’s required checks UI.
+- Output a Smart summary
+
+## `auto-close-issues-develop.yml` — 🧠 Auto-Close Issues on Develop
+
+**When it runs:**
+- Runs on successful merge of a pull request to `develop`.
+
+**Purpose:** Automates closing issues process from develop branch.
+
+**Key stages:**
+- Defines a close-issues job
+- Downloads the repository’s code into the runner.
+- Avoid shell interpretation of the PR body content
+- Extract issue references from PR Description
+- Closes existing issues
 - Output a Smart summary
 
 ## `update-changelog.yml` — 📄 Auto Update Changelog

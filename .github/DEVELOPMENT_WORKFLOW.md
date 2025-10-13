@@ -72,6 +72,8 @@ git add --all; git commit -m "<type(optional-scope): short-summary>"; git push -
 git checkout develop; git fetch origin --prune; git reset --hard origin/develop; git clean -fd; git log --oneline --graph --decorate -10
 
 # Step 9. Delete the feature/* or fix/* branch both locally and remotely
+#   OR ALTERNATIVELY: Go to repo settings and enable Automatically delete head branches, then always skip this step
+#   ONLY IF: Restrict deletions for branches main and develop are enabled. See attached BRANCH_PROTECTION_RULES.json
 git branch -d <type/branch-name>; git push origin --delete <type/branch-name>
 
 

@@ -90,6 +90,7 @@ Your repository should now contain:
 │   └── security.yml               # Template for security issues
 │
 ├── workflows/                     # Predefined GitHub workflows
+│   ├── auto-close-issues-develop.yml   # Automatically closes open issues on a successful PR Merge to develop
 │   ├── ci.yml                     # Ensures build + lint + test pass on PRs
 │   ├── deploy-netlify.yml         # Auto-deploys to target host on merge or push to `main`
 │   ├── lint-checks.yml            # Runs ESLint + Prettier independently - on push & PR for quick feedback
@@ -149,7 +150,7 @@ Your repository should now contain:
 
 After initial setup, customize these elements for your project:
 
-- [ ] Verify Template Configuration. See [CHANGES.md](../../.github/CHANGES.md) for full list of changes to make.
+- [ ] Verify Template Configuration.
 - [ ] Update `CONTRIBUTING.md` with project-specific guidelines
 - [ ] Configure `CODEOWNERS` with your team members
 - [ ] Modify workflow files for your deployment targets
