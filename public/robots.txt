@@ -1,0 +1,16 @@
+# ---------------------------------------------------------
+# robots.txt for https://wb-github-templates.netlify.app/
+# Reference: https://www.robotstxt.org/
+# ---------------------------------------------------------
+
+User-agent: *
+
+# Allow all learning and public assets
+# ---------------------------------------------------------
+
+Allow: /src/
+Allow: /index.html
+
+# Sitemap helps search engines discover content
+# ---------------------------------------------------------
+Sitemap: https://wb-github-templates.netlify.app/sitemap.xml
