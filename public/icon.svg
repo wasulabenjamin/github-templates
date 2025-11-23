@@ -1,0 +1,80 @@
+<!--
+  - Wasula Benjamin, Copyright (c) 2025
+  - Contact : wasulabenjamin@gmail.com
+  -
+  - Project Name  : github-templates
+  - File Name     : icon.svg
+  - Last Modified : 2025-11-15, 10:39pm
+  -->
+
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1080" height="1080" fill="url(#paint0_radial_34_55)" fill-opacity="0.2"/>
+<g filter="url(#filter0_n_34_55)">
+<rect width="1080" height="1080" fill="url(#paint1_radial_34_55)"/>
+</g>
+<g filter="url(#filter1_d_34_55)">
+<rect x="288.209" y="645.889" width="220" height="70" rx="28" transform="rotate(-45 288.209 645.889)" fill="#A0A0A0"/>
+</g>
+<g filter="url(#filter2_d_34_55)">
+<rect x="337.497" y="384" width="220" height="70" rx="28" transform="rotate(45 337.497 384)" fill="#E9E9E9"/>
+</g>
+<g filter="url(#filter3_d_34_55)">
+<rect x="543" y="614" width="250" height="70" rx="28" fill="#E9E9E9"/>
+</g>
+<defs>
+<filter id="filter0_n_34_55" x="0" y="0" width="1080" height="1080" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="2 2" stitchTiles="stitch" numOctaves="3" result="noise" seed="5829" />
+<feColorMatrix in="noise" type="luminanceToAlpha" result="alphaNoise" />
+<feComponentTransfer in="alphaNoise" result="coloredNoise1">
+<feFuncA type="discrete" tableValues="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+</feComponentTransfer>
+<feComposite operator="in" in2="shape" in="coloredNoise1" result="noise1Clipped" />
+<feFlood flood-color="rgba(0, 0, 0, 0.25)" result="color1Flood" />
+<feComposite operator="in" in2="noise1Clipped" in="color1Flood" result="color1" />
+<feMerge result="effect1_noise_34_55">
+<feMergeNode in="shape" />
+<feMergeNode in="color1" />
+</feMerge>
+</filter>
+<filter id="filter1_d_34_55" x="283.807" y="493.924" width="213.865" height="213.865" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="8"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_34_55"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_34_55" result="shape"/>
+</filter>
+<filter id="filter2_d_34_55" x="283.598" y="387.598" width="213.865" height="213.865" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="8"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_34_55"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_34_55" result="shape"/>
+</filter>
+<filter id="filter3_d_34_55" x="527" y="606" width="282" height="102" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="8"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_34_55"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_34_55" result="shape"/>
+</filter>
+<radialGradient id="paint0_radial_34_55" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(540 540) rotate(90) scale(540)">
+<stop stop-color="#2C8BD0"/>
+<stop offset="1" stop-color="#16476A"/>
+</radialGradient>
+<radialGradient id="paint1_radial_34_55" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(540 540) rotate(-41.0699) scale(4064.82)">
+<stop stop-color="#1D2831"/>
+<stop offset="1" stop-color="#597B97"/>
+</radialGradient>
+</defs>
+</svg>

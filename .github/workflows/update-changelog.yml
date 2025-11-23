@@ -1,0 +1,181 @@
+name: 📄 Auto Update Changelog         # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+  # If a new run starts for this same concurrency group, automatically cancel any currently running one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  push:                                # Runs when code is pushed or merged from PR directly to these branches.
+    branches: [main]
+    paths-ignore:                      # Prevents changelog runs on doc-only edits.
+      - '.github/**'
+      - 'docs/**'
+      - '**.md'
+
+# Although permissions block is no longer needed since we're using app token with explicit permissions
+permissions:
+  contents: write                      # Required for tagging and writing CHANGELOG.md
+
+env:
+  GIT_AUTHOR_NAME: "github-actions[bot]"
+  GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+  GIT_COMMITTER_NAME: "Wasula Benjamin (via: 📄 Auto Update Changelog)"
+  GIT_COMMITTER_EMAIL: "wasulabenjamin@users.noreply.github.com"
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  update-changelog:                    # Defines a Changelog Update job
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    name: Changelog Update             # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 2                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 🔑 Step 1: Generate GitHub App token to bypass branch protection
+      - name: Generate Changelog App token
+        id: changelog-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.CHANGELOG_BOT_ID }}               # Changelog Bot ID
+          private_key: ${{ secrets.CHANGELOG_BOT_PRIVATE_KEY }} # Changelog Bot Private Key
+
+      # 📥 Step 2: Downloads the repository’s code into the runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.changelog-token.outputs.token }}     # Uses changelog-token instead of GITHUB_TOKEN
+          fetch-depth: 0                                        # Full history for accurate changelog
+
+      # 🔍 Step 3: Verify if changelog config cliff.toml exists
+      - name: Verify changelog config cliff.toml exists
+        run: |
+          if [ -f "cliff.toml" ]; then
+            echo "✅ cliff.toml configuration found"
+          else
+            echo "❌ cliff.toml configuration file is missing"
+            echo "💡 Create a cliff.toml file or use default configuration"
+            exit 1
+          fi
+
+      # 🧩 Step 4: Determine semantic version
+      - name: Determine next version
+        id: version
+        run: |
+          # Check if any tags exist first
+          if git rev-parse --verify --quiet "v0.0.0" >/dev/null; then
+            LATEST_TAG="v0.0.0"
+          else
+            # Get latest actual tag or use empty if none exist
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          fi
+
+          echo "Latest tag: $LATEST_TAG"
+
+          # Set default version if no tags exist
+          if [ -z "$LATEST_TAG" ]; then
+            MAJOR=0
+            MINOR=1
+            PATCH=0
+            BUMP="initial"
+          else
+            # Extract numeric part from existing tag
+            VERSION=${LATEST_TAG#v}
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)
+            MINOR=$(echo "$VERSION" | cut -d. -f2)
+            PATCH=$(echo "$VERSION" | cut -d. -f3)
+
+            # Detect bump type - only if we have a valid base tag
+            if git log "${LATEST_TAG}..HEAD" --pretty=format:'%s%n%b' | grep -Eq '(^[^ ]*!:|BREAKING CHANGE:)'; then
+              BUMP="major"
+            elif git log "${LATEST_TAG}..HEAD" --pretty=format:%s | grep -Eq "^feat"; then
+              BUMP="minor"
+            elif git log "${LATEST_TAG}..HEAD" --pretty=format:%s | grep -Eq "^fix"; then
+              BUMP="patch"
+            else
+              BUMP="none"
+            fi
+
+            # Increment version based on bump type
+            case $BUMP in
+              major) MAJOR=$((MAJOR+1)); MINOR=0; PATCH=0 ;;
+              minor) MINOR=$((MINOR+1)); PATCH=0 ;;
+              patch) PATCH=$((PATCH+1)) ;;
+              none) ;;
+            esac
+          fi
+
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "New version: v$NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "bump=$BUMP" >> $GITHUB_OUTPUT
+
+      # 🪶 Step 5: Generate CHANGELOG.md
+      - name: Generate changelog
+        if: steps.version.outputs.bump != 'none'
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: -o CHANGELOG.md --tag v${{ steps.version.outputs.version }} --verbose
+
+      # 🔍 Step 6: Check if changes were made to CHANGELOG.md
+      - name: Check if CHANGELOG has changes
+        if: steps.version.outputs.bump != 'none'
+        id: changes
+        run: |
+          if git diff --quiet CHANGELOG.md; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "📝 No changes to CHANGELOG.md"
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "📝 CHANGELOG.md has been updated"
+          fi
+
+      # 💾 Step 7: Commit and push changes made to CHANGELOG.md
+      - name: Commit and push CHANGELOG updates
+        if: steps.version.outputs.bump != 'none' && steps.changes.outputs.changes == 'true'
+        run: |
+          git config user.name "${GIT_AUTHOR_NAME}"
+          git config user.email "${GIT_AUTHOR_EMAIL}"
+          git add CHANGELOG.md
+          git commit -m "chore: update changelog for v${{ steps.version.outputs.version }} [skip ci]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ steps.changelog-token.outputs.token }}     # Uses changelog-token instead of GITHUB_TOKEN
+
+      # 🏷️ Step 8: Tag the main branch with the newly extracted version (only if that tag doesn't already exist)
+      - name: Tag version
+        if: steps.version.outputs.bump != 'none' && steps.changes.outputs.changes == 'true'
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          NEW_TAG="v${{ steps.version.outputs.version }}"
+
+          if [[ "$LATEST_TAG" == "$NEW_TAG" ]]; then
+            echo "ℹ️ Skipping tag creation — latest tag ($LATEST_TAG) equals new tag ($NEW_TAG)"
+          elif git rev-parse "$NEW_TAG" >/dev/null 2>&1; then
+            echo "⚠️ Tag $NEW_TAG already exists locally — skipping creation."
+          elif git ls-remote --tags origin | grep -q "refs/tags/$NEW_TAG"; then
+            echo "⚠️ Tag $NEW_TAG already exists on remote — skipping creation."
+          else
+            git tag "$NEW_TAG" -m "Release $NEW_TAG"
+            git push origin "$NEW_TAG"
+            echo "✅ Created and pushed tag $NEW_TAG"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ steps.changelog-token.outputs.token }}     # Uses changelog-token instead of GITHUB_TOKEN
+
+      # 🧾 Step 9: Smart Summary
+      - name: Changelog workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]] && [[ "${{ steps.changes.outputs.changes }}" == "true" ]]; then
+            echo "✅ CHANGELOG.md updated and committed successfully"
+            echo "✅ main branch tagged with v${{ steps.version.outputs.version }}"
+          elif [[ "${{ job.status }}" == "success" ]] && [[ "${{ steps.changes.outputs.changes }}" != "true" ]]; then
+            echo "ℹ️ No version bump detected — skipping changelog and tag creation"
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Changelog job failed"
+          else
+            echo "⚠️ Changelog job ended with status: ${{ job.status }}"
+          fi

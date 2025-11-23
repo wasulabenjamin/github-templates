@@ -1,0 +1,77 @@
+name: 🚀 Deploy to Netlify             # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+  # If a new run starts for this same concurrency group, automatically cancel any currently running one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  workflow_run:
+    workflows: ["📦 Continuous Integration"]
+    branches: [main]                   # Only run when CI completed on the main branch
+    types: [completed]
+
+permissions:
+  contents: read                       # Needed to read repository files.
+
+env:
+  DEPLOY_ENV: production
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  deploy:                              # Defines a deployment job
+    if: github.event.workflow_run.conclusion == 'success'  # Only proceed if CI was successful
+    name: Netlify Deploy               # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 5                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 📥 Step 1: Download pre-built artifacts from a previous ci job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: build-output
+
+      # 🔍 Step 2: Verify build artifacts
+      - name: Verify build artifacts
+        run: |
+          echo "🔎 Verifying downloaded artifact..."
+          
+          if [ -d dist ] || [ -d build ] || [ -d out ]; then
+            echo "✅ Build output exists."
+          else
+            echo "❌ No build output found (expected one of: dist/, build/, out/)."
+            exit 1
+          fi
+
+      # ✅ Step 3: Install Netlify CLI
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      # 🚀 Step 4: Deploy to Netlify
+      - name: Deploy to Netlify
+        run: |
+          netlify deploy \
+            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site ${{ secrets.NETLIFY_PROJECT_ID }} \
+            --dir=dist \
+            --prod-if-unlocked
+
+      # 🧾 Step 5: Smart Summary
+      - name: Deploy workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "✅ Deployment completed successfully"
+            echo "📦 Commit: ${{ github.sha }}"
+            echo "🎯 Environment: production"
+            echo "🔗 Trigger: ${{ github.event_name }}"
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Deployment job failed"
+          else
+            echo "⚠️ Deployment job ended with status: ${{ job.status }}"
+            exit 1
+          fi

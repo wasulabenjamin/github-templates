@@ -1,0 +1,118 @@
+name: 🛡️ Security Vulnerability
+description: Responsibly report security vulnerabilities
+title: "Security: <brief-summary>"
+labels: ["security", "needs triage"]
+assignees: ["wasulabenjamin"]
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚨 Important Security Notice
+        **DO NOT report security vulnerabilities in public issues.**
+
+        ### 🙏 Please use:
+        - **GitHub's private vulnerability reporting** (Security tab → Report a vulnerability)
+        - **Email**: wasulabenjamin@gmail.com (for security issues only)
+
+        💀 PROCEED WITH CAUTION HERE ON OUT! 💣
+
+        ### ⚠️ Critical Instructions:
+        - **DO NOT** describe the vulnerability in detail here
+        - **DO NOT** include proof-of-concept code
+        - **DO NOT** share exploit steps publicly
+
+        Please use GitHub's private vulnerability reporting feature or email wasulabenjamin@gmail.com
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Vulnerability Category
+      options:
+        - "Authentication/Authorization"
+        - "Data Exposure"
+        - "Code Injection"
+        - "Dependency Vulnerability"
+        - "Configuration Issue"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity Assessment
+      options:
+        - "🔴 Critical - Remote code execution, data breach"
+        - "🟡 High - Privilege escalation, data exposure"
+        - "🔵 Medium - Limited impact, requires specific conditions"
+        - "🟢 Low - Minimal impact, theoretical risk"
+    validations:
+      required: true
+
+  - type: textarea
+    id: contact
+    attributes:
+      label: Contact Information
+      description: How can we reach you privately? (Email, GitHub username, etc.)
+      placeholder: "Provide secure contact method for follow-up"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: High-Level Description
+      description: General area of concern WITHOUT technical details
+      placeholder: |
+        Example: "Potential issue in user authentication flow"
+        Example: "Concern about data validation in API endpoints"
+        Example: "Possible dependency with known vulnerabilities"
+
+        **DO NOT**: "SQL injection in login.php line 45 using ' OR '1'='1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential Impact Level
+      description: What could an attacker potentially achieve?
+      placeholder: |
+        Example: "Could allow unauthorized access to user data"
+        Example: "Might enable denial of service"
+        Example: "Potential for privilege escalation"
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected
+    attributes:
+      label: Affected Components
+      description: Which parts of the system might be involved?
+      placeholder: "e.g., API endpoints, authentication system, file uploads, etc."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: coordination
+    attributes:
+      label: Disclosure Coordination
+      options:
+        - label: "I agree to coordinate disclosure timing with maintainers"
+        - label: "I have not disclosed this vulnerability elsewhere"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **NOTE:** This issue may be automatically closed and followed up via private channels.
+
+        ## Next Steps
+        1. We will acknowledge receipt within 24 hours
+        2. We will contact you via your provided contact method
+        3. We will work together on a fix and coordinated disclosure
+
+        Thank you for your responsible disclosure! 🛡️
