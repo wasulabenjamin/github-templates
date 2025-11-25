@@ -8,8 +8,6 @@ concurrency:                           # Prevents multiple runs of the same work
 on:                                    # Defines the triggers that cause this workflow to run.
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    branches: [develop]
 
 permissions:
   pull-requests: read                  # Needed to read detailed PR metadata (branch names, repos, refs)
@@ -167,7 +165,7 @@ jobs:                                  # Defines all the major automated tasks G
           echo "🎉 All branch validations passed!"
 
       # 🧾 Step 4: Smart Summary
-      - name: PR Sources workflow summary
+      - name: Branch Validations workflow summary
         if: always()
         run: |
           if [[ "${{ job.status }}" == "success" ]]; then

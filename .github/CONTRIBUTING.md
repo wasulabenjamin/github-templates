@@ -41,18 +41,19 @@ them:
 - `duplicate` - This issue or pull request already exists
 - `enhancement` - An improvement to existing feature
 - `feature` - New feature or request
-- `good first issue` - Beginner-friendly: for on-boarding contributors
+- `good first issue` - Beginner-friendly for on-boarding contributors
 - `help wanted` - Extra attention is needed
 - `invalid` - This doesn't seem right
-- `needs triage` - Unreviewed: awaiting team assignment or confirmation
+- `needs triage` - Unreviewed, awaiting team assignment or confirmation
 - `question` - Further information is requested
+- `ready for release` - Issue is completed and merged into develop; awaiting production release
 - `security` - Vulnerability or risk issue
 - `wontfix` - This will not be worked on
 - `work in progress` - Currently being worked on
 
 For a complete look at our labels, see the [github-templates labels page.][gh_templates_labels]
 
-> Issues may be auto-closed after 30 days of inactivity. You can reopen anytime if still relevant.
+> Issues may be auto-closed after 63 days of inactivity. You can reopen anytime if still relevant.
 
 ## Bug reports
 
@@ -80,7 +81,7 @@ Example:
 > If applicable, add screenshots to help explain your problem.
 >
 > Any other information you want to share that is relevant to the issue being reported. This might include the lines of
-code that you have identified as causing the bug, and potential solutions (and your opinions on their merits).
+> code that you have identified as causing the bug, and potential solutions (and your opinions on their merits).
 
 ## Feature requests
 

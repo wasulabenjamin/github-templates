@@ -6,6 +6,10 @@
   description: A confirmed or suspected defect in functionality
   color: d73a4a
 
+- name: chore
+  description: Routine maintenance, dependency updates, or build process changes
+  color: d2dae1
+
 - name: documentation
   description: Improvements or additions to documentation
   color: 0075ca
@@ -42,16 +46,16 @@
   description: Further information is requested
   color: d876e3
 
+- name: ready for release
+  description: Issue is completed and merged into develop; awaiting production release
+  color: 8fd19e
+
 - name: security
   description: Vulnerability or risk issue
   color: e11d21
 
 - name: wontfix
   description: This will not be worked on
-  color: d2dae1
-
-- name: chore
-  description: Routine maintenance, dependency updates, or build process changes
   color: d2dae1
 
 - name: work in progress

@@ -107,14 +107,20 @@ github-templates/
 │   │   ├── feature_request.yml        # Template for feature requests
 │   │   └── security.yml               # Template for security issues
 │   │
+│   ├── PULL_REQUEST_TEMPLATE/         # Directory for custom templates
+│   │   ├── bugfix.md                  # Bugfix Pull Request
+│   │   ├── documentation.md           # Documentation Pull Request
+│   │   ├── feature.md                 # Feature Pull Request
+│   │   ├── hotfix.md                  # Hotfix Pull Request
+│   │   └── release.md                 # Release Pull Request
+│   │
 │   ├── workflows/                     # Predefined GitHub workflows
-│   │   ├── auto-close-issues-develop.yml   # Automatically closes open issues on a successful PR Merge to develop
 │   │   ├── ci.yml                     # Ensures build + lint + test pass on PRs
 │   │   ├── deploy-netlify.yml         # Auto-deploys to target host on merge or push to `main`
 │   │   ├── lint-checks.yml            # Runs ESLint + Prettier independently - on push & PR for quick feedback
+│   │   ├── pr-issue-handler.yml       # A smart Issues and PRs handler 
 │   │   ├── run-tests.yml              # Runs Vitest/Playwright suites - Keeps CI cleanly separated; may run parallel
 │   │   ├── semantic-release.yml       # Generates changelog + semantic version tag
-│   │   ├── stale.yml                  # Auto-closes Stale Issues and PRs
 │   │   ├── sync-labels.yml            # Overwrites GitHub labels with our defined LABELS.yml
 │   │   ├── sync-main-to develop.yml   # Automatically syncs main changes to develop
 │   │   ├── update-changelog.yml       # Generate CHANGELOG.md file with git-cliff
@@ -126,7 +132,7 @@ github-templates/
 │   ├── CONTRIBUTING.md                # Contribution rules & setup
 │   ├── DEVELOPMENT_WORKFLOW.md        # Defines how branches are organized and how commits are structured
 │   ├── LABELS.yml                     # Defines our own labels
-│   └── PULL_REQUEST_TEMPLATE.md       # Template for PR submissions
+│   └── PULL_REQUEST_TEMPLATE.md       # Default template (always loaded by GitHub UI)
 │
 ├── .vscode/
 │   └── extensions.json
@@ -204,19 +210,18 @@ github-templates/
 
 Each GitHub Action in `.github/workflows` automates a specific lifecycle task:
 
-| Workflow                          | Purpose                                            | Trigger                                              |
-|-----------------------------------|----------------------------------------------------|------------------------------------------------------|
-| **stale.yml**                     | Close inactive issues/PRs                          | Scheduled (`cron`)                                   |
-| **sync-labels.yml**               | Synchronizes customs labels with GitHub            | Changes to `.github/LABELS.yml`                      |
-| **lint-checks.yml**               | Run ESLint and Prettier checks                     | `push`, specified file types and folders             |
-| **run-tests.yml**                 | Run Vitest/Playwright test suites                  | `push`, specified file types and folders             |
-| **validate-branches.yml**         | Only allow `release/*` or `hotfix/*` PRs to `main` | On every pull request                                |
-| **auto-close-issues-develop.yml** | Read repo files and close issues from `develop`    | Successful PR merge to `develop`                     |
-| **update-changelog.yml**          | Update `CHANGELOG.md` via git-cliff                | `push`, non-docs changes                             |
-| **sync-main-to-develop.yml**      | Keeps `main` and `develop` in sync                 | `workflow_run:` run after changelog-workflow on main |
-| **ci.yml**                        | Run tests and linters then builds project          | `push`, `pull_request`,                              |
-| **semantic-release.yml**          | Generate changelog + semantic release              | `workflow_run:` run after ci-workflow on main        |
-| **deploy-netlify.yml**            | Auto-deploy app to hosting provider Netlify        | `workflow_run:` run after ci-workflow on main        |
+| Workflow                     | Purpose                                            | Trigger                                              |
+|------------------------------|----------------------------------------------------|------------------------------------------------------|
+| **sync-labels.yml**          | Synchronizes customs labels with GitHub            | Changes to `.github/LABELS.yml`                      |
+| **lint-checks.yml**          | Run ESLint and Prettier checks                     | `push`, specified file types and folders             |
+| **run-tests.yml**            | Run Vitest/Playwright test suites                  | `push`, specified file types and folders             |
+| **validate-branches.yml**    | Allow project defined PRs, inject custom PR bodies | On every pull request                                |
+| **pr-issue-handler.yml**     | Smartly handle issues and PRs                      | Schedule and Successful PR merge to `main/develop`   |
+| **update-changelog.yml**     | Update `CHANGELOG.md` via git-cliff                | `push`, non-docs changes                             |
+| **sync-main-to-develop.yml** | Keeps `main` and `develop` in sync                 | `workflow_run:` run after changelog-workflow on main |
+| **ci.yml**                   | Run tests and linters then builds project          | `push`, `pull_request`,                              |
+| **semantic-release.yml**     | Generate changelog + semantic release              | `workflow_run:` run after ci-workflow on main        |
+| **deploy-netlify.yml**       | Auto-deploy app to hosting provider Netlify        | `workflow_run:` run after ci-workflow on main        |
 
 👉 For a detailed explanation, check [`docs/USAGE_GUIDES/workflow-explanations.md`][workflow-explanations]
 

@@ -1,6 +1,6 @@
 name: 📝 Documentation Update
 description: Propose updates or improvements to documentation
-title: "Documentation: <brief-summary>"
+title: "docs: <brief-summary>"
 labels: ["documentation", "help wanted"]
 assignees: ["wasulabenjamin"]
 

@@ -1,64 +1,32 @@
-# 🧩 Pull Request
+# 📝 Choose the Correct Pull Request Template
 
-## ⚠️ Prerequisites
+This repository uses **specialized PR templates** depending on the type of change.  
+Before submitting your pull request, **Please go to the `Preview` tab and select the appropriate sub-template.**
+This will pre-fill your PR description with the appropriate structure.
 
-> This project only accepts pull requests linked to open issues
-> `main` branch only accepts pull requests from hotfix/* or release/* branches
-> For new ideas, please open a Feature Request.
-> For new issues, please open a Bug Report.
+---
 
-Before submitting:
-- ✅ Ensure all CI checks pass locally
-- ✅ Your branch name follows naming conventions:
+### 🔹 Select a template:
+
+* [🐛 Bugfix Pull Request](?expand=1&template=bugfix.md) – Fixes a bug or issue reported in the project
+* [📚 Documentation Pull Request](?expand=1&template=documentation.md) – Updates or improves documentation
+* [✨ Feature Pull Request](?expand=1&template=feature.md) – Adds a new feature or functionality
+* [🚑 Hotfix Pull Request](?expand=1&template=hotfix.md) – Urgent fix for production or critical issues
+* [🏷️ Release Pull Request](?expand=1&template=release.md) – Prepares a release for deployment
+
+---
+
+### ⚠️ Important Notes:
+
+1. Make sure your branch **follows naming conventions**:
   - `feature/<short-description>`
   - `bugfix/<issue-number>`
-  - `chore/<task>`
-- ✅ Your branch is up to date with `develop`:
+- `hotfix/<short-description>`
+- `release/<version-number>`
 
-## 🎯 Purpose
+2. Ensure your branch is **up-to-date with the target branch**.
+3. CI checks should **pass locally** before creating the PR.
 
-<!--- Describe your changes in detail -->
+---
 
-## 🧩 Related Issue
-
-Closes #ISSUE_ID <!--- Please link to the issue here: Edit ISSUE_ID -->
-
-## 🧪 Type of Change
-
-<!-- Mark with an `x` all the checkboxes that apply. -->
-- [ ] 💥 Breaking change (`*!`) — Affects existing functionality
-- [ ] ✨ Feature (`feat:`) — Adds new functionality
-- [ ] 🐛 Bug Fix (`fix`:) — Non-breaking change which fixes an issue
-- [ ] 🛠️ Chore (`chore:`) — Internal maintenance, CI, refactor, or cleanup
-- [ ] 📚 Documentation (`docs:`) — Updated documentation (README, comments, guides, e.t.c)
-- [ ] ⚡ Performance (`perf:`) — Improves performance without changing behavior
-- [ ] ♻️ Refactor (`refactor:`) — Improves code without changing behavior
-- [ ] 🎨 Style (`style:`) — Formatting or naming changes only
-- [ ] ✅ Test (`test:`) — Test-related changes
-
-## ✅ Checklist
-
-<!-- Mark with an `x` all the checkboxes that apply. -->
-- [ ] 🔄 My branch is rebased on the latest `develop`
-- [ ] 🧹 My code follows the project's coding standards and contribution guidelines.
-- [ ] 🧪 All existing tests pass
-- [ ] 🧩 I’ve added/updated relevant tests
-- [ ] 🧠 I’ve reviewed and self-tested my changes
-- [ ] 🌐 (If UI) Tested in multiple browsers
-- [ ] 📱 (If UI) Verified responsive behavior
-
-## 📸 Screenshots / Demos
-
-<!-- If applicable, attach screenshots or short clips to help explain your problem or visual changes. -->
-
-## 🗒️ Additional context
-
-<!-- Add any other context about the PR here -->
-
-## 🚦 Validation Status
-
-<!-- For maintainers -->
-- [ ] Code review completed
-- [ ] Tests passing
-- [ ] Documentation updated
-- [ ] Ready for merge
+*Click one of the links above to automatically load the appropriate template into your PR description.*

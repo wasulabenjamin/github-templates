@@ -1,6 +1,6 @@
 name: 🐛 Bug Report
 description: Create a bug report to help improve this project
-title: "Bug: <brief-summary>"
+title: "bug: <brief-summary>"
 labels: ["bug", "needs triage"]
 assignees: ["wasulabenjamin"]
 

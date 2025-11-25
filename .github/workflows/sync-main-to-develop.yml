@@ -166,7 +166,7 @@ jobs:                                  # Defines all the major automated tasks G
           GITHUB_TOKEN: ${{ steps.changelog-token.outputs.token }}
 
       # 🧾 Step 6: Smart Summary
-      - name: Sync workflow summary
+      - name: Sync Branches workflow summary
         if: always()
         run: |
           echo "## 🔄 Sync Main → Develop Summary"
