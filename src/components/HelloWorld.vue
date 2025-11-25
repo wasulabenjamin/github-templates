@@ -4,11 +4,11 @@
   -
   - Project Name  : github-templates
   - File Name     : HelloWorld.vue
-  - Last Modified : 2025-11-15, 08:28pm
+  - Last Modified : 2025-11-25, 10:02pm
   -->
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 
 defineProps<{ msg: string }>();
 
@@ -26,25 +26,21 @@ const toggleDetails = () => {
       <div class="section-header">
         <h2 class="section-title">{{ msg }}</h2>
         <p class="section-subtitle">
-          Explore the comprehensive GitHub Templates repository and accelerate
-          your project setup
+          Explore the comprehensive GitHub Templates repository and accelerate your project setup
         </p>
       </div>
 
       <div class="interactive-card">
         <div class="card-content">
-          <p>
-            Get hands-on with our template features and see how they can
-            transform your development workflow.
-          </p>
+          <p>Get hands-on with our template features and see how they can transform your development workflow.</p>
 
           <div class="interactive-section">
             <button type="button" @click="count++" class="btn btn-primary">
-              Template used {{ count }} {{ count === 1 ? "time" : "times" }}
+              Template used {{ count }} {{ count === 1 ? 'time' : 'times' }}
             </button>
 
             <button @click="toggleDetails" class="btn btn-secondary">
-              {{ showDetails ? "Hide" : "Show" }} project details
+              {{ showDetails ? 'Hide' : 'Show' }} project details
             </button>
           </div>
 
@@ -54,20 +50,20 @@ const toggleDetails = () => {
                 <h4>Project structure highlights</h4>
                 <ul class="detail-list">
                   <li>
-                    <strong>.github/</strong> - Workflows, issue templates, and
-                    contribution guidelines
+                    <strong>.github/</strong>
+                    - Workflows, issue templates, and contribution guidelines
                   </li>
                   <li>
-                    <strong>docs/</strong> - Comprehensive documentation and
-                    best practices
+                    <strong>docs/</strong>
+                    - Comprehensive documentation and best practices
                   </li>
                   <li>
-                    <strong>Workflows/</strong> - CI/CD, testing, deployment,
-                    and release automation
+                    <strong>Workflows/</strong>
+                    - CI/CD, testing, deployment, and release automation
                   </li>
                   <li>
-                    <strong>Templates/</strong> - Bug reports, feature requests,
-                    security issues
+                    <strong>Templates/</strong>
+                    - Bug reports, feature requests, security issues
                   </li>
                 </ul>
               </div>
@@ -90,21 +86,14 @@ const toggleDetails = () => {
       <div class="resources-section">
         <h3>Quick links</h3>
         <div class="resource-grid">
-          <a
-            href="https://github.com/wasulabenjamin/github-templates"
-            target="_blank"
-            class="resource-card"
-          >
+          <a class="resource-card" href="https://github.com/wasulabenjamin/github-templates" target="_blank">
             <div class="resource-icon">📖</div>
             <div class="resource-content">
               <strong>Repository</strong>
               <span>Explore the source code</span>
             </div>
           </a>
-          <a
-            href="./docs/USAGE_GUIDES/getting-started.md"
-            class="resource-card"
-          >
+          <a class="resource-card" href="./docs/USAGE_GUIDES/getting-started.md">
             <div class="resource-icon">🚀</div>
             <div class="resource-content">
               <strong>Getting started</strong>
@@ -118,10 +107,7 @@ const toggleDetails = () => {
               <span>Join our community</span>
             </div>
           </a>
-          <a
-            href="./docs/BEST_PRACTICES/code-review-standards.md"
-            class="resource-card"
-          >
+          <a class="resource-card" href="./docs/BEST_PRACTICES/code-review-standards.md">
             <div class="resource-icon">✅</div>
             <div class="resource-content">
               <strong>Code review</strong>
@@ -133,14 +119,11 @@ const toggleDetails = () => {
 
       <div class="docs-promo">
         <p>
-          Learn more about creating workflows, issue templates, and CI/CD
-          automation in
-          <a
-            href="https://github.com/wasulabenjamin/github-templates"
-            target="_blank"
-            class="promo-link"
-            >the repository documentation</a
-          >.
+          Learn more about creating workflows, issue templates, and CI/CD automation in
+          <a class="promo-link" href="https://github.com/wasulabenjamin/github-templates" target="_blank">
+            the repository documentation
+          </a>
+          .
         </p>
       </div>
     </div>
@@ -159,13 +142,13 @@ const toggleDetails = () => {
 }
 
 .section-title {
-  font: var(--ds-font-headline-large, 500 2rem/1.2 "Inter", sans-serif);
+  font: var(--ds-font-headline-large, 500 2rem/1.2 'Inter', sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 0.75rem;
 }
 
 .section-subtitle {
-  font: var(--ds-font-body, 400 1rem/1.5 "Inter", sans-serif);
+  font: var(--ds-font-body, 400 1rem/1.5 'Inter', sans-serif);
   color: var(--ds-text-subtle, #44546f);
   max-width: 600px;
   margin: 0 auto;
@@ -186,7 +169,7 @@ const toggleDetails = () => {
 }
 
 .card-content p {
-  font: var(--ds-font-body, 400 1rem/1.5 "Inter", sans-serif);
+  font: var(--ds-font-body, 400 1rem/1.5 'Inter', sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 2rem;
 }
@@ -213,7 +196,7 @@ const toggleDetails = () => {
 }
 
 .detail-section h4 {
-  font: var(--ds-font-headline-small, 600 1rem/1.2 "Inter", sans-serif);
+  font: var(--ds-font-headline-small, 600 1rem/1.2 'Inter', sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 1rem;
 }
@@ -227,7 +210,7 @@ const toggleDetails = () => {
 .detail-list li {
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--ds-border-subtle, #f1f2f4);
-  font: var(--ds-font-body, 400 0.875rem/1.5 "Inter", sans-serif);
+  font: var(--ds-font-body, 400 0.875rem/1.5 'Inter', sans-serif);
   color: var(--ds-text-subtle, #44546f);
 }
 
@@ -246,7 +229,7 @@ const toggleDetails = () => {
 }
 
 .resources-section h3 {
-  font: var(--ds-font-headline-medium, 500 1.25rem/1.2 "Inter", sans-serif);
+  font: var(--ds-font-headline-medium, 500 1.25rem/1.2 'Inter', sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 1.5rem;
 }
@@ -289,13 +272,13 @@ const toggleDetails = () => {
 }
 
 .resource-content strong {
-  font: var(--ds-font-body, 500 0.875rem/1.2 "Inter", sans-serif);
+  font: var(--ds-font-body, 500 0.875rem/1.2 'Inter', sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 0.25rem;
 }
 
 .resource-content span {
-  font: var(--ds-font-body-small, 400 0.75rem/1.2 "Inter", sans-serif);
+  font: var(--ds-font-body-small, 400 0.75rem/1.2 'Inter', sans-serif);
   color: var(--ds-text-subtle, #44546f);
 }
 
@@ -307,7 +290,7 @@ const toggleDetails = () => {
 }
 
 .docs-promo p {
-  font: var(--ds-font-body, 400 0.875rem/1.5 "Inter", sans-serif);
+  font: var(--ds-font-body, 400 0.875rem/1.5 'Inter', sans-serif);
   color: var(--ds-text-subtle, #44546f);
   margin: 0;
 }

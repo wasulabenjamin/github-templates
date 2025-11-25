@@ -4,7 +4,7 @@
   -
   - Project Name  : github-templates
   - File Name     : App.vue
-  - Last Modified : 2025-11-18, 02:46pm
+  - Last Modified : 2025-11-25, 10:02pm
   -->
 
 <script setup lang="ts">
@@ -77,13 +77,15 @@ onMounted(() => {
               <a
                 href="https://github.com/wasulabenjamin/github-templates/issues/new?template=bug_report.yml"
                 class="btn btn-secondary"
-                >Report bug</a
               >
+                Report bug
+              </a>
               <a
                 href="https://github.com/wasulabenjamin/github-templates/issues/new?template=feature_request.yml"
                 class="btn btn-outline"
-                >Request feature</a
               >
+                Request feature
+              </a>
             </div>
           </div>
         </div>
@@ -226,9 +228,9 @@ onMounted(() => {
               Join developers who have accelerated their project setup and maintained consistency across repositories.
             </p>
             <div class="cta-buttons">
-              <a href="https://github.com/wasulabenjamin/github-templates" class="btn btn-primary"
-                >Get started on GitHub</a
-              >
+              <a class="btn btn-primary" href="https://github.com/wasulabenjamin/github-templates">
+                Get started on GitHub
+              </a>
               <a href="./docs/USAGE_GUIDES/getting-started.md" class="btn btn-outline">Read documentation</a>
             </div>
           </div>
@@ -308,7 +310,8 @@ onMounted(() => {
             <div class="footer-info">
               <p>
                 &copy; 2025 GitHub Templates. Released under the
-                <a href="./LICENSE" class="footer-link">MIT License</a>.
+                <a class="footer-link" href="./LICENSE">MIT License</a>
+                .
               </p>
               <p>Built with Vue 3, Vite, and TypeScript.</p>
             </div>
