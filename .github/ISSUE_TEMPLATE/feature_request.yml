@@ -1,0 +1,56 @@
+name: ✨ Feature Request
+description: Suggest an idea or improvement for this project
+title: "feature: <brief-summary>"
+labels: ["feature", "enhancement", "question"]
+assignees: ["wasulabenjamin"]
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 💡 New idea? Great!  
+        Please provide detailed information to help understand and evaluate your proposal.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: Briefly describe the new feature.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Provide a clear and concise description of what you want to happen.
+      placeholder: What should the feature do or solve? It should allow users to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Give any alternative approaches or prior work?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature for your workflow?
+      options:
+        - "🟢 Low - Minor enhancement"
+        - "🔵 Medium - Nice to have"
+        - "🟡 High - Significant improvement"
+        - "🔴 Critical - Essential for my use case"
+
+  - type: checkboxes
+    id: volunteer
+    attributes:
+      label: Willing to contribute?
+      description: Would you like to submit a PR or help prototype this feature?
+      options:
+        - label: "Yes"

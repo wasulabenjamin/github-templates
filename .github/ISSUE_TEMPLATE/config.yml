@@ -1,0 +1,14 @@
+blank_issues_enabled: false            # Prevent users from opening blank, unstructured issues
+
+contact_links:
+  - name: 🤔 Need Help or Community Support?
+    url: https://github.com/wasulabenjamin/github-templates/discussions
+    about: For questions, ideas, or design discussions.
+
+  - name: 📝 Contributions Guide
+    url: https://github.com/wasulabenjamin/github-templates/blob/main/.github/CONTRIBUTING.md
+    about: Learn how to contribute to this project
+
+  - name: ☕ Chat with Maintainer
+    url: https://api.whatsapp.com/send?phone=254705657775&text=Hello%20CHi3F!
+    about: For friendly chats, quick clarifications, or collaboration ideas.

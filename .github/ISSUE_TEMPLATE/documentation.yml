@@ -1,0 +1,87 @@
+name: 📝 Documentation Update
+description: Propose updates or improvements to documentation
+title: "documentation: <brief-summary>"
+labels: ["documentation", "help wanted"]
+assignees: ["wasulabenjamin"]
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 📘 Improve documentation quality and clarity.
+        Whether it's a typo, unclear explanation, or missing information, we appreciate your feedback.
+
+  - type: textarea
+    id: area
+    attributes:
+      label: Documentation Area
+      description: Which page or section needs updating?
+      placeholder: e.g. README.md, CONTRIBUTING.md, setup-guide.md, code comments, etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Type of Change Needed
+      options:
+        - "📝 Typo or grammar correction"
+        - "🔧 Technical accuracy fix"
+        - "💡 Clarification or better explanation"
+        - "➕ Missing information or examples"
+        - "🗑️ Outdated or incorrect information"
+        - "🌐 Broken links"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Content (if applicable)
+      description: Copy the current text that needs changing
+      placeholder: |
+        Current documentation says...
+        [Copy problematic text here]
+
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be improved?
+      placeholder: |
+        The documentation should say...
+        [Describe what needs to be added, removed, or clarified.]
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Reasoning
+      description: Why is this change necessary? What problem does it solve?
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Notes
+      placeholder: Any extra context or rationale for this change.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this change?
+      options:
+        - "🟢 Low - Minor enhancement"
+        - "🔵 Medium - Nice to have"
+        - "🟡 High - Significant improvement"
+        - "🔴 Critical - Essential for my use case"
+
+  - type: checkboxes
+    id: volunteer
+    attributes:
+      label: Contribution Interest
+      description: Would you be willing to submit a PR for this documentation change?
+      options:
+        - label: "Yes, I can submit a pull request for this change"

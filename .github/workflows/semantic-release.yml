@@ -1,0 +1,149 @@
+name: 🏷️ Semantic Release              # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+
+  # If a new run starts for this same concurrency group, automatically cancel any currently running one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  workflow_run:
+    workflows: ["📦 Continuous Integration"]
+    branches: [main]                   # Only run when CI completed on the main branch
+    types: [completed]
+
+permissions:
+  contents: write                      # Create releases and attach assets.
+  packages: write                      # Publish to GitHub Packages (if used).
+
+env:
+  NODE_ENV: production
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  release:                             # Defines a release job
+    if: github.event.workflow_run.conclusion == 'success'  # Only proceed if CI was successful
+    name: GitHub Release               # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 5                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 📥 Step 1: Downloads the repository’s code into the runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0               # Fetch all history and tags (required for semantic versioning)
+
+      # 📥 Step 2: Download pre-built artifacts from a previous ci job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: build-output
+
+      # 🔍 Step 3: Verify build artifacts
+      - name: Verify build artifacts
+        id: verify
+        run: |
+          echo "🔎 Verifying downloaded artifact..."
+
+          if [ -d dist ]; then
+            echo "build_dir=dist" >> $GITHUB_OUTPUT
+            echo "✅ Found dist/ directory."
+          elif [ -d build ]; then
+            echo "build_dir=build" >> $GITHUB_OUTPUT
+            echo "✅ Found build/ directory."
+          elif [ -d out ]; then
+            echo "build_dir=out" >> $GITHUB_OUTPUT
+            echo "✅ Found out/ directory."
+          else
+            echo "❌ No build output found (expected one of: dist/, build/, out/)."
+            exit 1
+          fi
+
+      # ⚙️ Step 4: Get and Validate the latest semantic tag
+      - name: Get and Validate latest semantic tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n 1)
+
+          if [ -z "$LATEST_TAG" ]; then
+            echo "❌ No semantic version tag found"
+            exit 1
+          elif [[ ! $LATEST_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+            echo "❌ Invalid tag format: $LATEST_TAG"
+            echo "💡 Use semantic versioning: v1.0.0, v2.1.3, v1.0.0-beta.1"
+            exit 1
+          else
+            echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+            echo "✅ Found latest tag: $LATEST_TAG"
+          fi
+
+      # 📦 Step 5: Create a distribution package
+      - name: Create distribution package
+        run: |
+          BUILD_DIR="${{ steps.verify.outputs.build_dir }}"
+          echo "📦 Packaging contents from: $BUILD_DIR"
+
+          mkdir -p dist-package
+
+          # Copy the actual build output
+          cp -r $BUILD_DIR/* dist-package/ 2>/dev/null || echo "⚠️ Could not copy all files from $BUILD_DIR"
+
+          # Copy additional project files if they exist
+          echo "📄 Adding project metadata..."
+          [ -f "README.md" ] && cp README.md dist-package/ && echo "  ✅ README.md" 
+          [ -f "LICENSE" ] && cp LICENSE dist-package/ && echo "  ✅ LICENSE"
+          [ -f "CHANGELOG.md" ] && cp CHANGELOG.md dist-package/ && echo "  ✅ CHANGELOG.md"
+
+          # Show what we're packaging
+          echo "📁 Final package contents:"
+          ls -la dist-package/
+
+          # Create the archive
+          tar -czf release-assets.tar.gz dist-package/
+          echo "📦 Created release-assets.tar.gz from $BUILD_DIR"
+
+      # 🏷️ Step 6: Create GitHub Release (USE ACTUAL TAG)
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}
+          name: Version ${{ steps.get_tag.outputs.tag }}  # More formal naming
+          body: |
+            ## What's Changed
+
+            This release includes all changes up to tag ${{ steps.get_tag.outputs.tag }}.
+
+            ### 📦 Distribution Package
+            - Built assets from ${{ steps.verify.outputs.build_dir }}
+            - Includes project metadata (README, LICENSE, CHANGELOG)
+
+            See CHANGELOG.md for detailed release notes.
+          #generate_release_notes: true  # GitHub will still auto-generate notes
+          draft: false
+          prerelease: ${{ contains(steps.get_tag.outputs.tag, '-') }}
+          files: release-assets.tar.gz
+
+      # 🧹 Step 7: Cleanup after you
+      - name: Cleanup
+        run: rm -f release-assets.tar.gz && rm -rf dist-package/
+
+      # 🧾 Step 8: Smart summary
+      - name: Release workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "🎉 Release ${{ github.ref_name }} published successfully."
+            echo "📝 Release notes: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Release job failed"
+          else
+            echo "⚠️ Release job ended with status: ${{ job.status }}"
+            exit 1
+          fi

@@ -1,0 +1,79 @@
+# ==============================================================
+# CODEOWNERS
+# Location: .github/CODEOWNERS
+# Purpose: Defines ownership and auto-review assignment rules
+# ==============================================================
+
+# ──────────────────────────────────────────────────────────────
+# 👑 Default ownership
+# All files default to @wasulabenjamin unless otherwise stated.
+# ──────────────────────────────────────────────────────────────
+*                                      @wasulabenjamin
+
+
+# ──────────────────────────────────────────────────────────────
+# 🧭 GitHub Meta & Workflow Configuration
+# ──────────────────────────────────────────────────────────────
+.github/                               @wasulabenjamin
+
+# Issue templates
+.github/ISSUE_TEMPLATE/                @wasulabenjamin
+
+# PR templates
+.github/PULL_REQUEST_TEMPLATE/         @wasulabenjamin
+
+# CI/CD workflows
+.github/workflows/                     @wasulabenjamin
+
+# Others
+.github/CODE_OF_CONDUCT.md             @wasulabenjamin
+.github/CONTRIBUTING.md                @wasulabenjamin
+.github/DEVELOPMENT_WORKFLOW.md        @wasulabenjamin
+.github/LABELS.md                      @wasulabenjamin
+.github/PULL_REQUEST_TEMPLATE.md       @wasulabenjamin
+
+
+# ──────────────────────────────────────────────────────────────
+# 📘 Documentation
+# ──────────────────────────────────────────────────────────────
+docs/                                  @wasulabenjamin
+
+# Others
+docs/BEST_PRACTICES/                   @wasulabenjamin
+docs/REFERENCES/                       @wasulabenjamin
+docs/USAGE_GUIDES/                     @wasulabenjamin
+docs/FAQ.md                            @wasulabenjamin
+docs/INTEGRATIONS.md                   @wasulabenjamin
+docs/ROADMAP.md                        @wasulabenjamin
+
+
+# ──────────────────────────────────────────────────────────────
+# 🌐 Public Assets & Static Files
+# ──────────────────────────────────────────────────────────────
+public/                                @wasulabenjamin
+
+
+# ──────────────────────────────────────────────────────────────
+# 🧑🏽‍💻 Source code
+# ──────────────────────────────────────────────────────────────
+src/                                   @wasulabenjamin
+
+
+# ──────────────────────────────────────────────────────────────
+# 🧾 Root-Level Files
+# ──────────────────────────────────────────────────────────────
+.codacy.yml                            @wasulabenjamin
+.gitignore                             @wasulabenjamin
+.prettierrc                            @wasulabenjamin
+CHANGELOG.md                           @wasulabenjamin
+cliff.toml                             @wasulabenjamin
+eslint.config.js                       @wasulabenjamin
+index.html                             @wasulabenjamin
+LICENSE                                @wasulabenjamin
+package.json                           @wasulabenjamin
+README.md                              @wasulabenjamin
+stylelint.config.js                    @wasulabenjamin
+tsconfig.app.json                      @wasulabenjamin
+tsconfig.json                          @wasulabenjamin
+tsconfig.node.json                     @wasulabenjamin
+vite.config.ts                         @wasulabenjamin

@@ -1,0 +1,87 @@
+name: 🐛 Bug Report
+description: Create a bug report to help improve this project
+title: "bug: <brief-summary>"
+labels: ["bug", "needs triage"]
+assignees: ["wasulabenjamin"]
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 👋 Thank you for reporting an issue!
+        Please fill out all required sections clearly to help reproduce and fix the bug efficiently.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Please provide a clear and concise description of what the bug is and what you expected to happen
+      placeholder: |
+        Example:
+        - When I click "Save", the app freezes.
+        - I expected a success message instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide numbered steps to reproduce the issue.
+      placeholder: |
+        Example:
+        1. Go to '...'
+        2. Click on '...'
+        3. Observe '...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, browser, device, or tool versions.
+      placeholder: |
+        - OS: [e.g. Arch Linux, Windows 11, macOS Sonoma]
+        - Browser: [e.g. Chrome 119, Firefox 120, Safari 17]
+        - Node Version: [e.g. 18.17.0]
+        - Package Manager: [e.g. npm 9.6.7, yarn 1.22.19]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How serious is the issue?
+      options:
+        - "🟢 Low - Minor inconvenience"
+        - "🔵 Medium - Noticeable but manageable"
+        - "🟡 High - Serious impact but workaround exists"
+        - "🔴 Critical - Completely blocks usage"
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or Logs
+      description: If applicable, add screenshots, images or console logs to help explain your problem.
+      placeholder: Paste screenshots or logs here.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Anything else to add?
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Support Guidelines
+
+        Before submitting, please:
+        - Search existing issues to avoid duplicates.  
+        - Ensure you've included logs and reproduction steps.
+        - Review the projects FAQs

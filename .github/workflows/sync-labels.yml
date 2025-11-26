@@ -1,0 +1,50 @@
+name: ♾️ Synchronizes GitHub Labels    # Workflow name that appears in GitHub Actions UI
+
+concurrency:                           # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+  # If a new run starts for this same concurrency group, automatically cancel the old one.
+  cancel-in-progress: true             # Safety & efficiency flag set to true.
+
+on:                                    # Defines the triggers that cause this workflow to run.
+  push:                                # Runs when code is pushed or merged from PR directly to these branches.
+    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
+    paths:
+      - .github/LABELS.yml             # Run this workflow only when `labels.yml` changes (added, modified, committed).
+  workflow_dispatch:                   # Allow manual sync in GitHub’s “Actions” UI if labels get out of sync.
+
+permissions:
+  issues: write                        # GitHub treats label management under the issues scope.
+
+jobs:                                  # Defines all the major automated tasks GitHub will run
+
+  sync:                                # Defines a Sync job
+    name: Sync Labels                  # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 2                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 📥 Step 1: Downloads the repository’s code into the runner.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 📥 Step 2: Synchronize the newly uploaded LABELS.yml
+      - name: Sync labels
+        uses: micnncim/action-label-syncer@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          manifest: .github/LABELS.yml
+
+      # 🧾 Step 3: Smart Summary
+      - name: Sync Labels workflow summary
+        if: always()                     # Ensures it runs even if the previous step fails
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "✅ Labels were synchronized successfully"
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Syncing job failed"
+          else
+            echo "⚠️ Syncing job ended with status: ${{ job.status }}}"
+            exit 1
+          fi
