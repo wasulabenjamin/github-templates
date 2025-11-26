@@ -12,19 +12,18 @@ management, and environment protections.
 
 ### Basic Permission Requirements
 
-| Workflow                        | Minimum Permission | Why Required                              |
-|---------------------------------|--------------------|-------------------------------------------|
-| `stale.yml`                     | Write              | Close issues and PRs                      |
-| `sync-labels.yml`               | Write              | Overwrites default labels with custom     |
-| `lint-checks.yml`               | Read (or higher)   | Access source files for linting           |
-| `run-tests.yml`                 | Read (or higher)   | Run tests, access test files              |
-| `validate-branches.yml`         | Read (or higher)   | Read PRs sources                          |
-| `auto-close-issues-develop.yml` | Read and Write     | Read repo files and close issues          |
-| `update-changelog.yml`          | Write              | Update CHANGELOG.md file                  |
-| `sync-main-to-develop.yml`      | Write              | push to `develop` changes from `main`     |
-| `ci.yml`                        | Read (or higher)   | Checkout code, read repository contents   |
-| `semantic-release.yml`          | Write              | Create tags, generate releases            |
-| `deploy-netlify.yml`            | Write              | Deployment operations, environment access |
+| Workflow                   | Minimum Permission | Why Required                              |
+|----------------------------|--------------------|-------------------------------------------|
+| `sync-labels.yml`          | Write              | Overwrites default labels with custom     |
+| `lint-checks.yml`          | Read (or higher)   | Access source files for linting           |
+| `run-tests.yml`            | Read (or higher)   | Run tests, access test files              |
+| `validate-branches.yml`    | Write              | Read or Write to PRs sources              |
+| `pr-issue-handler.yml`     | Read and Write     | Handle issues and PRs                     |
+| `update-changelog.yml`     | Write              | Update CHANGELOG.md file                  |
+| `sync-main-to-develop.yml` | Write              | push to `develop` changes from `main`     |
+| `ci.yml`                   | Read (or higher)   | Checkout code, read repository contents   |
+| `semantic-release.yml`     | Write              | Create tags, generate releases            |
+| `deploy-netlify.yml`       | Write              | Deployment operations, environment access |
 
 ### Recommended Permission Model   
 
@@ -57,14 +56,6 @@ GitHub provides a default `GITHUB_TOKEN` with these base permissions:
 
 ### Workflow-Specific Token Configurations
 
-#### `stale.yml` Workflow Permissions
-
-```yaml
-permissions:
-  issues: write                        # Needed to comment, label, and close issues
-  pull-requests: write                 # Needed to comment, label, and close PRs
-```
-
 #### `sync-labels.yml` Workflow Permissions
 
 ```yaml
@@ -94,6 +85,15 @@ permissions:
 permissions:
   pull-requests: read                  # Needed to read detailed PR metadata (branch names, repos, refs)
   contents: read                       # Needed to read repository files.
+```
+
+#### `pr-issue-handler.yml` Workflow Permissions
+
+```yaml
+permissions:
+  pull-requests: write                 # Needed to comment, label, and close PRs
+  issues: write                        # Needed to comment, label, and close issues
+  contents: read                       # Needed to read repo files (optional)
 ```
 
 #### `update-changelog.yml` Workflow Permissions

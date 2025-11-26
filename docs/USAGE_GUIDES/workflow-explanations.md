@@ -8,11 +8,10 @@ focused YAML snippets are included — workflows are intentionally well-commente
 
 | Workflow                          | Purpose                                            | Trigger                                              |
 |-----------------------------------|----------------------------------------------------|------------------------------------------------------|
-| **stale.yml**                     | Close inactive issues/PRs                          | Scheduled (`cron`)                                   |
 | **sync-labels.yml**               | Synchronizes customs labels with GitHub            | Changes to `.github/LABELS.yml`                      |
 | **lint-checks.yml**               | Run ESLint and Prettier checks                     | `push`, specified file types and folders             |
 | **run-tests.yml**                 | Run Vitest/Playwright test suites                  | `push`, specified file types and folders             |
-| **validate-branches.yml**         | Only allow `release/*` or `hotfix/*` PRs to `main` | On every pull request                                |
+| **validate-branches.yml**         | Allow project defined PRs, inject custom PR bodies | On every pull request                                |
 | **auto-close-issues-develop.yml** | Read repo files and close issues from `develop`    | Successful PR merge to `develop`                     |
 | **update-changelog.yml**          | Update `CHANGELOG.md` via git-cliff                | `push`, non-docs changes                             |
 | **sync-main-to-develop.yml**      | Keeps `main` and `develop` in sync                 | `workflow_run:` run after changelog-workflow on main |
@@ -21,19 +20,6 @@ focused YAML snippets are included — workflows are intentionally well-commente
 | **deploy-netlify.yml**            | Auto-deploy app to hosting provider Netlify        | `workflow_run:` run after ci-workflow on main        |
 
 Each file under `.github/workflows/` defines one automation process.
-
-## `stale.yml` — 🧹 Auto Close Stale Issues and PRs
-
-**When it runs:**
-- Automatically runs Monday to Friday at 08:30AM (EAT, UTC+3)
-- Also allows manual runs via GitHub’s “Actions” UI.
-
-**Purpose:** Automatically mark and close stale issues/PRs. It relies on labels applied by templates or maintainers.
-
-**Key stages:**
-- Defines a Stale job
-- Based on defined timers and inactivity thresholds, clean up stale issues and PRs.
-- Output a Smart Summary
 
 ## `sync-labels.yml` — ♾️ Synchronizes GitHub Labels
 
@@ -98,11 +84,12 @@ Kept separate, so heavy E2E tests can be scheduled or run only on `main`.
 ## `validate-branches.yml` — 🔐 Enforce Allowed PR Source Branches
 
 **When it runs:**
-- Runs on every pull request, but the job itself only executes when the PR’s target is `main`.
-- Triggered on PR events: `opened`, `synchronize`, and `reopened`.
 
-**Purpose:** Ensure only controlled branch types (`release/*` or `hotfix/*`) can merge into `main`. This prevents 
-accidental or unsafe merges (e.g., feature branches or random personal branches getting into production-critical code).
+- Runs on every pull request
+
+**Purpose:** Ensure only project defined PRs patterns succeed, i.e., only`release/*` or `hotfix/*` can merge into
+`main`. This prevents accidental or unsafe merges (e.g., feature branches or random personal branches getting into
+production-critical code).
 
 **Key stages:**
 - Defines a validate-pr job
@@ -119,20 +106,42 @@ accidental or unsafe merges (e.g., feature branches or random personal branches 
 - Output a pass/fail decision visible in GitHub’s required checks UI.
 - Output a Smart summary
 
-## `auto-close-issues-develop.yml` — 🧠 Auto-Close Issues on Develop
+## `pr-issue-handler` — 🧠 Issues and PRs Smart Handler
+
+Defines 2 jobs discussed below
+
+### `smart-handler`
 
 **When it runs:**
-- Runs on successful merge of a pull request to `develop`.
 
-**Purpose:** Automates closing issues process from develop branch.
+- Runs on successful merge of a pull request to `develop` and `main`.
+
+**Purpose:** Automates labeling issues as `ready for release` from develop branch, then later closing them on main
 
 **Key stages:**
-- Defines a close-issues job
+
+- Defines a smart-handler job
 - Downloads the repository’s code into the runner.
 - Avoid shell interpretation of the PR body content
-- Extract issue references from PR Description
-- Closes existing issues
+- Extract issue references from PR Description (develop only)
+- Relabeling found issues from develop
+- Smart closing of issues
 - Output a Smart summary
+
+### `stale` — Auto Closes Stale Issues and PRs
+
+**When it runs:**
+
+- Automatically runs Monday to Friday at 08:30AM (EAT, UTC+3)
+- Also allows manual runs via GitHub’s “Actions” UI.
+
+**Purpose:** Automatically mark and close stale issues/PRs. It relies on labels applied by templates or maintainers.
+
+**Key stages:**
+
+- Defines a Stale job
+- Based on defined timers and inactivity thresholds, clean up stale issues and PRs.
+- Output a Smart Summary
 
 ## `update-changelog.yml` — 📄 Auto Update Changelog
 

@@ -4,13 +4,13 @@
  *
  * Project Name  : github-templates
  * File Name     : vite.config.ts
- * Last Modified : 2025-11-15, 07:57pm
+ * Last Modified : 2025-11-25, 10:02pm
  */
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-})
+});

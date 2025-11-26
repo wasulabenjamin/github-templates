@@ -19,6 +19,9 @@
 # Issue templates
 .github/ISSUE_TEMPLATE/                @wasulabenjamin
 
+# PR templates
+.github/PULL_REQUEST_TEMPLATE/         @wasulabenjamin
+
 # CI/CD workflows
 .github/workflows/                     @wasulabenjamin
 

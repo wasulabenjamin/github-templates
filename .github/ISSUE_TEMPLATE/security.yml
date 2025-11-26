@@ -1,6 +1,6 @@
 name: 🛡️ Security Vulnerability
 description: Responsibly report security vulnerabilities
-title: "Security: <brief-summary>"
+title: "security: <brief-summary>"
 labels: ["security", "needs triage"]
 assignees: ["wasulabenjamin"]
 

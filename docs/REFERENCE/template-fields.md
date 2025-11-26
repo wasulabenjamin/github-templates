@@ -246,13 +246,79 @@ While GitHub Forms don't support native conditional validation, you can use the 
         required: true
 ```
 
-## Pull Request Template Fields
+## Pull Request Templates
 
-A good PR template should include:
-- Summary and motivation
-- Checklist for tests, changelog, and documentation
-- Deployment and rollback notes
-- Backward-compatibility considerations
+This repository uses a **default Pull Request template** as a chooser and **specialized sub-templates** for different
+types of PRs.
+
+### Default PR Template (Chooser)
+
+GitHub automatically loads `.github/PULL_REQUEST_TEMPLATE.md`
+
+This template acts as a **gateway**, providing links to all specialized templates:
+
+* 🐛 Bugfix PR
+* 📚 Documentation PR
+* ✨ Feature PR
+* 🚑 Hotfix PR
+* 🏷️ Release PR
+
+**How it works:**
+When a contributor opens a new PR, they will see the default template. They must click the appropriate link to load the
+sub-template that matches their work. This ensures the PR is structured correctly from the start.
+
+### Specialized Sub-Templates
+
+Located in `.github/PULL_REQUEST_TEMPLATE/`:
+
+```
+.github/
+├── PULL_REQUEST_TEMPLATE/
+│   ├── bugfix.md          # Bugfix Pull Request
+│   ├── documentation.md   # Documentation Pull Request
+│   ├── feature.md         # Feature Pull Request
+│   ├── hotfix.md          # Hotfix Pull Request
+│   └── release.md         # Release Pull Request
+```
+
+Each sub-template contains fields relevant to PR type (e.g., bugfix details, feature description, testing checklist).
+
+#### Example: Bugfix PR (`bugfix.md`)
+
+```markdown
+## 🐛 Bugfix Summary
+
+<!-- Describe the bug and your fix -->
+
+## 🧪 Verification Steps
+
+<!-- How was the bug verified/fixed? -->
+
+## ✅ Checklist
+- [ ] Branch is up-to-date with `develop`
+- [ ] Tests pass
+- [ ] Documentation updated if needed
+```
+
+### Adding New Custom Templates
+
+To add a new PR type:
+
+1. Create a new `.md` file inside `.github/PULL_REQUEST_TEMPLATE/`, e.g., `improvement.md`.
+2. Add the template link to `PULL_REQUEST_TEMPLATE.md`:
+
+```markdown
+* [🚀 Improvement PR](?expand=1&template=improvement.md)
+```
+
+### Recommended Template Fields
+
+All PR templates should ideally include:
+
+* **Summary & motivation:** What the change does and why.
+* **Checklist:** Tests, changelog, documentation updates.
+* **Validation steps:** How the PR was verified.
+* **Deployment notes / backward compatibility:** If relevant.
 
 ### Standard PR Template Sections
 

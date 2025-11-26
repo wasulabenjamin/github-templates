@@ -1,0 +1,200 @@
+name: 🧠 Issues and PRs Smart Handler   # Workflow name that appears in GitHub Actions UI
+
+# IMPORTANT! Allow concurrent runs. DO NOT TRY preventing multiple runs of this workflow
+
+on: # Defines the triggers that cause this workflow to run.
+  pull_request: # Trigger when a PR is closed and merged into main or develop
+    types: [ closed ]
+    branches: [ main, develop ]
+  schedule: # Automates daily checks.
+    - cron: '30 5 * * 1-5'             # Runs Monday to Friday at 08:30AM (EAT, UTC+3)
+  workflow_dispatch:                   # Allows for manual cleanup in GitHub’s “Actions” UI.
+
+permissions:
+  pull-requests: write                 # Needed to comment, label, and close PRs
+  issues: write                        # Needed to comment, label, and close issues
+  contents: read                       # Needed to read repo files (optional)
+
+jobs: # Defines all the major automated tasks GitHub will run
+
+  smart-handler: # Defines a smart-handler job
+
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }} # Only act on merged PRs
+    name: Smart PR/Issue Handler       # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 5                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 📥 Step 1: Downloads the repository’s code into the runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 🖥️ Step 2. Avoid shell interpretation of the PR body content
+      - name: Write PR body safely (env + base64)
+        run: echo "$PR_BODY" > pr_body.txt
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+
+      # 📤 Step 3. Extract issue references from PR Description (develop only)
+      - name: Extract issue references from file
+        if: ${{ github.event.pull_request.base.ref == 'develop' }}
+        id: extract
+        run: |
+          # Case Insensitive Regex, matches: "Closes #123", "closes #123", "fixes #22", "resolves #9"
+          # It also extracts the number(s) and handles various whitespace
+          issues=$(grep -iEo '(^|\b)(close[sd]?|closing|fix(es|ed)?|fixing|resolve[sd]?|resolving)[[:space:]]*#[0-9]+' pr_body.txt \
+            | grep -oE '#[0-9]+' \
+            | tr -d '#' \
+            | sort -u \
+            | tr '\n' ' ' \
+            | sed 's/ $//')
+
+          if [ -z "$issues" ]; then
+            echo "ℹ️ No linked issues found in PR description"
+            echo "no_issues=true" >> $GITHUB_OUTPUT
+          else
+            echo "🚩 Linked issues found in PR description"
+            echo "no_issues=false" >> $GITHUB_OUTPUT
+            echo "issues=$issues" >> $GITHUB_OUTPUT
+          fi
+
+      # 🏷️ Step 4: Relabeling found issues from develop
+      - name: Label issues as ready for release
+        if: ${{ github.event.pull_request.base.ref == 'develop' && steps.extract.outputs.no_issues == 'false' }}
+        run: |
+          repo="${{ github.repository }}"
+
+          for issue in ${{ steps.extract.outputs.issues }}; do
+            echo "🔍 Validating if issue #$issue exists in $repo ..."
+            if gh issue view "$issue" >/dev/null 2>&1; then
+
+              # Remove "work in progress" label if exists
+              gh issue edit $issue --remove-label "work in progress" 2>/dev/null || true
+          
+              # Add "ready for release" label
+              gh issue edit $issue --add-label "ready for release"
+              echo "✅ Successfully relabeled issue #$issue"
+          
+              # Comment with status update
+              gh issue comment $issue --body \
+                "✅ Issue is completed and merged into develop: will automatically close when deployed to production."
+
+            else
+              echo "⚠️ Issue #$issue not found in $repo - skipping"
+            fi
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 📕 Step 5: Smart closing of issues
+      - name: Close issues with 'ready for release' label
+        if: ${{ github.event.pull_request.base.ref == 'main' }}
+        run: |
+          # Get all issues with 'ready for release' label
+          issues=$(gh issue list --label "ready for release" --json number --jq '.[].number' | tr '\n' ' ')
+
+          # Check for empty variable and skip
+          if [ -z "$issues" ]; then
+            echo "No issues labeled 'ready for release' found — nothing to close."
+
+          else 
+            for issue in $issues; do
+              # Remove "ready for release" label if exists incase its re-openned later on
+              gh issue edit $issue --remove-label "ready for release" 2>/dev/null || true
+
+              echo "Closing issue #$issue (released to production)"
+              gh issue close "$issue" --comment \
+                "✅ Automatically closed issue by workflow after Release PR #${{ github.event.pull_request.number }} was merged into main."
+            done
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 🧾 Step 6: Smart summary
+      - name: Smart Handler workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "✅ Smart Handler job completed successfully."
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Smart Handler job failed"
+          else
+            echo "⚠️ Smart Handler job ended with status: ${{ job.status }}"
+            exit 1
+          fi
+
+  stale: # Defines a Stale job — Auto Closes Stale Issues and PRs
+    if: ${{ (github.event_name == 'schedule') || (github.event_name == 'workflow_dispatch') }}
+    name: Sweep Issues and PRs         # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 3                 # Automatically cancel an entire job if it runs longer than set minutes.
+
+    steps:
+
+      # 🧹 Step 1: Go through repository, clean up stale issues and PRs.
+      - name: Clean up stale issues and PRs
+        uses: actions/stale@v9
+        with:
+
+          # 🕒 Timers and inactivity thresholds
+          days-before-issue-stale: 42  # Mark the issue as stale after 42 days of no activity.
+          days-before-issue-close: 21  # Close the issue 21 days later if still inactive.
+          days-before-pr-stale: 28     # Mark PR as stale after 28 days of no activity.
+          days-before-pr-close: 14     # Close PR 14 days later if still inactive.
+
+          operations-per-run: '200'        # Safety cap — limit operations per run.
+          remove-stale-when-updated: true  # Automatically unmark when activity resumes.
+
+          # 🏷️ Exemptions — items that should never be marked stale
+          exempt-issue-labels: >
+            pinned, security, documentation, bug, feature
+          exempt-pr-labels: >
+            work-in-progress, bug-fix, security
+          exempt-all-assignees: false       # Assigned items can still go stale
+          exempt-assignees: wasulabenjamin  # Specific maintainer exemption
+          exempt-milestones: true           # Milestone items are active
+
+          # 💬 Messages shown when items are marked or closed
+          stale-issue-message: >
+            👋 This issue has been automatically marked as **stale** due to 42 days of inactivity.
+            It will be **closed in 21 days** if no further updates occur.
+            Please comment or add a label to keep it open.
+          close-issue-message: >
+            🧹 Closing this issue due to prolonged inactivity.
+            Feel free to reopen it or create a new issue if the problem persists.
+          stale-pr-message: >
+            👋 This pull request has been marked as **stale** due to 28 days of inactivity.
+            It will be **closed in 14 days** if no updates occur.
+            Please push a new commit or comment to keep it active.
+          close-pr-message: >
+            🧹 This pull request has been automatically closed after inactivity.
+            If still relevant, reopen it or open a fresh PR.
+
+          # ⚙️ Label settings
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+          delete-branch: false              # Keep branches after stale PRs are closed
+
+          # 🧠 Behavior tuning for small teams
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          enable-statistics: true           # Log how many items were processed
+          only-labels: ''                   # Process all issues/PRs
+
+          # Optional: set if you want to limit to newer issues only entrypoint:
+          start-date: ''                    # Process all items regardless of creation date
+
+      # 🧾 Step 2: Smart summary
+      - name: Stale workflow summary
+        if: always()
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "✅ Stale workflow completed successfully."
+            echo "⏰ Runs Monday to Friday at 08:30AM (EAT, UTC+3)"
+            echo "📈 Statistics are available in the previous step"
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            echo "❌ Stale job failed"
+          else
+            echo "⚠️ Stale job ended with status: ${{ job.status }}"
+            exit 1
+          fi
