@@ -3,7 +3,9 @@
 ## ⚠️ Pre-Requisites
 
 > This bugfix must target `develop` branch only
+
 > All bugfixes require a linked Bug Report issue
+
 > Fix must include regression tests
 
 Before submitting:
@@ -15,21 +17,25 @@ Before submitting:
 
 ## 🎯 Purpose
 
-<!--- 
+<!---
 Describe the bug and your fix in detail
 Include: Symptoms, Root Cause, Solution, Testing Approach
 -->
 
 **Bug Description:**
+
 <!-- What was the observable issue? -->
 
 **Root Cause Analysis:**
+
 <!-- What code/logic caused the bug? -->
 
 **Fix Explanation:**
+
 <!-- How does this change resolve the issue? -->
 
 **Testing Strategy:**
+
 <!-- How was the fix verified? -->
 
 ## 🧩 Related Issue
@@ -67,6 +73,7 @@ Closes #ISSUE_ID <!--- Link to the Bug Report -->
 - Actual:
 
 **Files Changed:**
+
 <!-- Key files modified for this fix -->
 
 ## 📸 Evidence

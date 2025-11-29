@@ -4,125 +4,127 @@
   ~
   ~ Project Name  : github-templates
   ~ File Name     : 404.html
-  ~ Last Modified : 2025-11-25, 08:00pm
+  ~ Last Modified : 2025-11-27, 08:56pm
   -->
 
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
-<head>
-  <!-- CHARACTER ENCODING & VIEWPORT FIRST -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <!-- CHARACTER ENCODING & VIEWPORT FIRST -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- PRIMARY METADATA -->
-  <title>Page Not Found</title>
-  <meta name="description" content="404 - Page Not Found | GitHub Templates">
-  <meta name="author" content="Wasula Benjamin">
+    <!-- PRIMARY METADATA -->
+    <title>Page Not Found</title>
+    <meta name="description" content="404 - Page Not Found | GitHub Templates" />
+    <meta name="author" content="Wasula Benjamin" />
 
-  <!-- SEO AND INDEXING -->
-  <meta name="robots" content="index, follow">
-  <meta name="keywords" content="error, 404">
+    <!-- SEO AND INDEXING -->
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="error, 404" />
 
-  <!-- OPEN GRAPH/SOCIAL METADATA (SHOULD COME BEFORE ICONS) -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://github.com/wasulabenjamin/github-templates">
-  <meta property="og:title" content="Page Not Found">
-  <meta property="og:description" content="404 - Page Not Found | GitHub Templates">
-  <meta property="og:image" content="./assets/img/social-preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="628">
-  <meta property="og:image:alt" content="Page Not Found Infographic">
-  <meta property="og:site_name" content="Wasula Benjamin">
+    <!-- OPEN GRAPH/SOCIAL METADATA (SHOULD COME BEFORE ICONS) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/wasulabenjamin/github-templates" />
+    <meta property="og:title" content="Page Not Found" />
+    <meta property="og:description" content="404 - Page Not Found | GitHub Templates" />
+    <meta property="og:image" content="./assets/img/social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="628" />
+    <meta property="og:image:alt" content="Page Not Found Infographic" />
+    <meta property="og:site_name" content="Wasula Benjamin" />
 
-  <!-- TWITTER CARD TAGS (SHOULD COME BEFORE ICONS) -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Page Not Found">
-  <meta name="twitter:description" content="404 - Page Not Found | GitHub Templates">
-  <meta name="twitter:image" content="./assets/img/social-preview.png">
-  <meta name="twitter:image:alt" content="Page Not Found Infographic">
-  <meta name="twitter:site" content="@wasulabenjamin">
-  <meta name="twitter:creator" content="@wasulabenjamin">
-  <meta name="twitter:domain" content="github.com/wasulabenjamin/github-templates">
+    <!-- TWITTER CARD TAGS (SHOULD COME BEFORE ICONS) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Page Not Found" />
+    <meta name="twitter:description" content="404 - Page Not Found | GitHub Templates" />
+    <meta name="twitter:image" content="./assets/img/social-preview.png" />
+    <meta name="twitter:image:alt" content="Page Not Found Infographic" />
+    <meta name="twitter:site" content="@wasulabenjamin" />
+    <meta name="twitter:creator" content="@wasulabenjamin" />
+    <meta name="twitter:domain" content="github.com/wasulabenjamin/github-templates" />
 
-  <!-- PWA SUPPORT AND BROWSER UI ENHANCEMENTS -->
-  <meta name="theme-color" content="#fafafa"> <!-- fallback default for older browsers -->
-  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="./site.webmanifest">
+    <!-- PWA SUPPORT AND BROWSER UI ENHANCEMENTS -->
+    <meta name="theme-color" content="#fafafa" />
+    <!-- fallback default for older browsers -->
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="manifest" href="./site.webmanifest" />
 
-  <!-- ICONS (ORDER MATTERS FOR FALLBACK) -->
-  <link rel="icon" href="./icon.svg" type="image/svg+xml">
-  <link rel="icon" href="./icon.png" type="image/png">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon" sizes="any">
-  <link rel="apple-touch-icon" href="./icon.png">
+    <!-- ICONS (ORDER MATTERS FOR FALLBACK) -->
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./icon.png" type="image/png" />
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="apple-touch-icon" href="./icon.png" />
 
-  <!-- STYLESHEETS - LOCAL FIRST  -->
-  <style>
-    * {
-      line-height: 1.2;
-      margin: 0;
-    }
+    <!-- STYLESHEETS - LOCAL FIRST  -->
+    <style>
+      * {
+        line-height: 1.2;
+        margin: 0;
+      }
 
-    html {
-      color: #888;
-      display: table;
-      font-family: sans-serif;
-      height: 100%;
-      text-align: center;
-      width: 100%;
-    }
+      html {
+        color: #888;
+        display: table;
+        font-family: sans-serif;
+        height: 100%;
+        text-align: center;
+        width: 100%;
+      }
 
-    body {
-      display: table-cell;
-      vertical-align: middle;
-      margin: 2em auto;
-    }
-
-    h1 {
-      color: #555;
-      font-size: 2em;
-      font-weight: 400;
-    }
-
-    p {
-      margin: 0 auto;
-      width: 280px;
-    }
-
-    @media only screen and (width <= 280px) {
-      body,
-      p {
-        width: 95%;
+      body {
+        display: table-cell;
+        vertical-align: middle;
+        margin: 2em auto;
       }
 
       h1 {
-        font-size: 1.5em;
-        margin: 0 0 0.3em;
+        color: #555;
+        font-size: 2em;
+        font-weight: 400;
       }
 
-    }
-  </style>
+      p {
+        margin: 0 auto;
+        width: 280px;
+      }
 
-  <!-- STYLESHEETS - VENDOR STYLE-SHEETS CDN  -->
-</head>
-<body>
+      @media only screen and (width <= 280px) {
+        body,
+        p {
+          width: 95%;
+        }
 
-<h1>Page Not Found</h1>
-<p>Sorry, but the page you were trying to view does not exist.</p>
-<p>You will be redirected to the <a href="/">home page</a> in about <span id="countdown">10</span> seconds.</p>
+        h1 {
+          font-size: 1.5em;
+          margin: 0 0 0.3em;
+        }
+      }
+    </style>
 
-<!-- SCRIPTS - LOCAL FIRST  -->
-<script>
-  let countdown = 10;
-  const timer = setInterval(() => {
-    countdown--;
-    document.getElementById('countdown').textContent = countdown.toString();
-    if(countdown <= 0) clearInterval(timer);
-  }, 1000);
-</script>
+    <!-- STYLESHEETS - VENDOR STYLE-SHEETS CDN  -->
+  </head>
+  <body>
+    <h1>Page Not Found</h1>
+    <p>Sorry, but the page you were trying to view does not exist.</p>
+    <p>
+      You will be redirected to the <a href="/" title="Home Page"> home page </a> in about
+      <span id="countdown">10</span> seconds.
+    </p>
 
-<!-- SCRIPTS - VENDOR SCRIPTS CDN  -->
-</body>
+    <!-- SCRIPTS - LOCAL FIRST  -->
+    <script>
+      let countdown = 10;
+      const timer = setInterval(() => {
+        countdown--;
+        document.getElementById('countdown').textContent = countdown.toString();
+        if (countdown <= 0) clearInterval(timer);
+      }, 1000);
+    </script>
+
+    <!-- SCRIPTS - VENDOR SCRIPTS CDN  -->
+  </body>
 </html>

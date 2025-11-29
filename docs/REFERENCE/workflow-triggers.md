@@ -19,6 +19,7 @@ to use each trigger type.
 Trigger workflows when commits are pushed to specific branches or paths.
 
 **Example:** `push` on tags for releases:
+
 ```yaml
 on:
   push:
@@ -29,7 +30,7 @@ on:
 **Common Patterns**:
 
 | Scenario                 | Configuration                 |
-|--------------------------|-------------------------------|
+| ------------------------ | ----------------------------- |
 | Main branch only         | `branches: [ main ]`          |
 | Feature branches         | `branches: [ 'feature/**' ]`  |
 | All branches except main | `branches-ignore: [ main ]`   |
@@ -41,20 +42,21 @@ on:
 Trigger workflows when pull request activity occurs.
 
 **Example:** `pull_request` on specified branches:
+
 ```yaml
 on:
-  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
-    types: [ opened, synchronize, reopened ]
-    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
-    branches-ignore: [ 'dependabot/**' ]
-    paths: [ 'src/**' ]
-    paths-ignore: [ 'docs/**' ]
+  pull_request: # Runs when someone opens or updates a pull request targeting these branches.
+    types: [opened, synchronize, reopened]
+    branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
+    branches-ignore: ['dependabot/**']
+    paths: ['src/**']
+    paths-ignore: ['docs/**']
 ```
 
 **PR Event Types**:
 
 | Type               | Description         | Common Use         |
-|--------------------|---------------------|--------------------|
+| ------------------ | ------------------- | ------------------ |
 | `opened`           | New PR created      | Initial CI checks  |
 | `synchronize`      | New commits pushed  | Re-run tests       |
 | `reopened`         | Closed PR reopened  | Verify still valid |
@@ -67,11 +69,10 @@ on:
 Defines another workflow as part of a current workflow.
 
 ```yaml
-jobs:                                  # Defines all the major automated tasks GitHub will run
-
-  lint:                                # Defines a lint job called as part of CI.
-    name: Calling lint.yml...          # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
-    uses: ./.github/workflows/lint-checks.yml    # Calls an external lint workflow file
+jobs: # Defines all the major automated tasks GitHub will run
+  lint: # Defines a lint job called as part of CI.
+    name: Calling lint.yml... # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    uses: ./.github/workflows/lint-checks.yml # Calls an external lint workflow file
 ```
 
 ### Workflow Call or Dispatch
@@ -79,15 +80,16 @@ jobs:                                  # Defines all the major automated tasks G
 Defines a reusable workflow:
 
 **Example:** Allows `workflow_call` or `workflow_dispatch`
+
 ```yaml
 on:
-  workflow_call:                       # Allows other workflows to call this one
+  workflow_call: # Allows other workflows to call this one
     inputs:
       node-version:
         required: false
         default: '18'
 
-  workflow_dispatch:                   # Allows manual runs in GitHub’s “Actions” UI.
+  workflow_dispatch: # Allows manual runs in GitHub’s “Actions” UI.
     inputs:
       environment:
         description: 'Deployment environment'
@@ -95,8 +97,8 @@ on:
         default: 'staging'
         type: choice
         options:
-        - staging
-        - production
+          - staging
+          - production
       force-redeploy:
         description: 'Force redeployment'
         required: false
@@ -104,11 +106,11 @@ on:
 ```
 
 **Input Types**:
+
 - `string`: Text input
 - `choice`: Dropdown selection
 - `boolean`: Checkbox
 - `environment`: Environment selection
-
 
 ### Schedule Events
 
@@ -116,11 +118,12 @@ Execute workflows on a cron schedule.
 
 ```yaml
 on:
-  schedule:                            # Automates daily checks.
-    - cron: '0 5 * * *'                # Runs daily at 08:00AM (EAT, UTC+3)
+  schedule: # Automates daily checks.
+    - cron: '0 5 * * *' # Runs daily at 08:00AM (EAT, UTC+3)
 ```
 
 **Cron Syntax**:
+
 ```bash
 * * * * *
 │ │ │ │ │
@@ -134,7 +137,7 @@ on:
 **Common Schedules**:
 
 | Purpose        | Cron           | Description                                  |
-|----------------|----------------|----------------------------------------------|
+| -------------- | -------------- | -------------------------------------------- |
 | Daily cleanup  | `30 5 * * *`   | Daily at 08:30AM (EAT, UTC+3)                |
 | Weekly reports | `30 5 * * 0`   | Every Sunday at 08:30AM (EAT, UTC+3)         |
 | Business hours | `30 5 * * 1-5` | Monday to Friday at 08:30AM (EAT, UTC+3)     |
@@ -151,6 +154,7 @@ on:
 ```
 
 `repository_dispatch` sample to trigger from another repo or system:
+
 ```bash
 curl -X POST -H "Accept: application/vnd.github+json" \
   -H "Authorization: token $PAT" \
@@ -163,123 +167,130 @@ curl -X POST -H "Accept: application/vnd.github+json" \
 ### Lint Workflow (`lint-checks.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
-  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
-    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
-    paths:                             # Only run when the below-listed folders or file types change.
-      - 'src/**'                       # Source code directories
-      - '**.{js,ts,jsx,tsx,vue}'       # All code files
-      - '**.{json,yml,yaml}'           # Config files
-      - '.eslintrc.*'                  # Lint configs
+on: # Defines the triggers that cause this workflow to run.
+  pull_request: # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
+    paths: # Only run when the below-listed folders or file types change.
+      - 'src/**' # Source code directories
+      - '**.{js,ts,jsx,tsx,vue}' # All code files
+      - '**.{json,yml,yaml}' # Config files
+      - '.eslintrc.*' # Lint configs
       - '.prettierrc.*'
-      - 'vite.config.*'                # Build tool config
-      - 'vue.config.*'                 # Vue-specific config
-  push:                                # Runs when code is pushed or merged from PR directly to these branches.
-    branches-ignore: []                # Flexible branch triggers — automatically runs on any branch.
-    paths:                             # Only run when the below-listed folders or file types change.
-      - 'src/**'                       # Source code directories
-      - '**.{js,ts,jsx,tsx,vue}'       # All code files
-      - '**.{json,yml,yaml}'           # Config files
-      - '.eslintrc.*'                  # Lint configs
+      - 'vite.config.*' # Build tool config
+      - 'vue.config.*' # Vue-specific config
+  push: # Runs when code is pushed or merged from PR directly to these branches.
+    branches-ignore: [] # Flexible branch triggers — automatically runs on any branch.
+    paths: # Only run when the below-listed folders or file types change.
+      - 'src/**' # Source code directories
+      - '**.{js,ts,jsx,tsx,vue}' # All code files
+      - '**.{json,yml,yaml}' # Config files
+      - '.eslintrc.*' # Lint configs
       - '.prettierrc.*'
-      - 'vite.config.*'                # Build tool config
-      - 'vue.config.*'                 # Vue-specific config
+      - 'vite.config.*' # Build tool config
+      - 'vue.config.*' # Vue-specific config
 ```
 
 **Purpose**: Fast feedback on code style
+
 **When**: Only run when source files and specified files change on specified branches.
 
 ### Test Workflow (`run-tests.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
-  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
-    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
-    paths:                             # Only run when the below-listed folders or file types change
-      - 'src/**'                       # Source code directories
-      - 'tests/**'                     # Test files
-      - '**.{test,spec}.{js,ts}'       # Test files
-      - 'package.json'                 # Dependency changes
-  push:                                # Runs when code is pushed or merged from PR directly to these branches.
-    branches: ['**']                   # Flexible branch triggers — automatically runs on any branch.
-    paths:                             # Only run when the below-listed folders or file types change
-      - 'src/**'                       # Source code directories
-      - 'tests/**'                     # Test files
-      - '**.{test,spec}.{js,ts}'       # Test files
-      - 'package.json'                 # Dependency changes
+on: # Defines the triggers that cause this workflow to run.
+  pull_request: # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
+    paths: # Only run when the below-listed folders or file types change
+      - 'src/**' # Source code directories
+      - 'tests/**' # Test files
+      - '**.{test,spec}.{js,ts}' # Test files
+      - 'package.json' # Dependency changes
+  push: # Runs when code is pushed or merged from PR directly to these branches.
+    branches: ['**'] # Flexible branch triggers — automatically runs on any branch.
+    paths: # Only run when the below-listed folders or file types change
+      - 'src/**' # Source code directories
+      - 'tests/**' # Test files
+      - '**.{test,spec}.{js,ts}' # Test files
+      - 'package.json' # Dependency changes
 ```
 
 **Purpose**: Comprehensive testing
+
 **When**: Run when code or tests change on specified branches.
 
 ### Changelog Workflow (`update-changelog.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
-  push:                                # Runs when code is pushed or merged from PR directly to these branches.
+on: # Defines the triggers that cause this workflow to run.
+  push: # Runs when code is pushed or merged from PR directly to these branches.
     branches: [main]
-    paths-ignore:                      # Prevents changelog runs on doc-only edits.
+    paths-ignore: # Prevents changelog runs on doc-only edits.
       - '.github/**'
       - 'docs/**'
       - '**.md'
 ```
 
 **Purpose**: Keep changelog updated
+
 **When**: Automatically on `main` branch update when the release is published or edited.
 
 ### CI Workflow (`ci.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
-  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
-    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
-  push:                                # Runs when code is pushed or merged from PR directly to these branches.
-    branches: [develop]                # Remove the 'develop' branch reference if it doesn't exist
-  workflow_run:                        # Trigger when the changelog workflow completes
-    workflows: ["📄 Auto Update Changelog"]
-    branches: [main]                   # Only run when changelog completed on the main branch
+on: # Defines the triggers that cause this workflow to run.
+  pull_request: # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
+  push: # Runs when code is pushed or merged from PR directly to these branches.
+    branches: [develop] # Remove the 'develop' branch reference if it doesn't exist
+  workflow_run: # Trigger when the changelog workflow completes
+    workflows: ['📄 Auto Update Changelog']
+    branches: [main] # Only run when changelog completed on the main branch
     types: [completed]
 ```
 
 **Purpose**: Ensure code quality, tests and successful builds before merging
+
 **When**: Run on all code changes to `main` and `develop` branches.
 
 ### Deploy Workflow (`deploy-netlify.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
+on: # Defines the triggers that cause this workflow to run.
   workflow_run:
-    workflows: ["📦 Continuous Integration"]
-    branches: [main]                   # Only run when CI completed on the main branch
+    workflows: ['📦 Continuous Integration']
+    branches: [main] # Only run when CI completed on the main branch
     types: [completed]
 ```
 
 **Purpose**: Deploy to various environments
+
 **When**: Run on `main` after `ci` workflow.
 
 ### Release Workflow (`semantic-release.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
+on: # Defines the triggers that cause this workflow to run.
   workflow_run:
-    workflows: ["📦 Continuous Integration"]
-    branches: [main]                   # Only run when CI completed on the main branch
+    workflows: ['📦 Continuous Integration']
+    branches: [main] # Only run when CI completed on the main branch
     types: [completed]
 ```
 
 **Purpose**: Create releases and version tags
+
 **When**: Run on `main` after `ci` workflow.
 
 ### Stale Workflow (`stale.yml`)
 
 ```yaml
-on:                                    # Defines the triggers that cause this workflow to run.
-  schedule:                            # Automates daily checks.
-    - cron: '30 5 * * 1-5'             # Runs Monday to Friday at 08:30AM (EAT, UTC+3) 
-  workflow_dispatch:                   # Allows for manual cleanup in GitHub’s “Actions” UI.
+on: # Defines the triggers that cause this workflow to run.
+  schedule: # Automates daily checks.
+    - cron: '30 5 * * 1-5' # Runs Monday to Friday at 08:30AM (EAT, UTC+3)
+  workflow_dispatch: # Allows for manual cleanup in GitHub’s “Actions” UI.
 ```
 
 **Purpose**: Clean up stale issues and PRs
+
 **When**: Scheduled maintenance with manual override.
 
 ## Advanced Trigger Conditions
@@ -289,9 +300,9 @@ on:                                    # Defines the triggers that cause this wo
 ```yaml
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
     - cron: '0 0 * * 0'
   workflow_dispatch:
@@ -452,7 +463,7 @@ paths: [ 'src/**', 'package.json' ]
 # Avoid: Too broad
 paths: [ '**' ]
 
-# Avoid: Too narrow  
+# Avoid: Too narrow
 paths: [ 'src/app/components/Button.jsx' ]
 ```
 
@@ -460,10 +471,11 @@ paths: [ 'src/app/components/Button.jsx' ]
 
 ```yaml
 # Appropriate frequencies
-stale-issues: '0 2 * * *'        # Daily
-security-scan: '0 0 * * 0'       # Weekly
-backup: '0 0 1 * *'              # Monthly
-cleanup: '0 0 * * 0'             # Weekly
+stale-issues: '0 2 * * *' # Daily
+security-scan: '0 0 * * 0' # Weekly
+backup: '0 0 1 * *' # Monthly
+cleanup: '0 0 * * 0' # Weekly
+
 
 # Avoid excessive schedules
 # Don't: '*/5 * * * *' (every 5 minutes)
@@ -476,16 +488,16 @@ cleanup: '0 0 * * 0'             # Weekly
 ```yaml
 # Only allow from specific sources
 on:
-  workflow_dispatch:  # Manual only
+  workflow_dispatch: # Manual only
   push:
-    branches: [ main ]  # Main branch only
+    branches: [main] # Main branch only
 ```
 
 ### Environment Protection
 
 ```yaml
 deploy-production:
-  environment: 
+  environment:
     name: production
     url: https://yourapp.com
   if: github.ref == 'refs/heads/main'
@@ -496,17 +508,20 @@ deploy-production:
 ### Common Problems and Solutions
 
 **Workflow not triggering?**
+
 - Check YAML syntax
 - Verify branch names match exactly
 - Check path patterns are correct
 - Ensure workflow file is in `.github/workflows/`
 
 **Unexpected triggers?**
+
 - Review path patterns
 - Check branch patterns
 - Verify event types
 
 **Schedule not running?**
+
 - Confirm cron syntax
 - Check UTC timezone
 - Verify repository activity
@@ -545,7 +560,8 @@ on:
 
 - Runs triggered by `repository_dispatch` or webhooks may run with lower privileges; vet the source of events.
 - Workflows triggered by `workflow_call` should validate inputs; do not run privileged actions on untrusted input.
-- Avoid exposing secrets to workflows triggered by forks or untrusted contributors. Use `if` conditions to gate secrets usage:
+- Avoid exposing secrets to workflows triggered by forks or untrusted contributors. Use `if` conditions to gate secrets
+  usage:
 
 ```yaml
 if: github.repository == 'your-org/allowed-repo'
@@ -553,25 +569,26 @@ if: github.repository == 'your-org/allowed-repo'
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ../USAGE_GUIDES/getting-started.md
 [customizing-templates]: ../USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ../USAGE_GUIDES/workflow-explanations.md

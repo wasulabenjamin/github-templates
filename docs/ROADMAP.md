@@ -1,25 +1,27 @@
 # Project Roadmap
 
-This document outlines the future direction, planned features, and improvement goals for the GitHub Templates 
+This document outlines the future direction, planned features, and improvement goals for the GitHub Templates
 repository.
 
 ## Overview
 
 The GitHub Templates project aims to provide the most comprehensive, production-ready GitHub repository setup for open
-source projects and enterprise development teams.
-Our vision is to make best-practice GitHub automation accessible to every project.
+source projects and enterprise development teams. Our vision is to make best-practice GitHub automation accessible to
+every project.
 
 ## Current Status
 
 ### ✅ Implemented Features
 
 **Core Templates**:
+
 - [x] Issue templates (bug reports, feature requests, documentation, security)
 - [x] Pull request template
 - [x] GitHub Actions workflows (changelog, ci, deployment, lint, release, stale, test)
 - [x] Community guidelines (CODE_OF_CONDUCT, CONTRIBUTING, CODEOWNERS)
 
 **Automation**:
+
 - [x] Continuous integration and deployment
 - [x] Automated changelog generation
 - [x] Semantic versioning
@@ -27,6 +29,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 - [x] Netlify deployment support
 
 **Documentation**:
+
 - [x] Comprehensive usage guides
 - [x] Technical reference documentation
 - [x] Best practices documentation
@@ -37,6 +40,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Q1-Q2 2026
 
 #### Enhanced Template Variety
+
 - [ ] **Specialized industry templates**
   - Mobile app development templates
   - Data science project templates
@@ -50,6 +54,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Performance testing integration
 
 #### Developer Experience Improvements
+
 - [ ] **Template customization wizard**
   - Interactive setup script
   - Project-specific configuration generator
@@ -61,6 +66,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Community-contributed examples
 
 #### Integration Expansion
+
 - [ ] **Additional deployment platforms**
   - AWS SAM and CloudFormation
   - Google Cloud Platform
@@ -77,6 +83,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Q3 2026
 
 #### AI-Powered Features
+
 - [ ] **Smart template suggestions**
   - AI analysis of the project structure
   - Automated template recommendations
@@ -88,6 +95,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Priority assignment suggestions
 
 #### Enterprise Features
+
 - [ ] **Organization-wide templates**
   - Centralized template management
   - Cross-repository consistency checks
@@ -99,6 +107,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Audit trail generation
 
 #### Performance Optimization
+
 - [ ] **Workflow performance**
   - Caching optimization strategies
   - Parallel execution improvements
@@ -114,6 +123,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Q4 2026 and Beyond
 
 #### Platform Expansion
+
 - [ ] **Multi-platform support**
   - GitLab templates and CI/CD
   - Bitbucket pipeline templates
@@ -127,6 +137,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Go module templates
 
 #### Community Ecosystem
+
 - [ ] **Template marketplace**
   - Community-contributed templates
   - Template rating and review system
@@ -138,6 +149,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Community events and workshops
 
 #### Advanced Analytics
+
 - [ ] **Project health metrics**
   - Automated project health scoring
   - Improvement recommendations
@@ -153,6 +165,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Ongoing Improvements
 
 #### Code Quality
+
 - [ ] **Test coverage expansion**
   - Increase test coverage to 95%+
   - Add integration tests for all workflows
@@ -164,6 +177,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - Accessibility improvements
 
 #### Performance
+
 - [ ] **Workflow optimization**
   - Reduce average workflow execution time
   - Implement smarter caching strategies
@@ -179,10 +193,12 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Growth and Engagement
 
 #### User Base Expansion
+
 - **Current**: 0 stars, 0 forks
 - **Target**: 5,000+ stars, 1,000+ forks by the end of 2026.
 
 #### Community Contributions
+
 - [ ] **Community maintainer program**
   - Onboard community maintainers
   - Establish contribution guidelines
@@ -196,6 +212,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Education and Outreach
 
 #### Learning Resources
+
 - [ ] **Video content**
   - Template setup tutorials
   - Advanced workflow guides
@@ -211,12 +228,14 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Emerging Technologies
 
 #### AI/ML Integration
+
 - Research areas:
   - Predictive issue assignment
   - Automated code review suggestions
   - Intelligent release timing
 
 #### Developer Experience
+
 - Exploration areas:
   - Natural language workflow configuration
   - Visual workflow designer
@@ -225,6 +244,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
 ### Industry Trends
 
 #### DevOps Evolution
+
 - Monitoring trends in:
   - GitOps practices
   - DevSecOps integration
@@ -232,6 +252,7 @@ Our vision is to make best-practice GitHub automation accessible to every projec
   - AI-assisted development
 
 #### Open Source Sustainability
+
 - Researching:
   - Sustainable maintenance models
   - Funding strategies
@@ -274,28 +295,29 @@ This roadmap is a living document. Major updates will be:
 
 ## See Also
 
-* [CHANGELOG.md](../CHANGELOG.md) - Past releases and changes
-* [CONTRIBUTING.md](../.github/CONTRIBUTING.md) - How to contribute
-* [GitHub Discussions](https://github.com/wasulabenjamin/github-templates/discussions) - Community feedback
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [CHANGELOG.md](../CHANGELOG.md) - Past releases and changes
+- [CONTRIBUTING.md](../.github/CONTRIBUTING.md) - How to contribute
+- [GitHub Discussions](https://github.com/wasulabenjamin/github-templates/discussions) - Community feedback
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ./USAGE_GUIDES/getting-started.md
 [customizing-templates]: ./USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ./USAGE_GUIDES/workflow-explanations.md

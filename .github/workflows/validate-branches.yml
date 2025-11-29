@@ -1,33 +1,31 @@
-name: 🔐 Enforce Allowed PR Source Branches       # Workflow name that appears in GitHub Actions UI
+name: 🔐 Enforce Allowed PR Source Branches # Workflow name that appears in GitHub Actions UI
 
-concurrency:                           # Prevents multiple runs of the same workflow
-  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+concurrency: # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }} # Defines the grouping key
   # If a new run starts for this same concurrency group, automatically cancel any currently running one.
-  cancel-in-progress: true             # Safety & efficiency flag set to true.
+  cancel-in-progress: true # Safety & efficiency flag set to true.
 
-on:                                    # Defines the triggers that cause this workflow to run.
+on: # Defines the triggers that cause this workflow to run.
   pull_request:
     types: [opened, synchronize, reopened]
 
 permissions:
-  pull-requests: read                  # Needed to read detailed PR metadata (branch names, repos, refs)
-  contents: read                       # Needed to read repository files.
+  pull-requests: read # Needed to read detailed PR metadata (branch names, repos, refs)
+  contents: read # Needed to read repository files.
 
-jobs:                                  # Defines all the major automated tasks GitHub will run
-
-  validate-pr:                         # Defines a validate-pr job
-    name: Validate Branches            # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
-    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
-    timeout-minutes: 2                 # Automatically cancel an entire job if it runs longer than set minutes.
+jobs: # Defines all the major automated tasks GitHub will run
+  validate-pr: # Defines a validate-pr job
+    name: Validate Branches # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 2 # Automatically cancel an entire job if it runs longer than set minutes.
 
     steps:
-
       # 📥 Step 1: Downloads the repository’s code into the runner.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0               # Required for full history (Sources & Ancestry)
-          ref: ${{ github.head_ref }}  # Checkout the source branch for ancestry validation
+          fetch-depth: 0 # Required for full history (Sources & Ancestry)
+          ref: ${{ github.head_ref }} # Checkout the source branch for ancestry validation
 
       # 🧾 Step 2: Display detailed PR metadata (branch names, repos, refs) for debugging and audit clarity.
       - name: Show PR info

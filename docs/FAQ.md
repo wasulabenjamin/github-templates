@@ -10,13 +10,14 @@ developers, maintainers, and repository administrators.
 **Q: What exactly are "GitHub Templates" and what problem do they solve?**
 
 **A**: GitHub Templates is a production-ready GitHub repository setup that provides:
+
 - Standardized issue and pull request templates
 - Automated GitHub Actions workflows for CI/CD
 - Community management tools (CODE_OF_CONDUCT, CONTRIBUTING)
 - Best practices for open source and enterprise projects
 
-It solves the problem of every project reinventing the wheel for their GitHub setup,
-ensuring consistent quality and saving development time.
+It solves the problem of every project reinventing the wheel for their GitHub setup, ensuring consistent quality and
+saving development time.
 
 ### Who is this for?
 
@@ -25,7 +26,7 @@ ensuring consistent quality and saving development time.
 **A**: These templates are designed for:
 
 | Project Type              | Benefits                                                           |
-|---------------------------|--------------------------------------------------------------------|
+| ------------------------- | ------------------------------------------------------------------ |
 | **Open Source**           | Professional issue triage, automated releases, community standards |
 | **Enterprise Teams**      | Consistent workflows, security scanning, deployment automation     |
 | **Startups**              | Rapid setup, scalable processes, best practices from day one       |
@@ -36,6 +37,7 @@ ensuring consistent quality and saving development time.
 **Q: What's the quickest way to start using these templates?**
 
 **A**:
+
 1. **Fork this repository**
 2. **Copy the `.github` directory** to your project
 3. **Customize the templates** for your specific needs
@@ -62,6 +64,7 @@ The templates are designed to work together but can function independently.
 **Q: What are the requirements for using these templates?**
 
 **A**:
+
 - **GitHub repository** (any plan: Free, Pro, Team, or Enterprise)
 - **GitHub Actions enabled** (enabled by default)
 - **Basic understanding** of YAML and GitHub workflows
@@ -74,7 +77,7 @@ The templates are designed to work together but can function independently.
 **A**: The templates are designed to work out-of-the-box, but we recommend:
 
 | Customization Level | Effort        | Recommended For                    |
-|---------------------|---------------|------------------------------------|
+| ------------------- | ------------- | ---------------------------------- |
 | **Basic**           | 15-30 minutes | Personal projects, quick starts    |
 | **Standard**        | 1-2 hours     | Most open source projects          |
 | **Comprehensive**   | Half day      | Enterprise teams, complex projects |
@@ -86,6 +89,7 @@ The templates are designed to work together but can function independently.
 **Q: Will these workflows work with my existing CI/CD setup?**
 
 **A**: Yes, these workflows can:
+
 - **Complement** your existing CI/CD
 - **Replace** specific parts of your automation
 - **Run alongside** other workflow files
@@ -100,7 +104,7 @@ Each workflow is independent and can be modified or removed.
 **A**: GitHub Actions pricing:
 
 | Plan           | Included Minutes     | Cost Beyond   |
-|----------------|----------------------|---------------|
+| -------------- | -------------------- | ------------- |
 | **Free**       | 2,000 minutes/month  | N/A           |
 | **Pro**        | 3,000 minutes/month  | $0.008/minute |
 | **Team**       | 10,000 minutes/month | $0.008/minute |
@@ -127,11 +131,11 @@ Most small-to-medium projects stay well within free tier limits.
 
 **A**: YAML issue forms provide:
 
-| Feature             | YAML Forms                   | Markdown Templates    |
-|---------------------|------------------------------|-----------------------|
-| **Validation**      | ✅ Required fields, dropdowns | ❌ No validation       |
-| **Structured Data** | ✅ Consistent formatting      | ❌ Free-form text      |
-| **Better UX**       | ✅ Guided forms               | ❌ Text areas only     |
+| Feature             | YAML Forms                    | Markdown Templates    |
+| ------------------- | ----------------------------- | --------------------- |
+| **Validation**      | ✅ Required fields, dropdowns | ❌ No validation      |
+| **Structured Data** | ✅ Consistent formatting      | ❌ Free-form text     |
+| **Better UX**       | ✅ Guided forms               | ❌ Text areas only    |
 | **Automation**      | ✅ Auto-labels, assignees     | ⚠️ Limited automation |
 
 ### Multiple PR Templates
@@ -155,7 +159,7 @@ For now, this setup includes `PULL_REQUEST_TEMPLATE.md`
 **A**: Currently supported:
 
 | Platform     | Workflow     | Status                  |
-|--------------|--------------|-------------------------|
+| ------------ | ------------ | ----------------------- |
 | **Netlify**  | `deploy.yml` | ⚠️ Manual configuration |
 | **Vercel**   | `deploy.yml` | ⚠️ Manual configuration |
 | **Supabase** | `deploy.yml` | ⚠️ Manual configuration |
@@ -167,6 +171,7 @@ For now, this setup includes `PULL_REQUEST_TEMPLATE.md`
 **Q: How do I add support for another deployment platform?**
 
 **A**:
+
 1. **Add platform-specific steps** to `deploy.yml`
 2. **Configure required secrets** in repository settings
 3. **Update environment configurations**
@@ -237,7 +242,7 @@ See [Workflow Explanations][workflow-explanations] for examples.
 ```yaml
 jobs:
   build:
-    runs-on: [self-hosted, linux]  # Use self-hosted runners
+    runs-on: [self-hosted, linux] # Use self-hosted runners
 ```
 
 ### Enterprise GitHub
@@ -282,6 +287,7 @@ jobs:
 **Q: Where can I get help if I'm stuck?**
 
 **A**:
+
 1. **Check documentation**: This FAQ and other guides
 2. **Search issues**: Look for similar problems
 3. **Community discussions**: Ask in GitHub Discussions
@@ -307,6 +313,7 @@ See [.github/CONTRIBUTING.md][CONTRIBUTING] for details.
 **Q: What security practices should I follow?**
 
 **A**:
+
 - **Never commit secrets** to version control
 - **Use environment-specific configurations**
 - **Regularly update dependencies**
@@ -318,6 +325,7 @@ See [.github/CONTRIBUTING.md][CONTRIBUTING] for details.
 **Q: How can I optimize workflow performance?**
 
 **A**:
+
 - **Use caching** for dependencies and build outputs
 - **Split large workflows** into smaller, parallel jobs
 - **Use path filters** to avoid unnecessary runs
@@ -341,6 +349,7 @@ See [.github/CONTRIBUTING.md][CONTRIBUTING] for details.
 **Q: How do I know if an update is compatible with my setup?**
 
 **A**:
+
 - **Check release notes** for breaking changes
 - **Test in a branch** before applying to main
 - **Review workflow changes** for compatibility
@@ -348,27 +357,28 @@ See [.github/CONTRIBUTING.md][CONTRIBUTING] for details.
 
 ## See Also
 
-* [Community Discussions](https://github.com/wasulabenjamin/github-templates/discussions)
-* [GitHub Issues](https://github.com/wasulabenjamin/github-templates/issues)
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [Community Discussions](https://github.com/wasulabenjamin/github-templates/discussions)
+- [GitHub Issues](https://github.com/wasulabenjamin/github-templates/issues)
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ./USAGE_GUIDES/getting-started.md
 [customizing-templates]: ./USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ./USAGE_GUIDES/workflow-explanations.md

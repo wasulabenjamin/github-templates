@@ -1,55 +1,53 @@
-name: 🧹 Lint & Code Quality           # Workflow name that appears in GitHub Actions UI
+name: 🧹 Lint & Code Quality # Workflow name that appears in GitHub Actions UI
 
-concurrency:                           # Prevents multiple runs of the same workflow
-  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+concurrency: # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }} # Defines the grouping key
   # If a new run starts for this same concurrency group, automatically cancel any currently running one.
-  cancel-in-progress: true             # Safety & efficiency flag set to true.
+  cancel-in-progress: true # Safety & efficiency flag set to true.
 
-on:                                    # Defines the triggers that cause this workflow to run.
-  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
-    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
-    paths:                             # Only run when the below-listed folders or file types change
-      - 'src/**'                       # Source code directories
-      - '**.{js,ts,jsx,tsx,vue}'       # All code files
-      - '**.{json,yml,yaml}'           # Config files
-      - '.eslintrc.*'                  # Lint configs
+on: # Defines the triggers that cause this workflow to run.
+  pull_request: # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
+    paths: # Only run when the below-listed folders or file types change
+      - 'src/**' # Source code directories
+      - '**.{js,ts,jsx,tsx,vue}' # All code files
+      - '**.{json,yml,yaml}' # Config files
+      - '.eslintrc.*' # Lint configs
       - '.prettierrc.*'
-      - 'vite.config.*'                # Build tool config
-      - 'vue.config.*'                 # Vue-specific config
-  push:                                # Runs when code is pushed or merged from PR directly to these branches.
-    branches: ['**']                   # Flexible branch triggers — automatically runs on any branch.
-    paths:                             # Only run when the below-listed folders or file types change
-      - 'src/**'                       # Source code directories
-      - '**.{js,ts,jsx,tsx,vue}'       # All code files
-      - '**.{json,yml,yaml}'           # Config files
-      - '.eslintrc.*'                  # Lint configs
+      - 'vite.config.*' # Build tool config
+      - 'vue.config.*' # Vue-specific config
+  push: # Runs when code is pushed or merged from PR directly to these branches.
+    branches: ['**'] # Flexible branch triggers — automatically runs on any branch.
+    paths: # Only run when the below-listed folders or file types change
+      - 'src/**' # Source code directories
+      - '**.{js,ts,jsx,tsx,vue}' # All code files
+      - '**.{json,yml,yaml}' # Config files
+      - '.eslintrc.*' # Lint configs
       - '.prettierrc.*'
-      - 'vite.config.*'                # Build tool config
-      - 'vue.config.*'                 # Vue-specific config
+      - 'vite.config.*' # Build tool config
+      - 'vue.config.*' # Vue-specific config
 
 permissions:
-  contents: read                       # Needed to read repository files.
-  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
+  contents: read # Needed to read repository files.
+  checks: write # Allows the workflow to report results directly to the GitHub Checks API.
 
 env:
-  NODE_ENV: development                # Ensures linter uses local dev rules.
-  ESLINT_USE_FLAT_CONFIG: true         # Enables modern config syntax if applicable.
+  NODE_ENV: development # Ensures linter uses local dev rules.
+  ESLINT_USE_FLAT_CONFIG: true # Enables modern config syntax if applicable.
 
-jobs:                                  # Defines all the major automated tasks GitHub will run
-
-  lint:                                # Defines a Lint job
-    name: Lint Checks                  # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
-    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
-    timeout-minutes: 5                 # Automatically cancel an entire job if it runs longer than set minutes.
+jobs: # Defines all the major automated tasks GitHub will run
+  lint: # Defines a Lint job
+    name: Lint Checks # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 5 # Automatically cancel an entire job if it runs longer than set minutes.
 
     # ⚙️ Strategy matrix, if node-version: [20.x, 22.x] it runs the build on both Node 20.x and 22.x for compatibility.
     strategy:
-      fail-fast: false                 # Continue with Node 22 even if Node 20 fails, if node-version: [20.x, 22.x]
+      fail-fast: false # Continue with Node 22 even if Node 20 fails, if node-version: [20.x, 22.x]
       matrix:
         node-version: [20.x]
 
     steps:
-
       # 📥 Step 1: Downloads the repository’s code into the runner.
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,7 +57,7 @@ jobs:                                  # Defines all the major automated tasks G
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }} # From the matrix above
-          cache: 'npm'                             # Speeds up workflow runs by caching dependencies.
+          cache: 'npm' # Speeds up workflow runs by caching dependencies.
 
       # 🧾 Step 3: Display environment info (for debugging clarity)
       - name: Show environment info
@@ -201,7 +199,7 @@ jobs:                                  # Defines all the major automated tasks G
           name: lint-report
           path: .cache/lint-results/
           if-no-files-found: warn
-          retention-days: 7            # Auto-delete lint artifacts after 7 days to save storage.
+          retention-days: 7 # Auto-delete lint artifacts after 7 days to save storage.
 
       # 🧾 Step 10: Smart summary
       - name: Lint workflow summary

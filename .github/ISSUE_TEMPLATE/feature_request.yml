@@ -1,11 +1,10 @@
 name: ✨ Feature Request
 description: Suggest an idea or improvement for this project
-title: "feature: <brief-summary>"
-labels: ["feature", "enhancement", "question"]
-assignees: ["wasulabenjamin"]
+title: 'feature: <brief-summary>'
+labels: ['feature', 'enhancement', 'question']
+assignees: ['wasulabenjamin']
 
 body:
-
   - type: markdown
     attributes:
       value: |
@@ -42,10 +41,10 @@ body:
       label: Priority
       description: How important is this feature for your workflow?
       options:
-        - "🟢 Low - Minor enhancement"
-        - "🔵 Medium - Nice to have"
-        - "🟡 High - Significant improvement"
-        - "🔴 Critical - Essential for my use case"
+        - '🟢 Low - Minor enhancement'
+        - '🔵 Medium - Nice to have'
+        - '🟡 High - Significant improvement'
+        - '🔴 Critical - Essential for my use case'
 
   - type: checkboxes
     id: volunteer
@@ -53,4 +52,4 @@ body:
       label: Willing to contribute?
       description: Would you like to submit a PR or help prototype this feature?
       options:
-        - label: "Yes"
+        - label: 'Yes'

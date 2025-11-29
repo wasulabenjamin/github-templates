@@ -1,18 +1,19 @@
 # Customizing Templates
 
-Every project has unique needs.
-This guide explains how to adapt the GitHub Templates for your repository while preserving structure and consistency.
+Every project has unique needs. This guide explains how to adapt the GitHub Templates for your repository while
+preserving structure and consistency.
 
 ## Design principles
 
 - **Clarity over verbosity:** templates should be concise and ask only for necessary information.
 - **Actionable fields:** use checklists and` front matter where useful to pre-populate metadata.
-- **Optional vs. required:** use headings and guidance to indicate required info
-  (GitHub won’t enforce required fields inside templates, so still provide checklist items).
+- **Optional vs. required:** use headings and guidance to indicate required info (GitHub won’t enforce required fields
+  inside templates, so still provide checklist items).
 
 ## Why Customize?
 
 Customization ensures templates reflect your workflow — for example:
+
 - Adding additional issue types.
 - Modifying pull request checklists.
 - Updating labels or auto-assignees.
@@ -20,16 +21,15 @@ Customization ensures templates reflect your workflow — for example:
 
 ## Issue Templates
 
-Issue templates live under `.github/ISSUE_TEMPLATE/`.
-Each issue template uses GitHub's form schema, 
-i.e., it contains a `name`, `description`, `title`, `labels`, `assignees`, and `body`.
+Issue templates live under `.github/ISSUE_TEMPLATE/`. Each issue template uses GitHub's form schema, i.e., it contains a
+`name`, `description`, `title`, `labels`, `assignees`, and `body`.
 
 ```yaml
 name: 🐛 Bug Report
 description: Create a bug report to help improve this project
-title: "Bug: <brief-summary>"
-labels: ["bug", "needs-triage"]
-assignees: ["wasulabenjamin"]
+title: 'Bug: <brief-summary>'
+labels: ['bug', 'needs-triage']
+assignees: ['wasulabenjamin']
 
 body:
   - type: markdown
@@ -59,21 +59,21 @@ body:
 - type: dropdown
   id: environment
   attributes:
-    label: "Environment"
-    description: "Where did you encounter this issue?"
+    label: 'Environment'
+    description: 'Where did you encounter this issue?'
     options:
-      - "Development"
-      - "Staging"
-      - "Production"
+      - 'Development'
+      - 'Staging'
+      - 'Production'
   validations:
     required: true
 
 - type: input
   id: version
   attributes:
-    label: "Version"
-    description: "What version of the software are you using?"
-    placeholder: "e.g., 1.2.3"
+    label: 'Version'
+    description: 'What version of the software are you using?'
+    placeholder: 'e.g., 1.2.3'
 ```
 
 #### Conditional Fields
@@ -84,18 +84,18 @@ Use the `visible` property to show/hide fields based on previous responses:
 - type: dropdown
   id: issue-type
   attributes:
-    label: "Issue Type"
-    options: ["Bug", "Performance", "Security"]
+    label: 'Issue Type'
+    options: ['Bug', 'Performance', 'Security']
   validations:
     required: true
 
 - type: textarea
   id: performance-metrics
   attributes:
-    label: "Performance Metrics"
-    description: "Provide specific performance measurements"
+    label: 'Performance Metrics'
+    description: 'Provide specific performance measurements'
   visible:
-    issue-type: ["Performance"]
+    issue-type: ['Performance']
 ```
 
 ### Template Configuration File
@@ -103,7 +103,7 @@ Use the `visible` property to show/hide fields based on previous responses:
 The `config.yml` file in `ISSUE_TEMPLATE/` controls the issue creation interface:
 
 ```yaml
-blank_issues_enabled: false            # Prevent users from opening blank, unstructured issues
+blank_issues_enabled: false # Prevent users from opening blank, unstructured issues
 
 contact_links:
   - name: 📚 Documentation
@@ -122,20 +122,24 @@ PR templates use standard Markdown with special comments for dynamic content:
 
 ```markdown
 ## Description
+
 <!-- Describe your changes in detail -->
 
 ## Related Issues
+
 <!-- Link to any related issues using #issue-number -->
 
 Fixes #123
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Checklist
+
 - [ ] Tests added/updated
 - [ ] Documentation updated
 - [ ] CHANGELOG updated
@@ -145,8 +149,8 @@ Fixes #123
 
 This project uses a **single unified Pull Request template** located at `.github/PULL_REQUEST_TEMPLATE.md`
 
-The goal is to keep contributions consistent and reduce the complexity of choosing between multiple templates.
-The template includes sections that apply to different types of changes (code, documentation, configuration, CI, etc.).
+The goal is to keep contributions consistent and reduce the complexity of choosing between multiple templates. The
+template includes sections that apply to different types of changes (code, documentation, configuration, CI, etc.).
 Contributors only need to fill in the parts relevant to their change.
 
 This simplifies the workflow while still ensuring PRs provide the context and checks needed for a proper review.
@@ -157,13 +161,15 @@ For example, create new template file `hotfix.md ` in `PULL_REQUEST_TEMPLATE/`:
 
 ```markdown
 ## Hotfix Details
-**Emergency**: [ ] Yes [ ] No
-**Production Impact**: [ ] High [ ] Medium [ ] Low
+
+**Emergency**: [ ] Yes [ ] No **Production Impact**: [ ] High [ ] Medium [ ] Low
 
 ## Root Cause
+
 <!-- What caused the issue? -->
 
 ## Verification
+
 <!-- How was the fix verified? -->
 ```
 
@@ -173,34 +179,35 @@ You can modify checklists or add auto-labels:
 
 ```markdown
 ## Auto-label
+
 > Add labels like `feature`, `bugfix`, or `hotfix` for easy filtering.
 ```
 
 #### Best practices
 
-* Use a lightweight checklist (build, tests, changelog).
-* Provide a `breaking changes` section if you use semantic releases.
-* Reference the related issue with `Closes #123` to an auto-link.
+- Use a lightweight checklist (build, tests, changelog).
+- Provide a `breaking changes` section if you use semantic releases.
+- Reference the related issue with `Closes #123` to an auto-link.
 
 ## Workflow Adjustments
 
-To customize workflows, modify triggers or environments.
-Each workflow file in `.github/workflows/` can be customized for your project's needs.
+To customize workflows, modify triggers or environments. Each workflow file in `.github/workflows/` can be customized
+for your project's needs.
 
 Example in `deploy.yml`:
 
 ```yaml
 on:
   push:
-    branches: [main]                   # Run on main only
+    branches: [main] # Run on main only
 ```
 
 ### Automations that depend on template content
 
-* Release and changelog workflows (e.g., `release.yml`) may parse commit messages and PR titles.
-  Encourage contributors to prefix PR titles (`fix:`, `feat:`, `docs:`) if you rely on conventional commits.
-* `stale.yml` often acts on labels — make sure your templates apply expected labels.
-* You can adjust deployment providers or add conditions (e.g., only deploy tags).
+- Release and changelog workflows (e.g., `release.yml`) may parse commit messages and PR titles. Encourage contributors
+  to prefix PR titles (`fix:`, `feat:`, `docs:`) if you rely on conventional commits.
+- `stale.yml` often acts on labels — make sure your templates apply expected labels.
+- You can adjust deployment providers or add conditions (e.g., only deploy tags).
 
 ### Environment-Specific Settings
 
@@ -212,7 +219,7 @@ jobs:
       matrix:
         node-version: [16.x, 18.x, 20.x]
         os: [ubuntu-latest, windows-latest]
-    
+
     steps:
       - name: Run tests
         run: npm test
@@ -242,27 +249,28 @@ Modify when workflows execute:
 # Custom branch and path triggers
 on:
   push:
-    branches: [ main, develop ]
-    paths: [ 'src/**', 'package.json' ]
+    branches: [main, develop]
+    paths: ['src/**', 'package.json']
   pull_request:
-    branches: [ main ]
-    paths-ignore: [ 'docs/**', '*.md' ]
+    branches: [main]
+    paths-ignore: ['docs/**', '*.md']
 ```
 
 ## Repository File Customizations
 
 ### CONTRIBUTING.md and CODE_OF_CONDUCT.md Configuration
 
-* Ensure `CODE_OF_CONDUCT.md` includes enforcement contacts (these can be separate from public issue contacts).
-* Link to `security.yml` the security issue template.
-* Update contact points and support hours in `CONTRIBUTING.md`.
+- Ensure `CODE_OF_CONDUCT.md` includes enforcement contacts (these can be separate from public issue contacts).
+- Link to `security.yml` the security issue template.
+- Update contact points and support hours in `CONTRIBUTING.md`.
 
 ### CODEOWNERS Configuration
 
-The `CODEOWNERS` file automatically assigns reviewers.
-Add and adjust list owners for `src/**`, `docs/**`, or packages e.t.c.
+The `CODEOWNERS` file automatically assigns reviewers. Add and adjust list owners for `src/**`, `docs/**`, or packages
+e.t.c.
 
 ## Coding Standards
+
 - Use TypeScript for all new code
 - Follow our ESLint configuration
 - Write tests for all new features
@@ -299,25 +307,26 @@ If you fork or copy this repo and later want to pull upstream template updates:
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ./getting-started.md
 [customizing-templates]: ./customizing-templates.md
 [workflow-explanations]: ./workflow-explanations.md

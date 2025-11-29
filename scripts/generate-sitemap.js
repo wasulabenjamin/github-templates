@@ -4,7 +4,7 @@
  *
  * Project Name  : github-templates
  * File Name     : generate-sitemap.js
- * Last Modified : 2025-11-25, 08:00pm
+ * Last Modified : 2025-11-27, 08:49pm
  */
 
 /**
@@ -31,10 +31,17 @@ const baseUrl = 'https://htmltutorial.netlify.app';
 // Root directory (project root)
 const rootDir = path.join(__dirname, '..');
 
-// Output directory — since `public/` was removed, sitemap now belongs at the ROOT.
-// Webpack’s CopyPlugin copies everything into your build output (e.g., dist/),
-// so generating into root keeps things consistent before packaging.
-const outputPath = path.join(rootDir, 'sitemap.xml');
+// Output directory — sitemap should live inside `public/`
+// so Vite’s build system automatically copies it into dist/.
+const publicDir = path.join(rootDir, 'public');
+
+// Ensure public/ exists (in case it was deleted or missing)
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir, { recursive: true });
+}
+
+// New output path (changed from rootDir to public/)
+const outputPath = path.join(publicDir, 'sitemap.xml');
 
 // Directory Webpack actually copies (see webpack.config.prod.js)
 const includedDirs = ['src'];
@@ -46,7 +53,9 @@ const includedRootFiles = ['index.html'];
 // HELPER: Recursively collect all .html files from specific directories
 // --------------------------------------------------------
 function collectHtmlFiles(dir, basePrefix = '') {
-  if (!fs.existsSync(dir)) return [];
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
 
   const results = [];
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -56,7 +65,9 @@ function collectHtmlFiles(dir, basePrefix = '') {
     const relPath = path.join(basePrefix, entry.name);
 
     // Skip hidden files and system directories
-    if (entry.name.startsWith('.')) continue;
+    if (entry.name.startsWith('.')) {
+      continue;
+    }
 
     if (entry.isDirectory()) {
       // Recursively traverse subdirectories
@@ -96,7 +107,7 @@ ${allUrls.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}
 // WRITE OUTPUT
 // --------------------------------------------------------
 
-// Make sure we’re writing into the right location (root-level sitemap.xml)
+// Write sitemap.xml into public/ (so Vite copies it into dist/)
 fs.writeFileSync(outputPath, sitemapContent, 'utf8');
 
 console.log(`✅ Sitemap generated: ${outputPath}`);

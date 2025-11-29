@@ -13,7 +13,7 @@
     and deployment processes. This repository provides pre-configured GitHub Actions, issue templates, and contribution 
     guidelines to help you set up a professional development workflow quickly.
     <br><br>
-    <a href="https://github.com/wasulabenjamin/github-templates.git">View Demo</a> . 
+    <a href="https://wb-github-templates.netlify.app/">View Demo</a> . 
     <a href="https://github.com/wasulabenjamin/github-templates/issues/new?template=bug_report.yml">Report Bug</a> . 
     <a href="https://github.com/wasulabenjamin/github-templates/issues/new?template=feature_request.yml">
       Request Feature
@@ -21,33 +21,40 @@
   </p>
 
 <br><br>
+
   <p>
     <a href="https://app.netlify.com/projects/wb-github-templates/deploys">
       <img 
-        src="https://api.netlify.com/api/v1/badges/e6831997-1b79-4d45-99f0-26d8f890396b/deploy-status" 
-        alt="Netlify Status"
-      />
+        src="https://img.shields.io/github/actions/workflow/status/wasulabenjamin/github-templates/deploy-netlify.yml?label=Deploy&logo=netlify" 
+        alt="Netify Deploy"
+      >
     </a> &nbsp;
     <a href="https://app.codacy.com/gh/wasulabenjamin/github-templates/dashboard">
-      <img src="https://app.codacy.com/project/badge/Grade/64e2c7603c094223a88d0ad9b50eeb09" alt="Codacy Badge"/>
+      <img 
+        src="https://app.codacy.com/project/badge/Grade/64e2c7603c094223a88d0ad9b50eeb09?label=Code%20Quality" 
+        alt="Codacy Badge"
+      >
     </a> &nbsp;
     <a href="https://github.com/wasulabenjamin/github-templates/graphs/contributors">
-        <img src="https://img.shields.io/github/contributors/wasulabenjamin/github-templates" alt="Contributors"/>
+      <img 
+        src="https://img.shields.io/github/contributors/wasulabenjamin/github-templates?label=Contributors" 
+        alt="Contributors"
+      >
     </a> &nbsp;
     <a href="https://github.com/wasulabenjamin/github-templates/network/members">
-      <img src="https://img.shields.io/github/forks/wasulabenjamin/github-templates" alt="Forks"/>
+      <img src="https://img.shields.io/github/forks/wasulabenjamin/github-templates" alt="Forks">
     </a> &nbsp;
     <a href="https://github.com/wasulabenjamin/github-templates/stargazers">
-      <img src="https://img.shields.io/github/stars/wasulabenjamin/github-templates" alt="Stars"/>
+      <img src="https://img.shields.io/github/stars/wasulabenjamin/github-templates" alt="Stars">
     </a> &nbsp;
     <a href="https://github.com/wasulabenjamin/github-templates/issues">
-      <img src="https://img.shields.io/github/issues/wasulabenjamin/github-templates" alt="Issues"/>
+      <img src="https://img.shields.io/github/issues/wasulabenjamin/github-templates?label=Issues" alt="Issues">
     </a> &nbsp;
     <a href="https://github.com/wasulabenjamin/github-templates/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/wasulabenjamin/github-templates" alt="License"/>
+      <img src="https://img.shields.io/github/license/wasulabenjamin/github-templates?label=License" alt="License">
     </a> &nbsp;
     <a href="https://github.com/wasulabenjamin/github-templates/blob/master/.github/CODE_OF_CONDUCT.md">
-      <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant v2.1"/>
+      <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant v2.1">
     </a> &nbsp;
   </p>
   <br><br>
@@ -60,10 +67,13 @@ release automation, contribution standards, and community management tools. It�
 stay consistent, and automate the boring stuff**.
 
 ### 🎯 Audience
+
 Developers, maintainers, and teams that are looking to bootstrap a professional GitHub repository with minimal setup.
 
 ### ⚙️ Prerequisites
+
 You should already be familiar with:
+
 - Git & GitHub basics (forking, branching, pull requests)
 - Basic CI/CD concepts
 - YAML syntax (for modifying workflows)
@@ -84,11 +94,11 @@ You can either:
 
 ### Customize for Your Project
 
-* Update `README.md` with your project info and
-* Delete everything in `CHANGELOG.md` as this will be regenerated
-* Edit `.github/workflows/` to match your CI/CD stack
-* Adjust `.github/LABELS.yml` and issue templates to suit your workflow
-* Review docs in `/docs/USAGE_GUIDES` for in-depth customization steps
+- Update `README.md` with your project info and
+- Delete everything in `CHANGELOG.md` as this will be regenerated
+- Edit `.github/workflows/` to match your CI/CD stack
+- Adjust `.github/LABELS.yml` and issue templates to suit your workflow
+- Review docs in `/docs/USAGE_GUIDES` for in-depth customization steps
 
 > 📝 Pro tip: Keep this repository separate from your product codebase — treat it as your **“template blueprint”**.
 
@@ -118,7 +128,7 @@ github-templates/
 │   │   ├── ci.yml                     # Ensures build + lint + test pass on PRs
 │   │   ├── deploy-netlify.yml         # Auto-deploys to target host on merge or push to `main`
 │   │   ├── lint-checks.yml            # Runs ESLint + Prettier independently - on push & PR for quick feedback
-│   │   ├── pr-issue-handler.yml       # A smart Issues and PRs handler 
+│   │   ├── pr-issue-handler.yml       # A smart Issues and PRs handler
 │   │   ├── run-tests.yml              # Runs Vitest/Playwright suites - Keeps CI cleanly separated; may run parallel
 │   │   ├── semantic-release.yml       # Generates changelog + semantic version tag
 │   │   ├── sync-labels.yml            # Overwrites GitHub labels with our defined LABELS.yml
@@ -179,16 +189,18 @@ github-templates/
 │   ├── App.vue
 │   └── main.ts
 │
-├── .codacy.yaml                       # Codacy config (code quality)
-├── .gitignore                         # Files ignored by Git
+├── .codacy.yml
+├── .editorconfig
+├── .gitignore
+├── .htmlhintrc
 ├── .prettierrc
-├── CHANGELOG.md                       # Changelog (release history)
-├── cliff.toml                         # git-cliff ~ configuration file
+├── CHANGELOG.md
+├── cliff.toml
 ├── eslint.config.js
 ├── index.html
-├── LICENSE                            # License file
+├── LICENSE
 ├── package.json
-├── README.md                          # Project documentation
+├── README.md
 ├── stylelint.config.js
 ├── tsconfig.app.json
 ├── tsconfig.json
@@ -198,11 +210,11 @@ github-templates/
 
 ### 🧭 Quick Summary
 
-* **`.github/`** → The automation and governance center. Houses workflows, issue templates, and contributor rules.
-* **`docs/`** → Your knowledge base. Contains guides, standards, and reference docs for setup and usage.
-* **Root Files** → Define project metadata, ignore rules, versioning, and quality configurations.
-* **`CHANGELOG.md` & `cliff.toml`** → Together manage semantic versioning and automated release notes.
-* **`LICENSE`** → Specifies terms of use for open-source sharing and collaboration.
+- **`.github/`** → The automation and governance center. Houses workflows, issue templates, and contributor rules.
+- **`docs/`** → Your knowledge base. Contains guides, standards, and reference docs for setup and usage.
+- **Root Files** → Define project metadata, ignore rules, versioning, and quality configurations.
+- **`CHANGELOG.md` & `cliff.toml`** → Together manage semantic versioning and automated release notes.
+- **`LICENSE`** → Specifies terms of use for open-source sharing and collaboration.
 
 > See [`docs/`](./docs) for deeper explanations and examples of customization.
 
@@ -211,7 +223,7 @@ github-templates/
 Each GitHub Action in `.github/workflows` automates a specific lifecycle task:
 
 | Workflow                     | Purpose                                            | Trigger                                              |
-|------------------------------|----------------------------------------------------|------------------------------------------------------|
+| ---------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
 | **sync-labels.yml**          | Synchronizes customs labels with GitHub            | Changes to `.github/LABELS.yml`                      |
 | **lint-checks.yml**          | Run ESLint and Prettier checks                     | `push`, specified file types and folders             |
 | **run-tests.yml**            | Run Vitest/Playwright test suites                  | `push`, specified file types and folders             |
@@ -240,9 +252,9 @@ project throughout its life cycle. Any contributions will be highly appreciated.
 
 Looking to contribute something to this template?
 
-* Read the [Contributing Guidelines][contributing-guidelines]
-* Review our [Code of Conduct](.github/CODE_OF_CONDUCT.md)
-* Follow the [Development Workflow](.github/DEVELOPMENT_WORKFLOW.md)
+- Read the [Contributing Guidelines][contributing-guidelines]
+- Review our [Code of Conduct](.github/CODE_OF_CONDUCT.md)
+- Follow the [Development Workflow](.github/DEVELOPMENT_WORKFLOW.md)
 
 Ways to contribute:
 
@@ -254,41 +266,41 @@ Ways to contribute:
 
 Have a bug or a feature request? **Here is to how you can help:**
 
-* Having problems related to this project? [Please report a bug][report-bug]
-* Is your problem or idea you would wish implemented not addressed yet? [Please request a feature.][request-feature]
-* Or alternatively **Ask a Question** using [Discussions][discussions]
+- Having problems related to this project? [Please report a bug][report-bug]
+- Is your problem or idea you would wish implemented not addressed yet? [Please request a feature.][request-feature]
+- Or alternatively **Ask a Question** using [Discussions][discussions]
 
 # 🧠 Other Resources
 
-* [Getting Started Guide][getting-started]
-* [Workflow Explanations][workflow-explanations]
-* [Code Review Standards][review-standards]
-* [Release Management][release-management]
-* [Roadmap][roadmap]
+- [Getting Started Guide][getting-started]
+- [Workflow Explanations][workflow-explanations]
+- [Code Review Standards][review-standards]
+- [Release Management][release-management]
+- [Roadmap][roadmap]
 
 # ⚖️ License
 
-Distributed under the **MIT License**.
-See [`LICENSE`](./LICENSE) for more information.
+Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for more information.
 
 # 💬 Acknowledgements
 
-Inspired by common GitHub automation patterns, semantic versioning, and open-source community conventions.
-If this repository saves you time, consider leaving a ⭐ — it helps others discover it.
+Inspired by common GitHub automation patterns, semantic versioning, and open-source community conventions. If this
+repository saves you time, consider leaving a ⭐ — it helps others discover it.
 
-* [JetBrains](https://www.jetbrains.com/) for a rich suite of tools that provide an exceptional developer experience.
-* [GitHub](https://github.com/) for repository hosting and workflows
-* [Codacy](https://www.codacy.com/) for their quality automated code quality and coverage platform.
-* [Bootstrap](https://getbootstrap.com/docs/5.3) for a powerful, feature-packed front-end toolkit.
-* [Tailwind](https://tailwindcss.com/docs/) Labs for incredible dev ergonomics.
-* [Vite](https://vite.dev/) for a blazing fast frontend build tool powering the next generation of web applications.
-* [Vue core](https://www.tutorialspoint.com/vuejs/index.htm) team for building something simple yet powerful.
-* [Supabase](https://supabase.com/dashboard/org) team for simplifying backend.
+- [JetBrains](https://www.jetbrains.com/) for a rich suite of tools that provide an exceptional developer experience.
+- [GitHub](https://github.com/) for repository hosting and workflows
+- [Codacy](https://www.codacy.com/) for their quality automated code quality and coverage platform.
+- [Bootstrap](https://getbootstrap.com/docs/5.3) for a powerful, feature-packed front-end toolkit.
+- [Tailwind](https://tailwindcss.com/docs/) Labs for incredible dev ergonomics.
+- [Vite](https://vite.dev/) for a blazing fast frontend build tool powering the next generation of web applications.
+- [Vue core](https://www.tutorialspoint.com/vuejs/index.htm) team for building something simple yet powerful.
+- [Supabase](https://supabase.com/dashboard/org) team for simplifying backend.
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [contributing-guidelines]: ./.github/CONTRIBUTING.md
 [discussions]: https://github.com/wasulabenjamin/github-templates/discussions
 [getting-started]: ./docs/USAGE_GUIDES/getting-started.md

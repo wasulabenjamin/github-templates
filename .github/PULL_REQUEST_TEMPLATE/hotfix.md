@@ -3,7 +3,9 @@
 ## ⚠️ Pre-Requisites
 
 > ⚠️ **CRITICAL**: Hotfix PRs must target `main` branch only
+
 > This is for urgent production fixes that cannot wait for normal release cycle
+
 > Must be followed by immediate back-merge to `develop`
 
 **Emergency Checklist:**
@@ -15,21 +17,25 @@
 
 ## 🎯 Purpose
 
-<!--- 
+<!---
 Describe the critical issue and your emergency fix in detail
 Include: Impact, Root Cause, Solution, Rollback Plan
 -->
 
 **Production Impact:**
+
 <!-- What is breaking in production? -->
 
 **Root Cause:**
+
 <!-- What caused the issue? -->
 
 **Emergency Fix:**
+
 <!-- How does this resolve the issue immediately? -->
 
 **Rollback Plan:**
+
 <!-- How can we quickly revert if this causes issues? -->
 
 ## 🧩 Related Issue

@@ -3,7 +3,9 @@
 ## ⚠️ Pre-Requisites
 
 > This feature must target `develop` branch only
+
 > All features require a linked Feature Request issue
+
 > Feature must be complete and tested before submission
 
 Before submitting:
@@ -15,18 +17,21 @@ Before submitting:
 
 ## 🎯 Purpose
 
-<!--- 
+<!---
 Describe the new functionality in detail
 Include: User Benefits, Technical Approach, Alternatives Considered
 -->
 
 **User Value:**
+
 <!-- How does this benefit end users? -->
 
 **Technical Implementation:**
+
 <!-- How was this feature implemented? -->
 
 **Alternatives Considered:**
+
 <!-- What other approaches were evaluated? -->
 
 ## 🧩 Related Issue

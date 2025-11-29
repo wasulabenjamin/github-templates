@@ -51,21 +51,23 @@ cp -r github-templates/.github/ <your-project>/.github/    # Or simply copy manu
 1. Navigate to your repository on GitHub
 2. Go to **Settings** → **General**
 3. Scroll to **Features** and ensure these are enabled:
+
 - ✅ Issues
 - ✅ Pull requests
 - ✅ Discussions (optional but recommended)
+
 4. Ensure GitHub Actions are enabled under **Settings > Actions**.
 5. Grant workflows the required permissions. See [REFERENCE/permissions-needed.md][permissions-needed]
-6. Optionally enable branch protection for `main` and require status checks.
-   See [BEST_PRACTICES/release-management.md][release-management]
+6. Optionally enable branch protection for `main` and require status checks. See
+   [BEST_PRACTICES/release-management.md][release-management]
 
 ### Step 3: Set Up GitHub Actions Secrets
 
-For workflows that require deployment or external services,
-configure secrets in **Settings** → **Secrets and variables** → **Actions**:
+For workflows that require deployment or external services, configure secrets in **Settings** → **Secrets and
+variables** → **Actions**:
 
 | Secret Name     | Description              | Required For         |
-|-----------------|--------------------------|----------------------|
+| --------------- | ------------------------ | -------------------- |
 | `NETLIFY_TOKEN` | Netlify deployment token | `deploy-netlify.yml` |
 | `VERCEL_TOKEN`  | Vercel deployment token  | `deploy-vercel.yml`  |
 | `NPM_TOKEN`     | npm publish token        | `release.yml`        |
@@ -100,7 +102,7 @@ Your repository should now contain:
 │   ├── ci.yml                     # Ensures build + lint + test pass on PRs
 │   ├── deploy-netlify.yml         # Auto-deploys to target host on merge or push to `main`
 │   ├── lint-checks.yml            # Runs ESLint + Prettier independently - on push & PR for quick feedback
-│   ├── pr-issue-handler.yml       # A smart Issues and PRs handler 
+│   ├── pr-issue-handler.yml       # A smart Issues and PRs handler
 │   ├── run-tests.yml              # Runs Vitest/Playwright suites - Keeps CI cleanly separated; may run parallel
 │   ├── semantic-release.yml       # Generates changelog + semantic version tag
 │   ├── sync-labels.yml            # Overwrites GitHub labels with our defined LABELS.yml
@@ -124,6 +126,7 @@ Your repository should now contain:
 1. Go to your repository's **Issues** tab
 2. Click **New issue**
 3. Verify you see multiple template options:
+
 - 🐛 Bug Report
 - 📝 Documentation Update
 - ✨ Feature Request
@@ -134,10 +137,12 @@ Your repository should now contain:
 1. Make a small change to your codebase
 2. Create a pull request
 3. Observe that:
+
 - PR template pre-fills the description based on your contribution type: `code_change.md` or `documentation.md`.
 - Required status checks appear
-- CI workflow runs automatically.
-  Each GitHub Action under `.github/workflows/` automates part of the development lifecycle. Use:
+- CI workflow runs automatically. Each GitHub Action under `.github/workflows/` automates part of the development
+  lifecycle. Use:
+
   ```powershell
   # Lists all workflows
   gh workflow list
@@ -148,9 +153,9 @@ Your repository should now contain:
 
 ## How templates are wired
 
-* Issue templates placed under `.github/ISSUE_TEMPLATE/` are automatically offered to contributors.
-* The `PULL_REQUEST_TEMPLATE.md` provides single default PR template.
-* `CODEOWNERS` controls auto-requesting reviewers and enforcing ownership for protected branches.
+- Issue templates placed under `.github/ISSUE_TEMPLATE/` are automatically offered to contributors.
+- The `PULL_REQUEST_TEMPLATE.md` provides single default PR template.
+- `CODEOWNERS` controls auto-requesting reviewers and enforcing ownership for protected branches.
 
 ## Customization Checklist
 
@@ -167,16 +172,19 @@ After initial setup, customize these elements for your project:
 ## Common Initial Issues
 
 **Workflows not triggering?**
+
 - Check that workflow files are in the correct `.github/workflows/` directory
 - Verify the repository has Actions enabled in Settings
 - Check repository-level Actions permissions and workflow `on:` triggers.
 - See [REFERENCE/workflow-triggers.md][workflow-triggers]
 
 **Templates not appearing?**
+
 - Ensure template files have correct extensions (`.yml` for issue templates, `.md` for PR templates)
 - Check that the `ISSUE_TEMPLATE` directory and `PULL_REQUEST_TEMPLATE.md` file are properly named.
 
 **Permission errors in workflows?**
+
 - Review the default GITHUB_TOKEN permissions in repository Settings
 - Add required secrets for deployment workflows
 
@@ -191,35 +199,36 @@ Once the basic setups are complete:
 
 ## Checklist before first release
 
-* [ ] Copy `.github/` into target repo.
-* [ ] Set required secrets.
-* [ ] Configure branch protection and required checks.
-* [ ] Update template links.
-* [ ] Run a PR to validate CI.
+- [ ] Copy `.github/` into target repo.
+- [ ] Set required secrets.
+- [ ] Configure branch protection and required checks.
+- [ ] Update template links.
+- [ ] Run a PR to validate CI.
 
 ## See Also
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ./getting-started.md
 [customizing-templates]: ./customizing-templates.md
 [workflow-explanations]: ./workflow-explanations.md

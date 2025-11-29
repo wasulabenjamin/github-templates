@@ -1,11 +1,10 @@
 name: 📝 Documentation Update
 description: Propose updates or improvements to documentation
-title: "documentation: <brief-summary>"
-labels: ["documentation", "help wanted"]
-assignees: ["wasulabenjamin"]
+title: 'documentation: <brief-summary>'
+labels: ['documentation', 'help wanted']
+assignees: ['wasulabenjamin']
 
 body:
-
   - type: markdown
     attributes:
       value: |
@@ -26,12 +25,12 @@ body:
     attributes:
       label: Type of Change Needed
       options:
-        - "📝 Typo or grammar correction"
-        - "🔧 Technical accuracy fix"
-        - "💡 Clarification or better explanation"
-        - "➕ Missing information or examples"
-        - "🗑️ Outdated or incorrect information"
-        - "🌐 Broken links"
+        - '📝 Typo or grammar correction'
+        - '🔧 Technical accuracy fix'
+        - '💡 Clarification or better explanation'
+        - '➕ Missing information or examples'
+        - '🗑️ Outdated or incorrect information'
+        - '🌐 Broken links'
     validations:
       required: true
 
@@ -73,10 +72,10 @@ body:
       label: Priority
       description: How important is this change?
       options:
-        - "🟢 Low - Minor enhancement"
-        - "🔵 Medium - Nice to have"
-        - "🟡 High - Significant improvement"
-        - "🔴 Critical - Essential for my use case"
+        - '🟢 Low - Minor enhancement'
+        - '🔵 Medium - Nice to have'
+        - '🟡 High - Significant improvement'
+        - '🔴 Critical - Essential for my use case'
 
   - type: checkboxes
     id: volunteer
@@ -84,4 +83,4 @@ body:
       label: Contribution Interest
       description: Would you be willing to submit a PR for this documentation change?
       options:
-        - label: "Yes, I can submit a pull request for this change"
+        - label: 'Yes, I can submit a pull request for this change'
