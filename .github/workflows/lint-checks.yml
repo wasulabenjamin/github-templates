@@ -99,17 +99,9 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 👀 Step 6: Run Lint checks.
       - name: Lint Checks
         run: |
-          echo "🧩 Starting lint checks..."
-
-          if npm run | grep -q "lint"; then
-
-            if npm run lint; then
-              echo "✅ Lint checks completed successfully."
-            else
-              echo "⚠️ 'lint' script failed — check your logs."
-              exit 1
-            fi
-
+          if grep -q '"lint"' package.json; then
+            echo "🧩 Running lint checks..."
+            npm run lint
           else
             echo "⚠️ No 'lint' script found in package.json, skipping check..."
             echo "💡 To enable lint checks, define a 'lint' script in package.json, e.g.:"
@@ -120,17 +112,9 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 👀 Step 7: Run Prettier checks.
       - name: Prettier Checks
         run: |
-          echo "🧩 Starting format checks..."
-
-          if npm run | grep -q "format:check"; then
-
-            if npm run format:check; then
-              echo "✅ Format checks completed successfully."
-            else
-              echo "⚠️ 'format:check' script failed — check your logs."
-              exit 1
-            fi
-
+          if grep -q '"format:check"' package.json; then
+            echo "🧩 Running format checks..."
+            npm run format:check
           else
             echo "⚠️ No 'format:check' script found in package.json, skipping check..."
             echo "💡 To enable format checks, define a 'format:check' script in package.json, e.g.:"
@@ -141,17 +125,9 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 👀 Step 8: Run TypeScript checks.
       - name: Type check (if TypeScript)
         run: |
-          echo "🧩 Starting type checks..."
-
-          if npm run | grep -q "typescript"; then
-
-            if npm run typescript; then
-              echo "✅ Type checks completed successfully."
-            else
-              echo "⚠️ 'typescript' script failed — check your logs."
-              exit 1
-            fi
-
+          if grep -q '"typescript"' package.json; then
+            echo "🧩 Running type checks..."
+            npm run typescript
           else
             echo "⚠️ No 'typescript' script found in package.json, skipping check..."
             echo "💡 To enable type checks, define a 'typescript' script in package.json, e.g.:"

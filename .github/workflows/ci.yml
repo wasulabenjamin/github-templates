@@ -96,17 +96,9 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 🧩 Step 6: Build the project.
       - name: Build project
         run: |
-          echo "🧩 Starting build process..."
-
-          if npm run | grep -q "build"; then
-
-            if npm run build; then
-              echo "✅ Build completed successfully."
-            else
-              echo "⚠️ 'build' script failed — check your build logs."
-              exit 1
-            fi
-
+          if grep -q '"build"' package.json; then
+            echo "🧩 Running build process..."
+            npm run build
           else
             echo "⚠️ No 'build' script found in package.json, skipping build..."
             echo "💡 To enable build, define a 'build' script in package.json, e.g.:"

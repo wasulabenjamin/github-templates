@@ -90,20 +90,12 @@ jobs: # Defines all the major automated tasks GitHub will run
 
           npm ci
 
-      # 👀 Step 6: If there’s a test:unit script, run it; otherwise, fall back to a direct Vitest command.
+      # 👀 Step 6: Run unit tests
       - name: Run Unit Test (Vitest)
         run: |
-          echo "🧩 Starting unit test..."
-
-          if npm run | grep -q "test:unit"; then
-
-            if npm run test:unit; then
-              echo "✅ Unit test completed successfully."
-            else
-              echo "⚠️ 'test:unit' script failed — check your test logs."
-              exit 1
-            fi
-
+          if grep -q '"test:unit"' package.json; then
+            echo "🧩 Running unit tests..."
+            npm run test:unit
           else
             echo "⚠️ No 'test:unit' script found in package.json, skipping test..."
             echo "💡 To enable unit tests, define a 'test:unit' script in package.json, e.g.:"
@@ -111,21 +103,14 @@ jobs: # Defines all the major automated tasks GitHub will run
             exit 1
           fi
 
-      # 👀 Step 7: If there’s a test:e2e script, run it; otherwise, fall back to a direct Playwright command.
+      # 👀 Step 7: Run e2e tests
       - name: Run E2E Tests
         run: |
-          echo "🧩 Starting end-to-end (E2E) tests..."
-
-          if npm run | grep -q "test:e2e"; then
-            npx playwright install --with-deps
-
-            if npm run test:e2e; then
-              echo "✅ E2E test completed successfully."
-            else
-              echo "⚠️ 'test:e2e' script failed — check your test logs."
-              exit 1
-            fi
-
+          if grep -q '"test:e2e"' package.json; then
+            echo "🧩 Running end-to-end (E2E) tests..."
+            npx playwright install chromium
+            sudo npx playwright install-deps chromium
+            npm run test:e2e
           else
             echo "⚠️ No 'test:e2e' script found in package.json, skipping test..."
             echo "💡 To enable e2e tests, define a 'test:e2e' script in package.json, e.g.:"
@@ -136,17 +121,9 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 🛡️ Step 8: Security audit for vulnerabilities
       - name: Security audit
         run: |
-          echo "🧩 Starting dependency security audit..."
-
-          if npm run | grep -q "audit"; then
-
-            if npm run audit; then
-              echo "✅ Security audit completed successfully."
-            else
-              echo "⚠️ 'audit' script failed — check your test logs."
-              exit 1
-            fi
-
+          if grep -q '"audit"' package.json; then
+            echo "🧩 Running dependency security audit..."
+            npm run audit
           else
             echo "⚠️ No 'audit' script found in package.json, skipping audit..."
             echo "💡 To enable security audits, define an 'audit' script in package.json, e.g.:"
@@ -154,17 +131,7 @@ jobs: # Defines all the major automated tasks GitHub will run
             exit 1
           fi
 
-      # 📤 Step 9: Upload a test report for inspection.
-      - name: Upload test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report-${{ matrix.node-version }}
-          path: .cache/test-results/
-          if-no-files-found: warn
-          retention-days: 7 # Auto-delete lint artifacts after 7 days to save storage.
-
-      # 🧾 Step 10: Smart summary
+      # 🧾 Step 9: Smart summary
       - name: Test workflow summary
         if: always()
         run: |
