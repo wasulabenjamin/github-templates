@@ -96,112 +96,70 @@ jobs: # Defines all the major automated tasks GitHub will run
 
           npm ci
 
-      # 👀 Step 6: Run ESLint checks.
-      - name: Run ESLint
+      # 👀 Step 6: Run Lint checks.
+      - name: Lint Checks
         run: |
-          echo "🧩 Starting ESLint check..."
-          mkdir -p .cache/lint-results      # Ensure report directory exists
+          echo "🧩 Starting lint checks..."
 
-          if npm run | grep -q "check:eslint"; then
-            echo "🧩 Running project-defined ESLint script..."
+          if npm run | grep -q "lint"; then
 
-            if npm run check:eslint -- --format json --output-file .cache/lint-results/eslint-report.json; then
-              echo "✅ ESLint completed successfully."
+            if npm run lint; then
+              echo "✅ Lint checks completed successfully."
             else
-              echo "⚠️ ESLint script failed — check your logs."
-            fi
-
-          elif npx --yes eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 >/dev/null 2>&1; then
-            echo "⚙️ No check:eslint script found - running fallback ESLint via npx..."
-
-            if npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 --format json \
-                --output-file .cache/lint-results/eslint-report.json; then
-              echo "✅ Fallback ESLint completed successfully."
-            else
-              echo "⚠️ Fallback ESLint failed — check your configuration."
-              echo "💡 To enable eslint checks, define a 'check:eslint' script in package.json or install eslint."
+              echo "⚠️ 'lint' script failed — check your logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No ESLint configuration found, skipping check..."
-            echo "💡 To enable eslint checks, define a 'check:eslint' script in package.json or install eslint."
+            echo "⚠️ No 'lint' script found in package.json, skipping check..."
+            echo "💡 To enable lint checks, define a 'lint' script in package.json, e.g.:"
+            echo '    "scripts": { "lint": "npm run lint:html && npm run lint:css && npm run lint:js" }'
             exit 1
           fi
 
       # 👀 Step 7: Run Prettier checks.
-      - name: Prettier
+      - name: Prettier Checks
         run: |
-          echo "🧩 Starting Prettier check..."
-          mkdir -p .cache/lint-results      # Ensure report directory exists
+          echo "🧩 Starting format checks..."
 
-          if npm run | grep -q "check:prettier"; then
-            echo "🧩 Running project-defined Prettier script..."
+          if npm run | grep -q "format:check"; then
 
-            if npm run check:prettier | tee .cache/lint-results/prettier-report.txt; then  # Capture logs
-              echo "✅ Prettier completed successfully."
+            if npm run format:check; then
+              echo "✅ Format checks completed successfully."
             else
-              echo "⚠️ Prettier script failed — check your logs."
-            fi
-
-          elif npx --yes prettier --check . >/dev/null 2>&1; then
-            echo "⚙️ No check:prettier script found - running fallback Prettier via npx..."
-
-            if npx prettier --check . | tee .cache/lint-results/prettier-report.txt; then  # Capture logs
-              echo "✅ Fallback Prettier completed successfully."
-            else
-              echo "⚠️ Fallback Prettier failed — check your configuration."
-              echo "💡 To enable prettier checks, define a 'check:prettier' script in package.json or install \
-                  prettier."
+              echo "⚠️ 'format:check' script failed — check your logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No Prettier configuration found, skipping check..."
-            echo "💡 To enable prettier checks, define a 'check:prettier' script in package.json or install prettier."
+            echo "⚠️ No 'format:check' script found in package.json, skipping check..."
+            echo "💡 To enable format checks, define a 'format:check' script in package.json, e.g.:"
+            echo '    "format:check": "prettier --check ."'
             exit 1
           fi
 
       # 👀 Step 8: Run TypeScript checks.
       - name: Type check (if TypeScript)
         run: |
-          echo "🧩 Starting TypeScript type check..."
-          mkdir -p .cache/lint-results      # Ensure report directory exists
+          echo "🧩 Starting type checks..."
 
-          if npm run | grep -q "check:typescript"; then
-            echo "🧩 Running project-defined TypeScript script..."
+          if npm run | grep -q "typescript"; then
 
-            if npm run check:typescript | tee .cache/lint-results/ts-report.txt; then
-              echo "✅ TypeScript check completed successfully."
+            if npm run typescript; then
+              echo "✅ Type checks completed successfully."
             else
-              echo "⚠️ TypeScript script failed — check your logs."
-            fi
-
-          elif npx --yes tsc --noEmit >/dev/null 2>&1; then
-            echo "⚙️ No check:typescript script found - running fallback tsc via npx..."
-
-            if npx tsc --noEmit | tee .cache/lint-results/ts-report.txt; then
-              echo "✅ Fallback TypeScript check completed successfully."
-            else
-              echo "⚠️ Fallback TypeScript check failed — check your configuration."
-              echo "💡 To enable tsc checks, define a 'check:tsc' script in package.json or install tsc."
+              echo "⚠️ 'typescript' script failed — check your logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No TypeScript configuration found, skipping check..."
-            echo "💡 To enable tsc checks, define a 'check:tsc' script in package.json or install tsc."
+            echo "⚠️ No 'typescript' script found in package.json, skipping check..."
+            echo "💡 To enable type checks, define a 'typescript' script in package.json, e.g.:"
+            echo '    "typescript": "vue-tsc --noEmit"'
             exit 1
           fi
 
-      # 📤 Step 9: Upload a lint report for inspection.
-      - name: Upload lint report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-report
-          path: .cache/lint-results/
-          if-no-files-found: warn
-          retention-days: 7 # Auto-delete lint artifacts after 7 days to save storage.
-
-      # 🧾 Step 10: Smart summary
+      # 🧾 Step 9: Smart summary
       - name: Lint workflow summary
         if: always()
         run: |

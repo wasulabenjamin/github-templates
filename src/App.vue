@@ -51,11 +51,12 @@ onMounted(() => {
           <a href="./.github/CONTRIBUTING.md" class="nav-link">Contribute</a>
           <button
             class="theme-toggle"
+            data-test="theme-toggle"
             :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
             @click="toggleTheme"
           >
             <span class="theme-icon">{{ isDark ? "☀️" : "🌙" }}</span>
-            <span class="theme-text">{{ isDark ? "Light" : "Dark" }}</span>
+            <span class="theme-text" data-test="theme-text">{{ isDark ? "Light" : "Dark" }}</span>
           </button>
         </nav>
       </div>

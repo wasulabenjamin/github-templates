@@ -26,9 +26,11 @@ env:
 jobs: # Defines all the major automated tasks GitHub will run
   build: # Defines a build job, compiles the project or prepares production-ready output.
     if: >
-      (github.event_name != 'workflow_run') || 
-      (!contains(github.event.head_commit.message, '[skip ci]')) || 
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      ${{
+        (github.event_name != 'workflow_run') ||
+        (!contains(github.event.head_commit.message, '[skip ci]')) ||
+        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      }}
     name: Build Project # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
     runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
     timeout-minutes: 10 # Automatically cancel an entire job if it runs longer than set minutes.
@@ -94,30 +96,19 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 🧩 Step 6: Build the project.
       - name: Build project
         run: |
-          echo "🧩 Starting build process..." 
+          echo "🧩 Starting build process..."
 
           if npm run | grep -q "build"; then
-            echo "📦 Running project-defined build..."
 
             if npm run build; then
               echo "✅ Build completed successfully."
             else
-              echo "⚠️ Build script failed — check your build logs."
-            fi
-
-          elif npx --yes vite --version >/dev/null 2>&1; then
-            echo "⚙️ No build script found - running fallback build via Vite..."
-
-            if npx vite build; then
-              echo "✅ Build completed successfully."
-            else
-              echo "⚠️ Fallback Vite build failed — check your configuration."
-              echo "💡 To enable build, define a 'build' script in package.json, e.g.:"
-              echo '    "scripts": { "build": "vite build" }'
+              echo "⚠️ 'build' script failed — check your build logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No build configuration or script found, skipping build..."
+            echo "⚠️ No 'build' script found in package.json, skipping build..."
             echo "💡 To enable build, define a 'build' script in package.json, e.g.:"
             echo '    "scripts": { "build": "vite build" }'
             exit 1
@@ -144,7 +135,7 @@ jobs: # Defines all the major automated tasks GitHub will run
             dist
             out
           if-no-files-found: warn
-          retention-days: 1 # Auto-delete build artifacts after 1 day to save storage
+          retention-days: 7 # Auto-delete build artifacts after 7 day to save storage
 
       # 🧾 Step 9: Smart Summary
       - name: CI workflow summary

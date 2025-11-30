@@ -94,34 +94,20 @@ jobs: # Defines all the major automated tasks GitHub will run
       - name: Run Unit Test (Vitest)
         run: |
           echo "🧩 Starting unit test..."
-          mkdir -p .cache/test-results      # Ensure report directory exists
 
           if npm run | grep -q "test:unit"; then
-            echo "🧩 Running project-defined Unit Test..."
 
-            if npm run test:unit -- --reporter=json \
-                --outputFile=.cache/test-results/vitest-report.json | tee .cache/test-results/vitest-console.log; then
-              echo "✅ Unit Test completed successfully."
+            if npm run test:unit; then
+              echo "✅ Unit test completed successfully."
             else
-              echo "⚠️ Unit test script failed — check your test logs."
-            fi
-
-          elif npx --yes vitest --version >/dev/null 2>&1; then
-            echo "⚙️ No test:unit script found - running fallback Unit Test via Vitest..."
-
-            if npx vitest run --reporter=dot --reporter=json \
-                --outputFile=.cache/test-results/vitest-report.json | tee .cache/test-results/vitest-console.log; then
-              echo "✅ Unit Test completed successfully."
-            else
-              echo "⚠️ Fallback Vitest unit test failed — check your configuration"
-              echo "💡 To enable Unit test, define a 'test:unit' script in package.json, e.g.:"
-              echo '    "scripts": { "test:unit": "vitest run" }'
+              echo "⚠️ 'test:unit' script failed — check your test logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No Unit Test configuration or script found, skipping test..."
-            echo "💡 To enable Unit test, define a 'test:unit' script in package.json, e.g.:"
-            echo '    "scripts": { "test:unit": "vitest run" }'
+            echo "⚠️ No 'test:unit' script found in package.json, skipping test..."
+            echo "💡 To enable unit tests, define a 'test:unit' script in package.json, e.g.:"
+            echo '    "test:unit": "vitest run"'
             exit 1
           fi
 
@@ -129,113 +115,42 @@ jobs: # Defines all the major automated tasks GitHub will run
       - name: Run E2E Tests
         run: |
           echo "🧩 Starting end-to-end (E2E) tests..."
-          mkdir -p .cache/test-results      # Ensure report directory exists
 
           if npm run | grep -q "test:e2e"; then
-            echo "🧩 Running project-defined e2e Test..."
+            npx playwright install --with-deps
 
-            if npm run test:e2e -- --reporter=html \
-                --output=.cache/test-results/playwright-report | tee .cache/test-results/e2e-console.log; then
-              echo "✅ E2E Test completed successfully."
+            if npm run test:e2e; then
+              echo "✅ E2E test completed successfully."
             else
-              echo "⚠️ E2E test script failed — check your test logs."
-            fi
-
-          elif npx playwright --version >/dev/null 2>&1; then
-            echo "⚙️ No test:e2e script found - running fallback E2E Test via Playwright..."
-
-            # Only install browsers if not already installed
-            if [ ! -d "node_modules/.playwright" ]; then
-              echo "📦 Installing Playwright browsers and dependencies..."
-              npx playwright install --with-deps
-              echo "✅ Playwright browsers and dependencies installed successfully."
-            else
-              echo "📦 Playwright browsers already installed — skipping installation."
-            fi
-
-            echo "⚙️ Running fallback E2E Test via Playwright..."
-            if npx playwright test --reporter=list,html \
-                --output=.cache/test-results/playwright-report | tee .cache/test-results/playwright-console.log; then
-              echo "✅ Playwright E2E Test completed successfully."
-            else
-              echo "⚠️ Playwright fallback E2E test failed — check configuration"
-            fi
-
-          elif npx cypress --version >/dev/null 2>&1; then
-            echo "⚙️ Running fallback E2E test via Cypress..."
-
-            if [ ! -d "node_modules/.cypress" ]; then
-              echo "📦 Installing Cypress dependencies..."
-              npx cypress install
-              echo "✅ Cypress installed successfully."
-            else
-              echo "📦 Cypress already installed — skipping installation."
-            fi
-
-            if npx cypress run --reporter junit --reporter-options \
-                "mochaFile=.cache/test-results/cypress-results.xml,toConsole=true" \
-                | tee .cache/test-results/cypress-console.log; then
-              echo "✅ Cypress E2E Test completed successfully."
-            else
-              echo "⚠️ Cypress fallback E2E test failed — check your configuration."
-            fi
-
-          elif npx wdio --version >/dev/null 2>&1; then
-            echo "⚙️ Running fallback E2E test via WebdriverIO..."
-
-            if [ ! -d "node_modules/.wdio" ]; then
-              echo "📦 Installing WebdriverIO dependencies..."
-              npx wdio install
-              echo "✅ WebdriverIO dependencies installed successfully."
-            else
-              echo "📦 WebdriverIO already installed — skipping installation."
-            fi
-
-            if npx wdio run wdio.conf.js | tee .cache/test-results/wdio-console.log; then
-              echo "✅ WebdriverIO E2E Test completed successfully."
-            else
-              echo "⚠️ WebdriverIO fallback E2E test failed — check your configuration."
+              echo "⚠️ 'test:e2e' script failed — check your test logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No E2E Test configuration, script or supported framework found, skipping test..."
-            echo "💡 To enable E2E tests, define a 'test:e2e' script in package.json or install one of these \
-                frameworks:"
-            echo "    Playwright:  npm install --save-dev @playwright/test"
-            echo "    Cypress:     npm install --save-dev cypress"
-            echo "    WebdriverIO: npm install --save-dev @wdio/cli"
+            echo "⚠️ No 'test:e2e' script found in package.json, skipping test..."
+            echo "💡 To enable e2e tests, define a 'test:e2e' script in package.json, e.g.:"
+            echo '    "test:e2e": "playwright test"'
             exit 1
           fi
 
       # 🛡️ Step 8: Security audit for vulnerabilities
-      - name: Dependencies audit
+      - name: Security audit
         run: |
           echo "🧩 Starting dependency security audit..."
-          mkdir -p .cache/test-results      # Ensure report directory exists
 
-          if npm run | grep -q "audit:deps"; then
-            echo "🧩 Running project-defined dependency security audit..."
+          if npm run | grep -q "audit"; then
 
-            if npm run audit:deps | tee .cache/test-results/audit-console.log; then
-              echo "✅ Dependency security audit completed successfully."
+            if npm run audit; then
+              echo "✅ Security audit completed successfully."
             else
-              echo "⚠️ Dependency security audit script failed — check your audit logs."
-            fi
-
-          elif npx audit-ci --version >/dev/null 2>&1; then
-            echo "⚙️ No build script found - running fallback dependency security audit via audit-ci..."
-
-            if npx audit-ci --moderate | tee .cache/test-results/audit-console.log; then
-              echo "✅ Dependency security audit completed successfully."
-            else
-              echo "⚠️ Fallback dependency security audit failed — check your configuration, e.g.:"
-              echo '    "scripts": { "audit:deps": "npm audit --audit-level=moderate" }'
+              echo "⚠️ 'audit' script failed — check your test logs."
+              exit 1
             fi
 
           else
-            echo "⚠️ No dependencies audit configuration or script found, skipping audit..."
-            echo "💡 To enable audit, define a 'audit:deps' script in package.json, e.g.:"
-            echo '    "scripts": { "audit:deps": "npm audit --audit-level=moderate" }'
+            echo "⚠️ No 'audit' script found in package.json, skipping audit..."
+            echo "💡 To enable security audits, define an 'audit' script in package.json, e.g.:"
+            echo '    "audit": "audit-ci --moderate --production"'
             exit 1
           fi
 

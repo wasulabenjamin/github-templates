@@ -28,8 +28,10 @@ env:
 jobs: # Defines all the major automated tasks GitHub will run
   merge-main-into-develop: # Defines a Main to Develop synchronization job
     if: >
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || (github.event_name
-      == 'push') || (github.event_name == 'workflow_dispatch')
+      ${{
+        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+        (github.event_name == 'push') || (github.event_name == 'workflow_dispatch')
+      }}
     name: Sync main to develop # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
     runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
     timeout-minutes: 2 # Automatically cancel an entire job if it runs longer than set minutes.
@@ -111,9 +113,11 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 🛑 Step 4: Skip workflow if develop branch doesn't exist
       - name: Check if develop branch exists
         id: check-develop
-        if: |
-          (github.event_name == 'push' && steps.detect.outputs.is_doc_only == 'true') || 
-          (github.event_name == 'workflow_run') || (github.event_name == 'workflow_dispatch')
+        if: >
+          ${{
+            (github.event_name == 'push' && steps.detect.outputs.is_doc_only == 'true') ||
+            (github.event_name == 'workflow_run') || (github.event_name == 'workflow_dispatch')
+          }}
         run: |
           if git ls-remote --heads origin develop | grep -q "refs/heads/develop"; then
             echo "✅ develop branch exists, continuing..."
@@ -125,7 +129,7 @@ jobs: # Defines all the major automated tasks GitHub will run
 
       # 🏷️ Step 5: Synchronize updated main branch to develop
       - name: Merge main into develop
-        if: steps.check-develop.outputs.exists == 'true'
+        if: ${{ steps.check-develop.outputs.exists == 'true' }}
         run: |
           echo "🔄 Starting main → develop sync..."
 

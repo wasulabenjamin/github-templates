@@ -122,7 +122,7 @@ jobs: # Defines all the major automated tasks GitHub will run
           fi
 
   stale: # Defines a Stale job — Auto Closes Stale Issues and PRs
-    if: ${{ (github.event_name == 'schedule') || (github.event_name == 'workflow_dispatch') }}
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
     name: Sweep Issues and PRs # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
     runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
     timeout-minutes: 3 # Automatically cancel an entire job if it runs longer than set minutes.

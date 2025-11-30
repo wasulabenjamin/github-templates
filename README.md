@@ -193,12 +193,14 @@ github-templates/
 ├── .editorconfig
 ├── .gitignore
 ├── .htmlhintrc
+├── .prettierignore
 ├── .prettierrc
 ├── CHANGELOG.md
 ├── cliff.toml
 ├── eslint.config.js
 ├── index.html
 ├── LICENSE
+├── package-lock.json
 ├── package.json
 ├── README.md
 ├── stylelint.config.js

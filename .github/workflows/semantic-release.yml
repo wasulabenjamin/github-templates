@@ -21,7 +21,7 @@ env:
 
 jobs: # Defines all the major automated tasks GitHub will run
   release: # Defines a release job
-    if: github.event.workflow_run.conclusion == 'success' # Only proceed if CI was successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only proceed if CI was successful
     name: GitHub Release # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
     runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
     timeout-minutes: 5 # Automatically cancel an entire job if it runs longer than set minutes.

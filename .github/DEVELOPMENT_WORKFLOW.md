@@ -96,6 +96,9 @@ git switch -c release/*; git push -u origin HEAD
 git checkout main; git fetch origin --prune; git reset --hard origin/main; git clean -fd; git log --oneline --graph --decorate -10; git checkout develop; git fetch origin --prune; git reset --hard origin/develop; git clean -fd; git log --oneline --graph --decorate -10
 
 # Step 15: Back to Step 3
+
+# Updated .gitignore? unstage everything first, then stage again.
+#   git reset; git rm -r --cached .; git add --all;
 ```
 
 ## 🧱 Commit Strategy
