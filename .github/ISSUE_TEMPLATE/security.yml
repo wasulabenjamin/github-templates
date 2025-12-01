@@ -1,11 +1,10 @@
 name: 🛡️ Security Vulnerability
 description: Responsibly report security vulnerabilities
-title: "security: <brief-summary>"
-labels: ["security", "needs triage"]
-assignees: ["wasulabenjamin"]
+title: 'security: <brief-summary>'
+labels: ['security', 'needs triage']
+assignees: ['wasulabenjamin']
 
 body:
-
   - type: markdown
     attributes:
       value: |
@@ -30,12 +29,12 @@ body:
     attributes:
       label: Vulnerability Category
       options:
-        - "Authentication/Authorization"
-        - "Data Exposure"
-        - "Code Injection"
-        - "Dependency Vulnerability"
-        - "Configuration Issue"
-        - "Other"
+        - 'Authentication/Authorization'
+        - 'Data Exposure'
+        - 'Code Injection'
+        - 'Dependency Vulnerability'
+        - 'Configuration Issue'
+        - 'Other'
     validations:
       required: true
 
@@ -44,10 +43,10 @@ body:
     attributes:
       label: Severity Assessment
       options:
-        - "🔴 Critical - Remote code execution, data breach"
-        - "🟡 High - Privilege escalation, data exposure"
-        - "🔵 Medium - Limited impact, requires specific conditions"
-        - "🟢 Low - Minimal impact, theoretical risk"
+        - '🔴 Critical - Remote code execution, data breach'
+        - '🟡 High - Privilege escalation, data exposure'
+        - '🔵 Medium - Limited impact, requires specific conditions'
+        - '🟢 Low - Minimal impact, theoretical risk'
     validations:
       required: true
 
@@ -56,7 +55,7 @@ body:
     attributes:
       label: Contact Information
       description: How can we reach you privately? (Email, GitHub username, etc.)
-      placeholder: "Provide secure contact method for follow-up"
+      placeholder: 'Provide secure contact method for follow-up'
     validations:
       required: true
 
@@ -91,7 +90,7 @@ body:
     attributes:
       label: Affected Components
       description: Which parts of the system might be involved?
-      placeholder: "e.g., API endpoints, authentication system, file uploads, etc."
+      placeholder: 'e.g., API endpoints, authentication system, file uploads, etc.'
     validations:
       required: true
 
@@ -100,8 +99,8 @@ body:
     attributes:
       label: Disclosure Coordination
       options:
-        - label: "I agree to coordinate disclosure timing with maintainers"
-        - label: "I have not disclosed this vulnerability elsewhere"
+        - label: 'I agree to coordinate disclosure timing with maintainers'
+        - label: 'I have not disclosed this vulnerability elsewhere'
     validations:
       required: true
 

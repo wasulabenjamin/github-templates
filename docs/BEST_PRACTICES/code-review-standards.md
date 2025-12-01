@@ -1,7 +1,7 @@
 # Code Review Standards
 
-This document establishes code review standards for repositories that adopt templates from `github-templates`.
-It is intended to help teams define consistent expectations for quality, security, and maintainability.
+This document establishes code review standards for repositories that adopt templates from `github-templates`. It is
+intended to help teams define consistent expectations for quality, security, and maintainability.
 
 ## Review responsibilities and roles
 
@@ -37,6 +37,7 @@ During code review, verify that commit messages:
   - Add migration notes for breaking changes
 
 This structure ensures:
+
 - **Discoverability**: Clear location in USAGE_GUIDES
 - **Integration**: Connected to existing workflows and documentation
 - **Automation**: Supports your existing git-cliff configuration
@@ -46,6 +47,7 @@ This structure ensures:
 Example short review comment:
 
 > Tests look good. Suggest renaming `doStuff()` to `processRequest()` for clarity.
+
 > Also add a short note in `CHANGELOG.md` describing the new optional parameter.
 
 ## Guidelines for automated checks
@@ -55,6 +57,7 @@ Example short review comment:
 - Annotate PRs with findings from static analysis for reviewers to consider.
 
 Example branch protection rules:
+
 - Require status checks: `ci`, `lint`
 - Require pull request reviews before merge
 - Require signed commits (optional)
@@ -77,25 +80,26 @@ Example branch protection rules:
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ../USAGE_GUIDES/getting-started.md
 [customizing-templates]: ../USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ../USAGE_GUIDES/workflow-explanations.md

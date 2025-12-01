@@ -13,7 +13,7 @@ management, and environment protections.
 ### Basic Permission Requirements
 
 | Workflow                   | Minimum Permission | Why Required                              |
-|----------------------------|--------------------|-------------------------------------------|
+| -------------------------- | ------------------ | ----------------------------------------- |
 | `sync-labels.yml`          | Write              | Overwrites default labels with custom     |
 | `lint-checks.yml`          | Read (or higher)   | Access source files for linting           |
 | `run-tests.yml`            | Read (or higher)   | Run tests, access test files              |
@@ -25,7 +25,7 @@ management, and environment protections.
 | `semantic-release.yml`     | Write              | Create tags, generate releases            |
 | `deploy-netlify.yml`       | Write              | Deployment operations, environment access |
 
-### Recommended Permission Model   
+### Recommended Permission Model
 
 ```yaml
 # Example: Minimal permissions for CI workflow
@@ -42,7 +42,7 @@ permissions:
 GitHub provides a default `GITHUB_TOKEN` with these base permissions:
 
 | Scope                 | Default    | Description                  |
-|-----------------------|------------|------------------------------|
+| --------------------- | ---------- | ---------------------------- |
 | `actions`             | read/write | Workflow and artifact access |
 | `checks`              | read/write | Status checks                |
 | `contents`            | read/write | Repository contents          |
@@ -60,78 +60,78 @@ GitHub provides a default `GITHUB_TOKEN` with these base permissions:
 
 ```yaml
 permissions:
-  issues: write                        # GitHub treats label management under the issues scope.
+  issues: write # GitHub treats label management under the issues scope.
 ```
 
 #### `lint-checks.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: read                       # Needed to read repository files.
-  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
+  contents: read # Needed to read repository files.
+  checks: write # Allows the workflow to report results directly to the GitHub Checks API.
 ```
 
 #### `run-tests.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: read                       # Needed to read repository files.
-  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
+  contents: read # Needed to read repository files.
+  checks: write # Allows the workflow to report results directly to the GitHub Checks API.
 ```
 
 #### `validate-branches.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  pull-requests: read                  # Needed to read detailed PR metadata (branch names, repos, refs)
-  contents: read                       # Needed to read repository files.
+  pull-requests: read # Needed to read detailed PR metadata (branch names, repos, refs)
+  contents: read # Needed to read repository files.
 ```
 
 #### `pr-issue-handler.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  pull-requests: write                 # Needed to comment, label, and close PRs
-  issues: write                        # Needed to comment, label, and close issues
-  contents: read                       # Needed to read repo files (optional)
+  pull-requests: write # Needed to comment, label, and close PRs
+  issues: write # Needed to comment, label, and close issues
+  contents: read # Needed to read repo files (optional)
 ```
 
 #### `update-changelog.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: write                      # Required for tagging and writing CHANGELOG.md
+  contents: write # Required for tagging and writing CHANGELOG.md
 ```
 
 #### `sync-main-to-develop.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: write                      # Required for pushing to `develop` changes from `main`
+  contents: write # Required for pushing to `develop` changes from `main`
 ```
 
 #### `ci.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: read                       # Needed to read repository files.
-  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
-  actions: write                       # Upload artifacts to Actions storage.
+  contents: read # Needed to read repository files.
+  checks: write # Allows the workflow to report results directly to the GitHub Checks API.
+  actions: write # Upload artifacts to Actions storage.
 ```
 
 #### `semantic-release.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: write                      # Create releases and attach assets.
-  packages: write                      # Publish to GitHub Packages (if used).
+  contents: write # Create releases and attach assets.
+  packages: write # Publish to GitHub Packages (if used).
 ```
 
 #### `deploy-netlify.yml` Workflow Permissions
 
 ```yaml
 permissions:
-  contents: read                       # Needed to read repository files.
+  contents: read # Needed to read repository files.
 ```
 
 ## Repository Settings Requirements
@@ -139,6 +139,7 @@ permissions:
 ### Actions Settings
 
 **Required Settings**:
+
 - ✅ Actions permissions: "Allow all actions"
 - ✅ Fork pull request workflows: "Require approval"
 - ✅ Workflow permissions: "Read and write permissions"
@@ -154,6 +155,7 @@ Settings → Rules → Rulesets → New Ruleset → Import [ruleset](../../.gith
 ### Environment Protections
 
 **Production Environment**:
+
 ```yaml
 # Settings → Environments → Production
 - Required reviewers: [team-leads]
@@ -166,7 +168,7 @@ Settings → Rules → Rulesets → New Ruleset → Import [ruleset](../../.gith
 ### Deployment Secrets
 
 | Secret                  | Workflow     | Purpose            | Example     |
-|-------------------------|--------------|--------------------|-------------|
+| ----------------------- | ------------ | ------------------ | ----------- |
 | `NETLIFY_TOKEN`         | `deploy.yml` | Netlify deployment | `def456...` |
 | `VERCEL_TOKEN`          | `deploy.yml` | Vercel deployment  | `abc123...` |
 | `SUPABASE_ACCESS_TOKEN` | `deploy.yml` | Supabase functions | `ghi789...` |
@@ -176,14 +178,14 @@ Settings → Rules → Rulesets → New Ruleset → Import [ruleset](../../.gith
 ### Package Publishing Secrets
 
 | Secret         | Workflow      | Purpose                  | Example     |
-|----------------|---------------|--------------------------|-------------|
+| -------------- | ------------- | ------------------------ | ----------- |
 | `NPM_TOKEN`    | `release.yml` | npm publishing           | `npm_...`   |
 | `GITHUB_TOKEN` | All           | Built-in, auto-generated | (automatic) |
 
 ### External Service Secrets
 
 | Secret              | Workflow | Purpose       | Example                       |
-|---------------------|----------|---------------|-------------------------------|
+| ------------------- | -------- | ------------- | ----------------------------- |
 | `SLACK_WEBHOOK_URL` | Various  | Notifications | `https://hooks.slack.com/...` |
 | `DISCORD_WEBHOOK`   | Various  | Notifications | `https://discord.com/api/...` |
 
@@ -194,7 +196,7 @@ Settings → Rules → Rulesets → New Ruleset → Import [ruleset](../../.gith
 **Settings → Secrets and variables → Actions → Variables**
 
 | Variable         | Purpose         | Example                   |
-|------------------|-----------------|---------------------------|
+| ---------------- | --------------- | ------------------------- |
 | `NODE_VERSION`   | Node.js version | `18`                      |
 | `PYTHON_VERSION` | Python version  | `3.11`                    |
 | `API_BASE_URL`   | API endpoint    | `https://api.example.com` |
@@ -202,12 +204,14 @@ Settings → Rules → Rulesets → New Ruleset → Import [ruleset](../../.gith
 ### Environment-Specific Variables
 
 **Production Environment**:
+
 ```yaml
 DEPLOY_URL: https://yourapp.com
 LOG_LEVEL: warn
 ```
 
 **Staging Environment**:
+
 ```yaml
 DEPLOY_URL: https://staging.yourapp.com
 LOG_LEVEL: debug
@@ -218,7 +222,7 @@ LOG_LEVEL: debug
 ### Team Access Requirements
 
 | Team            | Permission Level | Purpose                               |
-|-----------------|------------------|---------------------------------------|
+| --------------- | ---------------- | ------------------------------------- |
 | `developers`    | Write            | Push to branches, create PRs          |
 | `maintainers`   | Admin            | Manage settings, deploy to production |
 | `devops`        | Admin            | Workflow management, secrets          |
@@ -227,6 +231,7 @@ LOG_LEVEL: debug
 ### Repository Creation Permissions
 
 **Template Usage**:
+
 - Users need "Write" access to create repositories from templates
 - Organization owners can restrict template usage
 
@@ -235,6 +240,7 @@ LOG_LEVEL: debug
 ### Runner Specifications
 
 **Minimum Requirements**:
+
 - 2 vCPU cores
 - 4 GB RAM
 - 10 GB storage
@@ -243,12 +249,14 @@ LOG_LEVEL: debug
 ### Runner Permissions
 
 Runner registration token requires:
+
 - Repository: read/write for a single repo
 - Organization: read/write for all repos.
 
 ### Security Considerations
 
 **Self-hosted runners should**:
+
 - Use ephemeral runners when possible
 - Isolate production runners
 - Implement network restrictions
@@ -259,7 +267,7 @@ Runner registration token requires:
 ### GitHub API Limits
 
 | Token Type            | Rate Limit          | Purpose             |
-|-----------------------|---------------------|---------------------|
+| --------------------- | ------------------- | ------------------- |
 | `GITHUB_TOKEN`        | 1,000 requests/hour | Workflow operations |
 | Personal Access Token | 5,000 requests/hour | Higher limit needs  |
 | GitHub App            | 5,000 requests/hour | Integration needs   |
@@ -282,8 +290,8 @@ Runner registration token requires:
 ```yaml
 # Grant minimal necessary permissions
 permissions:
-  contents: read    # Instead, of write
-  issues: read      # Instead, of write
+  contents: read # Instead, of write
+  issues: read # Instead, of write
 ```
 
 ### Secret Management
@@ -313,12 +321,15 @@ deploy-production:
 ### Common Error Messages
 
 **"Resource not accessible by integration"**
+
 - Solution: Increase token permissions or use personal access token
 
 **"Permission denied"**
+
 - Solution: Check repository settings and branch protections
 
 **"Secrets not found"**
+
 - Solution: Verify secret names and repository access
 
 ### Debugging Steps
@@ -348,7 +359,7 @@ jobs:
 If using GitHub Apps for enhanced permissions:
 
 | App          | Permissions Needed | Purpose           |
-|--------------|--------------------|-------------------|
+| ------------ | ------------------ | ----------------- |
 | Dependabot   | Read & write       | Security updates  |
 | CodeQL       | Read & write       | Security scanning |
 | GitHub Pages | Read & write       | Site deployment   |
@@ -379,6 +390,7 @@ For organization-level workflows, additional permissions may be needed:
 ### Permission Auditing
 
 **Regular audits should check**:
+
 - Unused secrets and variables
 - Overly permissive tokens
 - Unnecessary environment access
@@ -387,6 +399,7 @@ For organization-level workflows, additional permissions may be needed:
 ### Access Logs
 
 **Monitor via Organization Audit Log**:
+
 - Workflow runs and failures
 - Secret access patterns
 - Permission changes
@@ -394,25 +407,26 @@ For organization-level workflows, additional permissions may be needed:
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ../USAGE_GUIDES/getting-started.md
 [customizing-templates]: ../USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ../USAGE_GUIDES/workflow-explanations.md

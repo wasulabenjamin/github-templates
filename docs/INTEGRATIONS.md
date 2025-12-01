@@ -16,15 +16,17 @@ templates.
 #### Official GitHub Actions
 
 **Core Actions Used**:
+
 ```yaml
-- uses: actions/checkout@v4            # Repository checkout
-- uses: actions/setup-node@v4          # Node.js environment
-- uses: actions/cache@v3               # Dependency caching
-- uses: actions/upload-artifact@v3     # Build artifacts
+- uses: actions/checkout@v4 # Repository checkout
+- uses: actions/setup-node@v4 # Node.js environment
+- uses: actions/cache@v3 # Dependency caching
+- uses: actions/upload-artifact@v3 # Build artifacts
 - uses: actions/download-artifact@v3
 ```
 
 **Authentication Actions**:
+
 ```yaml
 - uses: aws-actions/configure-aws-credentials@v1
 - uses: google-github-actions/auth@v1
@@ -34,6 +36,7 @@ templates.
 #### Community Actions
 
 **Testing & Quality**:
+
 ```yaml
 - uses: reviewdog/action-eslint@v1
 - uses: peaceiris/actions-hugo@v2
@@ -41,6 +44,7 @@ templates.
 ```
 
 **Deployment**:
+
 ```yaml
 - uses: amondnet/vercel-action@v20
 - uses: netlify/actions/cli@master
@@ -52,11 +56,11 @@ templates.
 While optimized for GitHub Actions, the templates can work with:
 
 | Platform         | Compatibility | Setup Notes                        |
-|------------------|---------------|------------------------------------|
+| ---------------- | ------------- | ---------------------------------- |
 | **GitLab CI**    | ⚠️ Partial    | Convert YAML to GitLab syntax      |
 | **CircleCI**     | ⚠️ Partial    | Use orbs for similar functionality |
 | **Jenkins**      | ⚠️ Partial    | Jenkinsfile conversion needed      |
-| **Azure DevOps** | ✅ Good        | Similar YAML pipeline structure    |
+| **Azure DevOps** | ✅ Good       | Similar YAML pipeline structure    |
 
 ## Deployment Platforms
 
@@ -65,6 +69,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Netlify Integration
 
 **Configuration** (`netlify.toml`):
+
 ```toml
 [build]
   command = "npm run build"
@@ -80,6 +85,7 @@ While optimized for GitHub Actions, the templates can work with:
 ```
 
 **Workflow Setup**:
+
 ```yaml
 - name: Deploy to Netlify
   uses: netlify/actions/cli@master
@@ -91,6 +97,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Vercel Integration
 
 **Configuration** (`vercel.json`):
+
 ```json
 {
   "version": 2,
@@ -113,6 +120,7 @@ While optimized for GitHub Actions, the templates can work with:
 ```
 
 **Workflow Integration**:
+
 ```yaml
 - name: Deploy to Vercel
   uses: amondnet/vercel-action@v20
@@ -127,6 +135,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Supabase Edge Functions
 
 **Configuration**:
+
 ```yaml
 - name: Deploy to Supabase
   run: |
@@ -139,6 +148,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### AWS Lambda
 
 **Serverless Framework**:
+
 ```yaml
 - name: Deploy to AWS Lambda
   run: |
@@ -153,6 +163,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Docker Hub
 
 **Container Publishing**:
+
 ```yaml
 - name: Build and push Docker image
   uses: docker/build-push-action@v4
@@ -166,6 +177,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Kubernetes
 
 **Helm Deployment**:
+
 ```yaml
 - name: Deploy to Kubernetes
   run: |
@@ -181,6 +193,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Sentry Integration
 
 **Error Tracking**:
+
 ```yaml
 - name: Create Sentry release
   uses: getsentry/action-release@v1
@@ -194,6 +207,7 @@ While optimized for GitHub Actions, the templates can work with:
 ```
 
 **Workflow Integration**:
+
 ```yaml
 - name: Upload source maps
   run: |
@@ -204,14 +218,15 @@ While optimized for GitHub Actions, the templates can work with:
 #### Datadog Integration
 
 **Metrics and Logs**:
+
 ```yaml
 - name: Send deployment event
   uses: DataDog/deployment-tracker-action@v1
   with:
     api-key: ${{ secrets.DATADOG_API_KEY }}
-    application: "my-app"
+    application: 'my-app'
     version: ${{ github.sha }}
-    environment: "production"
+    environment: 'production'
 ```
 
 ### Performance Monitoring
@@ -219,6 +234,7 @@ While optimized for GitHub Actions, the templates can work with:
 #### Lighthouse CI
 
 **Performance Testing**:
+
 ```yaml
 - name: Run Lighthouse CI
   run: |
@@ -229,6 +245,7 @@ While optimized for GitHub Actions, the templates can work with:
 ```
 
 **Configuration** (`.lighthouserc.js`):
+
 ```javascript
 module.exports = {
   ci: {
@@ -238,8 +255,8 @@ module.exports = {
     },
     assert: {
       assertions: {
-        'categories:performance': ['warn', {minScore: 0.8}],
-        'categories:accessibility': ['error', {minScore: 0.9}],
+        'categories:performance': ['warn', { minScore: 0.8 }],
+        'categories:accessibility': ['error', { minScore: 0.9 }],
       },
     },
     upload: {
@@ -256,6 +273,7 @@ module.exports = {
 #### Playwright Integration
 
 **E2E Testing**:
+
 ```yaml
 - name: Install Playwright
   run: npx playwright install
@@ -265,6 +283,7 @@ module.exports = {
 ```
 
 **Configuration** (`playwright.config.js`):
+
 ```javascript
 module.exports = {
   use: {
@@ -282,6 +301,7 @@ module.exports = {
 #### Cypress Integration
 
 **Alternative E2E Testing**:
+
 ```yaml
 - name: Run Cypress tests
   uses: cypress-io/github-action@v5
@@ -295,6 +315,7 @@ module.exports = {
 #### Postman/Newman
 
 **API Test Automation**:
+
 ```yaml
 - name: Run API tests
   run: |
@@ -310,6 +331,7 @@ module.exports = {
 #### Snyk Integration
 
 **Vulnerability Scanning**:
+
 ```yaml
 - name: Run Snyk security scan
   uses: snyk/actions/node@v2
@@ -322,6 +344,7 @@ module.exports = {
 #### GitHub CodeQL
 
 **Static Analysis**:
+
 ```yaml
 - name: Initialize CodeQL
   uses: github/codeql-action/init@v2
@@ -337,6 +360,7 @@ module.exports = {
 #### GitGuardian
 
 **Secret Detection**:
+
 ```yaml
 - name: GitGuardian scan
   uses: GitGuardian/gg-shield-action@master
@@ -351,6 +375,7 @@ module.exports = {
 #### Slack Integration
 
 **Deployment Notifications**:
+
 ```yaml
 - name: Notify Slack
   uses: 8398a7/action-slack@v3
@@ -361,6 +386,7 @@ module.exports = {
 ```
 
 **Custom Messages**:
+
 ```yaml
 - name: Custom Slack message
   uses: slackapi/slack-github-action@v1.23.0
@@ -374,13 +400,14 @@ module.exports = {
 #### Discord Integration
 
 **Community Notifications**:
+
 ```yaml
 - name: Discord notification
   uses: sarisia/actions-status-discord@v1
   with:
     webhook: ${{ secrets.DISCORD_WEBHOOK }}
     status: ${{ job.status }}
-    title: "Deployment Status"
+    title: 'Deployment Status'
 ```
 
 ### Status Pages
@@ -388,6 +415,7 @@ module.exports = {
 #### GitHub Pages
 
 **Documentation Hosting**:
+
 ```yaml
 - name: Deploy to GitHub Pages
   uses: peaceiris/actions-gh-pages@v3
@@ -403,6 +431,7 @@ module.exports = {
 #### Prisma Integration
 
 **Database Schema Management**:
+
 ```yaml
 - name: Run database migrations
   run: |
@@ -414,6 +443,7 @@ module.exports = {
 #### Liquibase/Flyway
 
 **Alternative Migrations**:
+
 ```yaml
 - name: Database migrations
   run: |
@@ -427,6 +457,7 @@ module.exports = {
 #### Automated Backups
 
 **Pre-deployment Backup**:
+
 ```yaml
 - name: Backup database
   run: |
@@ -443,6 +474,7 @@ module.exports = {
 #### Strapi Integration
 
 **Content Deployment**:
+
 ```yaml
 - name: Deploy Strapi
   run: |
@@ -453,6 +485,7 @@ module.exports = {
 #### Contentful
 
 **Content Sync**:
+
 ```yaml
 - name: Sync Contentful
   run: |
@@ -468,6 +501,7 @@ module.exports = {
 #### VS Code
 
 **Settings Configuration** (`.vscode/settings.json`):
+
 ```json
 {
   "eslint.workingDirectories": ["."],
@@ -481,6 +515,7 @@ module.exports = {
 #### JetBrains IDEs
 
 **Configuration Files**:
+
 - `.idea/codeStyles/` - Code style settings
 - `.idea/inspectionProfiles/` - Inspection profiles
 
@@ -489,6 +524,7 @@ module.exports = {
 #### npm Registry
 
 **Package Publishing**:
+
 ```yaml
 - name: Publish to npm
   run: |
@@ -500,6 +536,7 @@ module.exports = {
 #### GitHub Packages
 
 **Registry Publishing**:
+
 ```yaml
 - name: Publish to GitHub Packages
   run: |
@@ -515,6 +552,7 @@ module.exports = {
 #### Google Analytics
 
 **Tracking Deployment**:
+
 ```yaml
 - name: Update analytics configuration
   run: |
@@ -525,6 +563,7 @@ module.exports = {
 #### Plausible Analytics
 
 **Alternative Analytics**:
+
 ```yaml
 - name: Configure Plausible
   run: |
@@ -536,6 +575,7 @@ module.exports = {
 ### Stripe Integration
 
 **Payment Processing**:
+
 ```yaml
 - name: Run Stripe tests
   env:
@@ -549,6 +589,7 @@ module.exports = {
 ### Webhook Triggers
 
 **Generic Webhook Support**:
+
 ```yaml
 - name: Trigger external webhook
   run: |
@@ -561,6 +602,7 @@ module.exports = {
 ### Custom API Integrations
 
 **REST API Calls**:
+
 ```yaml
 - name: Update external service
   run: |
@@ -576,6 +618,7 @@ module.exports = {
 ### Testing Integrations
 
 **Mock Services for Testing**:
+
 ```yaml
 - name: Test with mocked services
   run: |
@@ -589,6 +632,7 @@ module.exports = {
 ### Integration Health Checks
 
 **Post-deployment Verification**:
+
 ```yaml
 - name: Verify integrations
   run: |
@@ -600,6 +644,7 @@ module.exports = {
 ### Environment-specific Configs
 
 **Multi-environment Setup**:
+
 ```yaml
 - name: Deploy with environment config
   run: |
@@ -610,6 +655,7 @@ module.exports = {
 ### Secret Management
 
 **External Secret Providers**:
+
 ```yaml
 - name: Fetch secrets from external provider
   run: |
@@ -621,25 +667,26 @@ module.exports = {
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ./USAGE_GUIDES/getting-started.md
 [customizing-templates]: ./USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ./USAGE_GUIDES/workflow-explanations.md

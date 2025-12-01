@@ -1,217 +1,55 @@
-# ==============================
-# UNIVERSAL GITIGNORE TEMPLATE
-# Language: Flutter, Java, JavaFX, Web, Supabase
-# Editors: IntelliJ IDEA, VS Code, Eclipse, NetBeans
-# OS: macOS, Windows
-# ==============================
-
-# ==============================
-# General Documentation
-# ==============================
 # Include your project-specific ignores in this file
-# Read about how to use .gitignore on: https://help.github.com/articles/ignoring-files
-# Useful templates: https://github.com/github/gitignore
+# Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+# Useful .gitignore templates: https://github.com/github/gitignore
 
-# ------------------------------
-# General
-# ------------------------------
-*.log
-*.tmp
-*.temp
-*.old
-*.swp
-*.swo
-*.pid
-*.out
-*.local
-*.zip
-*.rar
-*.7z
-*.tgz
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# ============================================================
+# PROJECT CACHES / TEMP FILES
+# ============================================================
 .cache/
+*.local
 coverage/
-logs
+test-results/
+playwright-report/
 
-# ------------------------------
-# Node.js
-# ------------------------------
-node_modules/
+# ============================================================
+# LOGS
+# ============================================================
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+# ============================================================
+# BUILD OUTPUT
+# ============================================================
+node_modules/
 dist/
-dist-ssr
+dist-ssr/
 
-# ------------------------------
-# Java / JavaFX
-# ------------------------------
-*.class
-*.jar
-*.war
-*.ear
-*.iml
-*.ipr
-*.iws
-hs_err_pid*
-replay_pid*
+# ============================================================
+# EDITORS & IDEs
+# ============================================================
 
-# JavaFX build tools
-fxbuild/
-fxcache/
-deploy/
-
-# ------------------------------
-# Maven / Gradle
-# ------------------------------
-target/
-.gradle/
-!gradle/wrapper/gradle-wrapper.jar
-!.mvn/wrapper/maven-wrapper.jar
-
-# ------------------------------
-# IDEs
-# ------------------------------
-
-## IntelliJ / Android Studio
-.idea/
-out/
-
-## VS Code
+# VS Code
 .vscode/*
+
+# Keep shared workspace config
 !.vscode/extensions.json
-.code-workspace
-.history/
 
-## Eclipse
-.classpath
-.project
-.settings/
-.apt_generated
-.factorypath
-.metadata/
-.springBeans
-.sts4-cache
-libs/
+# JetBrains / IntelliJ
+.idea/
 
-## NetBeans
-nbproject/private/
-nbbuild/
-nbdist/
-.nb-gradle/
-
-# ------------------------------
-# Flutter / Dart
-# ------------------------------
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-.pub/
-.pub-cache/
-build/
-.idea/          # IntelliJ shared with Flutter
-android/.gradle/
-android/app/key.properties
-ios/.symlinks/
-ios/Flutter/.last_build_id
-ios/Flutter/Flutter.framework
-ios/Flutter/Flutter.podspec
-ios/Pods/
-ios/Runner.xcworkspace/
-macos/Pods/
-macos/Flutter/ephemeral/
-windows/Flutter/ephemeral/
-linux/flutter/ephemeral/
-
-# ------------------------------
-# SupaBase
-# ------------------------------
-.supabase/
-.env
-.env.*
-*.env.local
-*.env.*.local
-
-# ------------------------------
-# Web Frontend
-# ------------------------------
-.sass-cache/
-.vite/
-.vitepress/dist/
-.eslintcache
-*.map
-
-# ------------------------------
-# Database Dumps / JSON
-# ------------------------------
-*.sqlite
-*.db
-
-# Only ignore database backups and dumps
-*.dump
-*.bak
-*.backup
-
-# Only ignore auto-generated JSON
-*.log.json
-*.temp.json
-coverage-report.json
-stats.json
-
-# BUT KEEP IMPORTANT JSON FILES
-!package.json
-!package-lock.json
-!*.config.json
-!tsconfig.json
-
-# Ignore database backups, not all SQL
-*.sql.bak
-dump*.sql
-
-# ------------------------------
-# UI/UX Assets
-# ------------------------------
-*.psd
-*.ai
-*.sketch
-*.fig
-*.xcf
-
-# ------------------------------
-# OS-Specific
-# ------------------------------
-
-## macOS
+# macOS Finder
 .DS_Store
-.apdisk
-.AppleDouble
-.AppleDB
-.AppleDesktop
-.LSOverride
-Network Trash Folder
-Temporary Items
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.Trashes
-.VolumeIcon.icns
-._*
 
-## Windows
-ehthumbs.db
-Desktop.ini
-Thumbs.db
-$RECYCLE.BIN/
-*.cab
-*.ini
-*.lnk
-*.msi
-*.msm
-*.msp
+# Windows / Microsoft project artifacts
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Swap files (Vim, VSCode, other editors)
+*.sw?

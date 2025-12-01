@@ -2,8 +2,8 @@
 
 ## 🎯 Overview
 
-This PR promotes the final, tested code from the `release/*` branch into `main` for production deployment.
-All included changes have already been reviewed, merged, and validated on `develop` previously.
+This PR promotes the final, tested code from the `release/*` branch into `main` for production deployment. All included
+changes have already been reviewed, merged, and validated on `develop` previously.
 
 ## 📄 Included Changes
 
@@ -14,7 +14,7 @@ For full details, refer to:
 
 ## 🚀 Release Actions (run automatically on merge)
 
-*Automated processes that will trigger on merge:*
+_Automated processes that will trigger on merge:_
 
 - CHANGELOG.md generation via git-cliff
 - Semantic versioning and tag creation

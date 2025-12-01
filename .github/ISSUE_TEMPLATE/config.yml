@@ -1,4 +1,4 @@
-blank_issues_enabled: false            # Prevent users from opening blank, unstructured issues
+blank_issues_enabled: false # Prevent users from opening blank, unstructured issues
 
 contact_links:
   - name: 🤔 Need Help or Community Support?

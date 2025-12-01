@@ -4,57 +4,57 @@
  *
  * Project Name  : github-templates
  * File Name     : style.css
- * Last Modified : 2025-11-25, 08:00pm
+ * Last Modified : 2025-12-01, 10:22am
  */
 
 /* Atlassian Design System Inspired Variables - Light Theme (Default) */
 
 :root {
   /* Colors - Light Theme */
-  --ds-background-brand: #0C66E4;
-  --ds-background-brand-bold: #05C;
-  --ds-background-selected: #E9F2FF;
-  --ds-background-selected-hovered: #CCE0FF;
-  --ds-background-neutral: #F7F8F9;
-  --ds-background-neutral-subtle: #FFF;
-  --ds-background-neutral-subtle-hovered: #F1F2F4;
-  --ds-background-neutral-sunken: #F7F8F9;
-  --ds-text: #172B4D;
-  --ds-text-subtle: #44546F;
-  --ds-text-brand: #0C66E4;
-  --ds-text-selected: #0C66E4;
-  --ds-text-danger: #C9372C;
-  --ds-border: #DCDFE4;
-  --ds-border-bold: #8993A4;
-  --ds-border-subtle: #F1F2F4;
-  --ds-border-focused: #0C66E4;
-  --ds-link: #0C66E4;
-  --ds-link-pressed: #05C;
-  --ds-surface: #FFF;
-  --ds-surface-raised: #FFF;
-  --ds-surface-sunken: #F7F8F9;
-  --ds-surface-hovered: #F1F2F4;
-  --ds-surface-pressed: #DCDFE4;
-  --ds-surface-overlay: #FFF;
+  --ds-background-brand: #0c66e4;
+  --ds-background-brand-bold: #05c;
+  --ds-background-selected: #e9f2ff;
+  --ds-background-selected-hovered: #cce0ff;
+  --ds-background-neutral: #f7f8f9;
+  --ds-background-neutral-subtle: #fff;
+  --ds-background-neutral-subtle-hovered: #f1f2f4;
+  --ds-background-neutral-sunken: #f7f8f9;
+  --ds-text: #172b4d;
+  --ds-text-subtle: #44546f;
+  --ds-text-brand: #0c66e4;
+  --ds-text-selected: #0c66e4;
+  --ds-text-danger: #c9372c;
+  --ds-border: #dcdfe4;
+  --ds-border-bold: #8993a4;
+  --ds-border-subtle: #f1f2f4;
+  --ds-border-focused: #0c66e4;
+  --ds-link: #0c66e4;
+  --ds-link-pressed: #05c;
+  --ds-surface: #fff;
+  --ds-surface-raised: #fff;
+  --ds-surface-sunken: #f7f8f9;
+  --ds-surface-hovered: #f1f2f4;
+  --ds-surface-pressed: #dcdfe4;
+  --ds-surface-overlay: #fff;
   --ds-shadow-card: 0 1px 1px rgb(9 30 66 / 25%), 0 0 1px rgb(9 30 66 / 31%);
   --ds-shadow-overlay: 0 8px 12px rgb(9 30 66 / 15%), 0 0 1px rgb(9 30 66 / 31%);
 
   /* Accent Colors */
-  --ds-accent-blue: #0C66E4;
-  --ds-accent-green: #22A06B;
-  --ds-accent-yellow: #CF9F02;
-  --ds-accent-red: #C9372C;
-  --ds-accent-purple: #8270DB;
-  --ds-accent-teal: #2898BD;
-  --ds-accent-orange: #E56910;
+  --ds-accent-blue: #0c66e4;
+  --ds-accent-green: #22a06b;
+  --ds-accent-yellow: #cf9f02;
+  --ds-accent-red: #c9372c;
+  --ds-accent-purple: #8270db;
+  --ds-accent-teal: #2898bd;
+  --ds-accent-orange: #e56910;
 
   /* Typography */
-  --ds-font-headline-large: 500 2rem/1.2 'Inter', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, sans-serif;
-  --ds-font-headline-medium: 500 1.25rem/1.2 'Inter', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, sans-serif;
-  --ds-font-headline-small: 600 1rem/1.2 'Inter', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, sans-serif;
-  --ds-font-body: 400 1rem/1.5 'Inter', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, sans-serif;
-  --ds-font-body-small: 400 0.875rem/1.5 'Inter', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, sans-serif;
-  --ds-font-code: 400 0.875rem/1.5 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  --ds-font-headline-large: 500 2rem/1.2 "Inter", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+  --ds-font-headline-medium: 500 1.25rem/1.2 "Inter", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+  --ds-font-headline-small: 600 1rem/1.2 "Inter", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+  --ds-font-body: 400 1rem/1.5 "Inter", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+  --ds-font-body-small: 400 0.875rem/1.5 "Inter", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+  --ds-font-code: 400 0.875rem/1.5 "Monaco", "Menlo", "Ubuntu Mono", monospace;
 
   /* Spacing */
   --ds-space-100: 0.25rem;
@@ -76,42 +76,42 @@
 /* Dark Theme Variables */
 .dark-theme {
   /* Colors - Dark Theme */
-  --ds-background-brand: #1D7AFC;
-  --ds-background-brand-bold: #0C66E4;
-  --ds-background-selected: #1C2B41;
-  --ds-background-selected-hovered: #1D3A5C;
-  --ds-background-neutral: #1D2125;
-  --ds-background-neutral-subtle: #22272B;
-  --ds-background-neutral-subtle-hovered: #282E33;
-  --ds-background-neutral-sunken: #161A1D;
-  --ds-text: #C7D1DB;
-  --ds-text-subtle: #9FADBC;
-  --ds-text-brand: #1D7AFC;
-  --ds-text-selected: #1D7AFC;
-  --ds-text-danger: #FD9891;
-  --ds-border: #A6C5E229;
-  --ds-border-bold: #9FADBC;
-  --ds-border-subtle: #BCD6F01A;
-  --ds-border-focused: #1D7AFC;
-  --ds-link: #1D7AFC;
-  --ds-link-pressed: #0C66E4;
-  --ds-surface: #22272B;
-  --ds-surface-raised: #282E33;
-  --ds-surface-sunken: #1D2125;
-  --ds-surface-hovered: #282E33;
-  --ds-surface-pressed: #38414A;
-  --ds-surface-overlay: #282E33;
+  --ds-background-brand: #1d7afc;
+  --ds-background-brand-bold: #0c66e4;
+  --ds-background-selected: #1c2b41;
+  --ds-background-selected-hovered: #1d3a5c;
+  --ds-background-neutral: #1d2125;
+  --ds-background-neutral-subtle: #22272b;
+  --ds-background-neutral-subtle-hovered: #282e33;
+  --ds-background-neutral-sunken: #161a1d;
+  --ds-text: #c7d1db;
+  --ds-text-subtle: #9fadbc;
+  --ds-text-brand: #1d7afc;
+  --ds-text-selected: #1d7afc;
+  --ds-text-danger: #fd9891;
+  --ds-border: #a6c5e229;
+  --ds-border-bold: #9fadbc;
+  --ds-border-subtle: #bcd6f01a;
+  --ds-border-focused: #1d7afc;
+  --ds-link: #1d7afc;
+  --ds-link-pressed: #0c66e4;
+  --ds-surface: #22272b;
+  --ds-surface-raised: #282e33;
+  --ds-surface-sunken: #1d2125;
+  --ds-surface-hovered: #282e33;
+  --ds-surface-pressed: #38414a;
+  --ds-surface-overlay: #282e33;
   --ds-shadow-card: 0 0 0 1px #000, 0 1px 1px rgb(0 0 0 / 25%);
   --ds-shadow-overlay: 0 4px 8px rgb(0 0 0 / 30%), 0 0 0 1px #000;
 
   /* Accent Colors - Dark */
-  --ds-accent-blue: #1D7AFC;
-  --ds-accent-green: #4BCE97;
-  --ds-accent-yellow: #E2B203;
-  --ds-accent-red: #F87168;
-  --ds-accent-purple: #9F8FEF;
-  --ds-accent-teal: #6CC3E0;
-  --ds-accent-orange: #FEA362;
+  --ds-accent-blue: #1d7afc;
+  --ds-accent-green: #4bce97;
+  --ds-accent-yellow: #e2b203;
+  --ds-accent-red: #f87168;
+  --ds-accent-purple: #9f8fef;
+  --ds-accent-teal: #6cc3e0;
+  --ds-accent-orange: #fea362;
 }
 
 /* Reset and Base Styles */
@@ -126,7 +126,9 @@ body {
   background: var(--ds-background-neutral-subtle);
   color: var(--ds-text);
   line-height: 1.5;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .app {
@@ -224,7 +226,7 @@ body {
 }
 
 .hero::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 30% 50%, rgb(255 255 255 / 10%) 0%, transparent 50%);
@@ -361,7 +363,7 @@ section {
 }
 
 .feature-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -410,7 +412,7 @@ section {
 }
 
 .workflow-card::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -420,11 +422,25 @@ section {
   border-radius: var(--ds-border-radius-100) 0 0 var(--ds-border-radius-100);
 }
 
-.workflow-card:nth-child(2)::before { background: var(--ds-accent-blue); }
-.workflow-card:nth-child(3)::before { background: var(--ds-accent-purple); }
-.workflow-card:nth-child(4)::before { background: var(--ds-accent-yellow); }
-.workflow-card:nth-child(5)::before { background: var(--ds-accent-orange); }
-.workflow-card:nth-child(6)::before { background: var(--ds-accent-teal); }
+.workflow-card:nth-child(2)::before {
+  background: var(--ds-accent-blue);
+}
+
+.workflow-card:nth-child(3)::before {
+  background: var(--ds-accent-purple);
+}
+
+.workflow-card:nth-child(4)::before {
+  background: var(--ds-accent-yellow);
+}
+
+.workflow-card:nth-child(5)::before {
+  background: var(--ds-accent-orange);
+}
+
+.workflow-card:nth-child(6)::before {
+  background: var(--ds-accent-teal);
+}
 
 .workflow-card:hover {
   border-color: var(--ds-border-focused);
@@ -505,7 +521,7 @@ section {
 }
 
 .cta::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 70% 30%, rgb(255 255 255 / 10%) 0%, transparent 50%);

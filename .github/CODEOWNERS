@@ -63,7 +63,9 @@ src/                                   @wasulabenjamin
 # 🧾 Root-Level Files
 # ──────────────────────────────────────────────────────────────
 .codacy.yml                            @wasulabenjamin
+.editorconfig                          @wasulabenjamin
 .gitignore                             @wasulabenjamin
+.htmlhintrc                            @wasulabenjamin
 .prettierrc                            @wasulabenjamin
 CHANGELOG.md                           @wasulabenjamin
 cliff.toml                             @wasulabenjamin

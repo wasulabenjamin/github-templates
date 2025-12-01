@@ -1,47 +1,47 @@
-name: 📦 Continuous Integration        # Workflow name that appears in GitHub Actions UI
+name: 📦 Continuous Integration # Workflow name that appears in GitHub Actions UI
 
-concurrency:                           # Prevents multiple runs of the same workflow
-  group: ${{ github.workflow }}-${{ github.ref }}     # Defines the grouping key
+concurrency: # Prevents multiple runs of the same workflow
+  group: ${{ github.workflow }}-${{ github.ref }} # Defines the grouping key
   # If a new run starts for this same concurrency group, automatically cancel any currently running one.
-  cancel-in-progress: true             # Safety & efficiency flag set to true.
+  cancel-in-progress: true # Safety & efficiency flag set to true.
 
-on:                                    # Defines the triggers that cause this workflow to run.
-  pull_request:                        # Runs when someone opens or updates a pull request targeting these branches.
-    branches: [main, develop]          # Remove the 'develop' branch reference if it doesn't exist
-  push:                                # Runs when code is pushed or merged from PR directly to these branches.
-    branches: [develop]                # Remove the 'develop' branch reference if it doesn't exist
-  workflow_run:                        # Trigger when the changelog workflow completes
-    workflows: ["📄 Auto Update Changelog"]
-    branches: [main]                   # Only run when changelog completed on the main branch
+on: # Defines the triggers that cause this workflow to run.
+  pull_request: # Runs when someone opens or updates a pull request targeting these branches.
+    branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
+  push: # Runs when code is pushed or merged from PR directly to these branches.
+    branches: [develop] # Remove the 'develop' branch reference if it doesn't exist
+  workflow_run: # Trigger when the changelog workflow completes
+    workflows: ['📄 Auto Update Changelog']
+    branches: [main] # Only run when changelog completed on the main branch
     types: [completed]
 
 permissions:
-  contents: read                       # Needed to read repository files.
-  checks: write                        # Allows the workflow to report results directly to the GitHub Checks API.
-  actions: write                       # Upload artifacts to Actions storage.
+  contents: read # Needed to read repository files.
+  checks: write # Allows the workflow to report results directly to the GitHub Checks API.
+  actions: write # Upload artifacts to Actions storage.
 
 env:
-  NODE_ENV: production                 # Keeps all downstream workflows (release and deploy) consistent when downloading artifacts.
+  NODE_ENV: production # Keeps all downstream workflows (release and deploy) consistent when downloading artifacts.
 
-jobs:                                  # Defines all the major automated tasks GitHub will run
-
-  build:                               # Defines a build job, compiles the project or prepares production-ready output.
+jobs: # Defines all the major automated tasks GitHub will run
+  build: # Defines a build job, compiles the project or prepares production-ready output.
     if: >
-      (github.event_name != 'workflow_run') || 
-      (!contains(github.event.head_commit.message, '[skip ci]')) || 
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
-    name: Build Project                # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
-    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
-    timeout-minutes: 10                # Automatically cancel an entire job if it runs longer than set minutes.
+      ${{
+        (github.event_name != 'workflow_run') ||
+        (!contains(github.event.head_commit.message, '[skip ci]')) ||
+        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      }}
+    name: Build Project # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 10 # Automatically cancel an entire job if it runs longer than set minutes.
 
     # ⚙️ Strategy matrix, if node-version: [20.x, 22.x] it runs the build on both Node 20.x and 22.x for compatibility.
     strategy:
-      fail-fast: false                 # Continue with Node 22 even if Node 20 fails, if node-version: [20.x, 22.x]
+      fail-fast: false # Continue with Node 22 even if Node 20 fails, if node-version: [20.x, 22.x]
       matrix:
         node-version: [20.x]
 
     steps:
-
       # 📥 Step 1: Downloads the repository’s code into the runner.
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:                                  # Defines all the major automated tasks G
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }} # From the matrix above
-          cache: 'npm'                             # Speeds up workflow runs by caching dependencies.
+          cache: 'npm' # Speeds up workflow runs by caching dependencies.
 
       # 🧾 Step 3: Display environment info (for debugging clarity)
       - name: Show environment info
@@ -65,7 +65,7 @@ jobs:                                  # Defines all the major automated tasks G
           echo "🔧 Working directory: $(pwd)"
 
       # 🚀 Step 4: Cache only the npm download cache (NOT node_modules)
-      - name: Cache npm cache
+      - name: Cache npm
         uses: actions/cache@v4
         with:
           # Caching ~/.npm only allowing `npm ci` to reinstall node_modules cleanly but MUCH faster.
@@ -96,30 +96,11 @@ jobs:                                  # Defines all the major automated tasks G
       # 🧩 Step 6: Build the project.
       - name: Build project
         run: |
-          echo "🧩 Starting build process..." 
-
-          if npm run | grep -q "build"; then
-            echo "📦 Running project-defined build..."
-
-            if npm run build; then
-              echo "✅ Build completed successfully."
-            else
-              echo "⚠️ Build script failed — check your build logs."
-            fi
-
-          elif npx --yes vite --version >/dev/null 2>&1; then
-            echo "⚙️ No build script found - running fallback build via Vite..."
-
-            if npx vite build; then
-              echo "✅ Build completed successfully."
-            else
-              echo "⚠️ Fallback Vite build failed — check your configuration."
-              echo "💡 To enable build, define a 'build' script in package.json, e.g.:"
-              echo '    "scripts": { "build": "vite build" }'
-            fi
-
+          if grep -q '"build"' package.json; then
+            echo "🧩 Running build process..."
+            npm run build
           else
-            echo "⚠️ No build configuration or script found, skipping build..."
+            echo "⚠️ No 'build' script found in package.json, skipping build..."
             echo "💡 To enable build, define a 'build' script in package.json, e.g.:"
             echo '    "scripts": { "build": "vite build" }'
             exit 1
@@ -146,7 +127,7 @@ jobs:                                  # Defines all the major automated tasks G
             dist
             out
           if-no-files-found: warn
-          retention-days: 1            # Auto-delete build artifacts after 1 day to save storage
+          retention-days: 7 # Auto-delete build artifacts after 7 day to save storage
 
       # 🧾 Step 9: Smart Summary
       - name: CI workflow summary

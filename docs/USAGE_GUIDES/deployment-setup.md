@@ -1,18 +1,19 @@
 # Deployment Setup
 
-Comprehensive guide for configuring automated deployment to various platforms including Vercel, Netlify, Supabase Edge 
+Comprehensive guide for configuring automated deployment to various platforms including Vercel, Netlify, Supabase Edge
 Functions, and traditional hosting services.
 
 ## Overview
 
-The deployment workflow `deploy.yml` supports **Netlify** as its main deployment targets with zero-downtime
-deployments, environment-specific configurations, and rollback capabilities.
+The deployment workflow `deploy.yml` supports **Netlify** as its main deployment targets with zero-downtime deployments,
+environment-specific configurations, and rollback capabilities.
 
 ## Platform-Specific Configuration
 
 ### Netlify Deployment
 
 #### Prerequisites
+
 - Netlify account
 - Site configured in Netlify dashboard
 - Netlify CLI access token
@@ -20,19 +21,22 @@ deployments, environment-specific configurations, and rollback capabilities.
 #### Setup Steps
 
 1. **Generate Netlify Token**
+
 - Go to [Netlify User Settings](https://app.netlify.com/user/applications#personal-access-tokens)
 - Click "New access token"
 - Copy the generated token
 
 2. **Get Site ID**
+
 - Go to your site settings in Netlify
 - Under "Site Information," copy the API ID
 
 3. **Configure Secrets**
-  ```yaml
-  NETLIFY_TOKEN: your_netlify_token
-  NETLIFY_SITE_ID: your_site_id
-  ```
+
+```yaml
+NETLIFY_TOKEN: your_netlify_token
+NETLIFY_SITE_ID: your_site_id
+```
 
 #### Netlify Configuration
 
@@ -66,6 +70,7 @@ deployments, environment-specific configurations, and rollback capabilities.
 ### Vercel Deployment
 
 #### Prerequisites
+
 - Vercel account
 - Vercel project connected to your repository
 - Vercel token for authentication
@@ -73,38 +78,41 @@ deployments, environment-specific configurations, and rollback capabilities.
 #### Setup Steps
 
 1. **Create Vercel Token**
+
 - Go to [Vercel Dashboard](https://vercel.com/account/tokens)
 - Click "Create" and name your token
 - Copy the generated token
 
 2. **Configure Repository Secrets**
-  ```yaml
-  # Required secrets for Vercel
-  VERCEL_TOKEN: your_vercel_token
-  VERCEL_ORG_ID: your_organization_id
-  VERCEL_PROJECT_ID: your_project_id
+
+```yaml
+# Required secrets for Vercel
+VERCEL_TOKEN: your_vercel_token
+VERCEL_ORG_ID: your_organization_id
+VERCEL_PROJECT_ID: your_project_id
 ```
 
 3. **Vercel Configuration File** (`vercel.json`)
-  ```json
-  {
-    "version": 2,
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "dist"
-        }
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/dist/$1"
-      }
-    ]
-  }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/$1"
+    }
+  ]
+}
 ```
 
 #### Workflow Configuration
@@ -123,6 +131,7 @@ deployments, environment-specific configurations, and rollback capabilities.
 ### Supabase Edge Functions
 
 #### Prerequisites
+
 - Supabase project
 - Supabase CLI installed
 - Edge functions configured
@@ -130,28 +139,31 @@ deployments, environment-specific configurations, and rollback capabilities.
 #### Configuration
 
 1. **Supabase Configuration** (`supabase/config.toml`)
-  ```toml
-  [api]
-  project_id = "your-project-id"
-   
-  [auth]
-  site_url = "https://your-project.supabase.co"
-  ```
+
+```toml
+[api]
+project_id = "your-project-id"
+
+[auth]
+site_url = "https://your-project.supabase.co"
+```
 
 2. **Secrets Setup**
-  ```yaml
-  SUPABASE_ACCESS_TOKEN: your_supabase_token
-  SUPABASE_PROJECT_ID: your_project_id
-  ```
+
+```yaml
+SUPABASE_ACCESS_TOKEN: your_supabase_token
+SUPABASE_PROJECT_ID: your_project_id
+```
 
 3. **Deployment Script**
-  ```yaml
-  - name: Deploy Edge Functions
-    run: |
-      npx supabase functions deploy your-function --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
-    env:
-      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-  ```
+
+```yaml
+- name: Deploy Edge Functions
+  run: |
+    npx supabase functions deploy your-function --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+  env:
+    SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+```
 
 ### Traditional Hosting (SSH/SFTP)
 
@@ -196,7 +208,7 @@ deploy-staging:
   if: github.ref == 'refs/heads/develop'
   environment: staging
   runs-on: ubuntu-latest
-  
+
   steps:
     - name: Deploy
       run: |
@@ -214,18 +226,18 @@ deploy-production:
   if: github.ref == 'refs/heads/main'
   environment: production
   runs-on: ubuntu-latest
-  
+
   steps:
     - name: Verify tests passed
       run: |
         # Check if all required workflows passed
         echo "Verifying CI status..."
-    
+
     - name: Create backup
       run: |
         # Backup current production
         echo "Creating backup..."
-    
+
     - name: Deploy to production
       run: |
         # Production deployment commands
@@ -241,13 +253,13 @@ deploy-production:
   run: |
     # Deploy to green environment
     deploy-to-green
-    
+
     # Run smoke tests
     run-smoke-tests --environment green
-    
+
     # Switch traffic
     switch-traffic --from blue --to green
-    
+
     # Keep blue for rollback
     keep-blue-for-rollback --hours 2
 ```
@@ -259,11 +271,11 @@ deploy-production:
   run: |
     # Deploy to 10% of servers
     deploy-canary --percentage 10
-    
+
     # Monitor metrics
     sleep 300  # Wait 5 minutes
     check-metrics --environment canary
-    
+
     # Full deployment if metrics are good
     if [ $? -eq 0 ]; then
       deploy-full
@@ -283,13 +295,13 @@ deploy-production:
   run: |
     # Backup database before migration
     backup-database --name pre-deployment-backup
-    
+
     # Run migrations in transaction
     run-migrations --safe --transaction
-    
+
     # Verify migration success
     verify-migration --check-data-integrity
-    
+
     # Rollback on failure
     if [ $? -ne 0 ]; then
       rollback-migration
@@ -318,15 +330,15 @@ WHERE new_column IS NULL;
   run: |
     # Wait for deployment to be ready
     sleep 30
-    
+
     # Perform health check
     response=$(curl -s -o /dev/null -w "%{http_code}" https://your-app.vercel.app/health)
-    
+
     if [ "$response" -ne 200 ]; then
       echo "Health check failed: $response"
       exit 1
     fi
-    
+
     echo "Health check passed"
 ```
 
@@ -413,7 +425,7 @@ deploy-assets:
 
 ```yaml
 # Use larger runner for resource-intensive deployments
-runs-on: ubuntu-latest-large  # or self-hosted runner
+runs-on: ubuntu-latest-large # or self-hosted runner
 ```
 
 ### Network Issues
@@ -439,25 +451,26 @@ runs-on: ubuntu-latest-large  # or self-hosted runner
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ./getting-started.md
 [customizing-templates]: ./customizing-templates.md
 [workflow-explanations]: ./workflow-explanations.md

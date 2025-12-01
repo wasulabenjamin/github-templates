@@ -4,11 +4,11 @@
   -
   - Project Name  : github-templates
   - File Name     : HelloWorld.vue
-  - Last Modified : 2025-11-25, 10:02pm
+  - Last Modified : 2025-12-01, 10:22am
   -->
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 
 defineProps<{ msg: string }>();
 
@@ -35,12 +35,12 @@ const toggleDetails = () => {
           <p>Get hands-on with our template features and see how they can transform your development workflow.</p>
 
           <div class="interactive-section">
-            <button type="button" @click="count++" class="btn btn-primary">
-              Template used {{ count }} {{ count === 1 ? 'time' : 'times' }}
+            <button type="button" class="btn btn-primary" @click="count++">
+              Template used {{ count }} {{ count === 1 ? "time" : "times" }}
             </button>
 
-            <button @click="toggleDetails" class="btn btn-secondary">
-              {{ showDetails ? 'Hide' : 'Show' }} project details
+            <button class="btn btn-secondary" @click="toggleDetails">
+              {{ showDetails ? "Hide" : "Show" }} project details
             </button>
           </div>
 
@@ -142,26 +142,26 @@ const toggleDetails = () => {
 }
 
 .section-title {
-  font: var(--ds-font-headline-large, 500 2rem/1.2 'Inter', sans-serif);
+  font: var(--ds-font-headline-large, 500 2rem/1.2 "Inter", sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 0.75rem;
 }
 
 .section-subtitle {
-  font: var(--ds-font-body, 400 1rem/1.5 'Inter', sans-serif);
+  font: var(--ds-font-body, 400 1rem/1.5 "Inter", sans-serif);
   color: var(--ds-text-subtle, #44546f);
   max-width: 600px;
   margin: 0 auto;
 }
 
 .interactive-card {
-  background: var(--ds-surface, #ffffff);
+  background: var(--ds-surface, #fff);
   border: 1px solid var(--ds-border, #dcdfe4);
   border-radius: 12px;
   padding: 2rem;
   margin: 2rem auto;
   max-width: 800px;
-  box-shadow: var(--ds-shadow-card, 0 1px 1px rgba(9, 30, 66, 0.25));
+  box-shadow: var(--ds-shadow-card, 0 1px 1px rgb(9 30 66 / 25%));
 }
 
 .card-content {
@@ -169,7 +169,7 @@ const toggleDetails = () => {
 }
 
 .card-content p {
-  font: var(--ds-font-body, 400 1rem/1.5 'Inter', sans-serif);
+  font: var(--ds-font-body, 400 1rem/1.5 "Inter", sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 2rem;
 }
@@ -196,7 +196,7 @@ const toggleDetails = () => {
 }
 
 .detail-section h4 {
-  font: var(--ds-font-headline-small, 600 1rem/1.2 'Inter', sans-serif);
+  font: var(--ds-font-headline-small, 600 1rem/1.2 "Inter", sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 1rem;
 }
@@ -210,7 +210,7 @@ const toggleDetails = () => {
 .detail-list li {
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--ds-border-subtle, #f1f2f4);
-  font: var(--ds-font-body, 400 0.875rem/1.5 'Inter', sans-serif);
+  font: var(--ds-font-body, 400 0.875rem/1.5 "Inter", sans-serif);
   color: var(--ds-text-subtle, #44546f);
 }
 
@@ -229,7 +229,7 @@ const toggleDetails = () => {
 }
 
 .resources-section h3 {
-  font: var(--ds-font-headline-medium, 500 1.25rem/1.2 'Inter', sans-serif);
+  font: var(--ds-font-headline-medium, 500 1.25rem/1.2 "Inter", sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 1.5rem;
 }
@@ -247,7 +247,7 @@ const toggleDetails = () => {
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: var(--ds-surface, #ffffff);
+  background: var(--ds-surface, #fff);
   border: 1px solid var(--ds-border, #dcdfe4);
   border-radius: 8px;
   text-decoration: none;
@@ -272,13 +272,13 @@ const toggleDetails = () => {
 }
 
 .resource-content strong {
-  font: var(--ds-font-body, 500 0.875rem/1.2 'Inter', sans-serif);
+  font: var(--ds-font-body, 500 0.875rem/1.2 "Inter", sans-serif);
   color: var(--ds-text, #172b4d);
   margin-bottom: 0.25rem;
 }
 
 .resource-content span {
-  font: var(--ds-font-body-small, 400 0.75rem/1.2 'Inter', sans-serif);
+  font: var(--ds-font-body-small, 400 0.75rem/1.2 "Inter", sans-serif);
   color: var(--ds-text-subtle, #44546f);
 }
 
@@ -290,7 +290,7 @@ const toggleDetails = () => {
 }
 
 .docs-promo p {
-  font: var(--ds-font-body, 400 0.875rem/1.5 'Inter', sans-serif);
+  font: var(--ds-font-body, 400 0.875rem/1.5 "Inter", sans-serif);
   color: var(--ds-text-subtle, #44546f);
   margin: 0;
 }
@@ -305,7 +305,7 @@ const toggleDetails = () => {
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .details-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
