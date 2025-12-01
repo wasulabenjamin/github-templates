@@ -54,12 +54,11 @@ Each file under `.github/workflows/` defines one automation process.
 - Downloads the repository’s code into the runner.
 - Installs Node.js on the runner and enables npm caching.
 - Display environment info (for debugging clarity)
-- Cache npm + node_modules for faster installations.
-- Install exact dependencies from package-lock.json
-- Run ESLint checks.
+- Cache only the npm download cache (NOT node_modules)
+- Deterministic installation using npm ci
+- Run Lint checks.
 - Run Prettier checks.
 - Run TypeScript checks.
-- Upload a lint report for inspection.
 - Output a Smart summary
 
 ## `run-tests.yml` — 🧪 E2E / Integration
@@ -79,12 +78,12 @@ be scheduled or run only on `main`.
 - Downloads the repository’s code into the runner.
 - Installs Node.js on the runner and enables npm caching.
 - Display environment info (for debugging clarity)
-- Cache npm + node_modules for faster installations.
-- Install exact dependencies from package-lock.json
-- If there’s a test:unit script, run it; otherwise, fall back to a direct Vitest command.
-- If there’s a test:e2e script, run it; otherwise, fall back to a direct Playwright command.
+- Cache only the npm download cache (NOT node_modules)
+- Deterministic installation using npm ci
+- Run unit tests
+- Run e2e tests
 - Security audit for vulnerabilities
-- Upload a test report for inspection.
+- Smart summary
 - Output a Smart summary
 
 ## `validate-branches.yml` — 🔐 Enforce Allowed PR Source Branches
@@ -202,8 +201,8 @@ doc-only edits.
 - Downloads the repository’s code into the runner.
 - Installs Node.js on the runner and enables npm caching.
 - Display environment info (for debugging clarity)
-- Cache npm + node_modules for faster installations.
-- Install exact dependencies from package-lock.json
+- Cache only the npm download cache (NOT node_modules)
+- Deterministic installation using npm ci
 - Build the project.
 - Strong verification - Helps catch cases where the build command ran but didn’t output anything.
 - Upload build artifacts for re-use by release and deployment workflows.

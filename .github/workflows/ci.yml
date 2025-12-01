@@ -65,7 +65,7 @@ jobs: # Defines all the major automated tasks GitHub will run
           echo "🔧 Working directory: $(pwd)"
 
       # 🚀 Step 4: Cache only the npm download cache (NOT node_modules)
-      - name: Cache npm cache
+      - name: Cache npm
         uses: actions/cache@v4
         with:
           # Caching ~/.npm only allowing `npm ci` to reinstall node_modules cleanly but MUCH faster.

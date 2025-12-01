@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Wasula Benjamin, Copyright (c) 2025
+  ~ Contact : wasulabenjamin@gmail.com
+  ~
+  ~ Project Name  : github-templates
+  ~ File Name     : sitemap.xml
+  ~ Last Modified : 2025-12-01, 10:22am
+  -->
+
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://htmltutorial.netlify.app/index.html</loc></url>
 </urlset>

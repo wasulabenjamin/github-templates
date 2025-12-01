@@ -52,4 +52,6 @@
 
   "spec-char-escape": true,
   "space-tab-mixed-disabled": "space",
+
+  "exclude": ["coverage/**", "dist/**", "node_modules/**", "playwright-report/**", "test-results/**"]
 }
