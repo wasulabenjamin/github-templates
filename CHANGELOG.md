@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## v0.2.0 - 2025-12-02
+
+[0eb0c6b](0eb0c6b73f7d78558be49304fa96e687c87ad118)...[9b4b0fd](9b4b0fd6b315d24158288d5c0656a56f29c67014)
+
+### ✨ Features
+
+- Unify project configs, linters and formatting rules ([4d00e7a](4d00e7a6ce1117e01cf1c059cf41eea8ed376c21))
+
+### 🐛 Bug Fixes
+
+- Updated existing workflows to match new package.json scripts ([16f432a](16f432ad33d47e648b8859ce6d72479553d8a355))
+- Workflows updates and fixes ([a4713d3](a4713d33a21fca529d2800f511dfb8bdffe14ae3))
+
+### 📝 Documentation
+
+- Updated docs for edited workflows ([0b0b807](0b0b807830cf53c0e76a24b38dd3a4e1d0b3bf52))
+
+### 🧰 Chores
+
+- Sync changes from main [skip ci] ([052e9ee](052e9eec2e93371dc3e276f1d580f2d7c982aa9d))
+
+### 🧹 Miscellaneous Tasks
+
+- Merge pull request #9 from wasulabenjamin/feature/update-dev-tooling-configs ([ca3fd52](ca3fd526544d0850c6180a121cdc40bafd6a4af8))
+- Merge pull request #10 from wasulabenjamin/release/2025-12-02 ([9b4b0fd](9b4b0fd6b315d24158288d5c0656a56f29c67014))
+
+
 ## v0.1.0 - 2025-11-26
 
 ### ✨ Features
@@ -32,6 +60,7 @@ All notable changes to this project will be documented in this file.
 - Refine readme and polish project ([146e0b7](146e0b791de8bfbfcdb9923de365d61f19251ccb))
 - Multiple updates and fixes ([17927f7](17927f7fa851a34bbbf84cbf1fe0b015382b26a9))
 - Update last modified timestamps across multiple files ([7962354](7962354e632196668885a8753724de06c4a11a17))
+- Update changelog for v0.1.0 [skip ci] ([0eb0c6b](0eb0c6b73f7d78558be49304fa96e687c87ad118))
 
 ### 🧹 Miscellaneous Tasks
 
