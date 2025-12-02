@@ -14,20 +14,21 @@ features.
 
 ### Branching Strategy
 
-We follow a structured branching strategy.
-Please read the [Branching Strategy Guide](DEVELOPMENT_WORKFLOW.md) for detailed information.
+We follow a structured branching strategy. Please read the [Branching Strategy Guide](DEVELOPMENT_WORKFLOW.md) for
+detailed information.
 
 ### Commit Conventions
 
-All commits must follow our commit message conventions.
-See the [Commit Conventions Guide](DEVELOPMENT_WORKFLOW.md) for detailed information.
+All commits must follow our commit message conventions. See the [Commit Conventions Guide](DEVELOPMENT_WORKFLOW.md) for
+detailed information.
 
 ## Using the issue tracker
 
-The [issue tracker][issue_tracker] is the preferred channel for [bug reports][report_bug] and
-[features requests][request_feature] and submitting pull requests, but please respect the following restrictions:
-* Please **do not** use the issue tracker for personal support requests.
-* Please **do not** derail or troll issues. Keep the discussion on the topic and respect the opinions of others.
+The [issue tracker][issue_tracker] is the preferred channel for [bug reports][report_bug] and [features
+requests][request_feature] and submitting pull requests, but please respect the following restrictions:
+
+- Please **do not** use the issue tracker for personal support requests.
+- Please **do not** derail or troll issues. Keep the discussion on the topic and respect the opinions of others.
 
 ## Issues and labels
 
@@ -61,9 +62,10 @@ A bug is a _demonstrable problem_ that is caused by the code in the repository. 
 so, thanks!
 
 Guidelines for bug reports:
-* **Validate your code** &mdash; To ensure your problem isn't caused by a simple error in your own code.
-* **Use the GitHub issue search** &mdash; Check if the issue has already been reported.
-* **Check if the issue has been fixed** &mdash; Try to reproduce it using the latest `main` or `development` branch in
+
+- **Validate your code** &mdash; To ensure your problem isn't caused by a simple error in your own code.
+- **Use the GitHub issue search** &mdash; Check if the issue has already been reported.
+- **Check if the issue has been fixed** &mdash; Try to reproduce it using the latest `main` or `development` branch in
   the repository.
 
 A good bug report shouldn't leave contributors needing to chase you up for more information. Please try to be as
@@ -72,6 +74,7 @@ experience the problem? Do other browser(s) show the bug differently? What would
 details will help fix any potential bugs.
 
 Example:
+
 > Describe a clear and concise description of what the bug is.
 >
 > Provide steps to reproduce the behavior.
@@ -86,12 +89,12 @@ Example:
 ## Feature requests
 
 Feature requests are welcome. But take a moment to find out whether your idea fits with the scope and aims of the
-project. It's up to you to make a strong case to convince the project's developers of the merits of this feature.
-Please provide as much detail and context as possible.
+project. It's up to you to make a strong case to convince the project's developers of the merits of this feature. Please
+provide as much detail and context as possible.
 
 ## Pull requests
 
-Good pull requests &mdash; *patches, improvements, new features* &mdash; are a fantastic help. They should remain
+Good pull requests &mdash; _patches, improvements, new features_ &mdash; are a fantastic help. They should remain
 focused in scope and avoid containing unrelated commits.
 
 **Please ask first** before embarking on any significant pull request (e.g., implementing features, refactoring code);
@@ -101,10 +104,11 @@ into the project.
 Please adhere to the coding guidelines and use them throughout the project (indentation, accurate comments, etc.) and
 any other requirements (such as test coverage).
 
-**Direct commits to main or develop are blocked by branch protection rules.** All work must start from a `feature/*` 
+**Direct commits to main or develop are blocked by branch protection rules.** All work must start from a `feature/*`
 branch created off `develop`, and changes may only be merged back into `develop` through a pull request.
 
 Adhering to the following process is the best way to get your work included in the project:
+
 1. [Fork][fork_repo] the project, clone your fork, and configure the remotes:
 
    ```bash
@@ -117,6 +121,7 @@ Adhering to the following process is the best way to get your work included in t
    # Assign the original repo to a remote called "upstream"
    git remote add upstream https://github.com/wasulabenjamin/github-templates.git
    ```
+
 2. If you cloned a while ago, get the latest changes for both `main` and `develop`:
 
    ```bash
@@ -128,6 +133,7 @@ Adhering to the following process is the best way to get your work included in t
    # WHY `reset --hard`? Changes to develop are EXTREMELY NOT TOLERATED!
    git checkout develop; git fetch origin --prune; git reset --hard origin/develop; git clean -fd; git log --oneline --graph --decorate -10
    ```
+
 3. Create a new topic branch (off the `develop` branch) to contain your feature, change, or fix:
 
    ```bash
@@ -137,6 +143,7 @@ Adhering to the following process is the best way to get your work included in t
    # Create and switch to feature/* or fix/* branch. Push the branch immediately to remote for visibility:
    git switch -c <type/branch-name>; git push -u origin HEAD
    ```
+
 4. Commit your changes in logical chunks. Please adhere to these [git commit message guidelines][commit_message_guides]
    or your code is unlikely to be merged into the `main` branch. Use Git's [interactive rebase][interactive_rebase]
    feature to tidy up your commits before making them public.
@@ -147,6 +154,7 @@ Adhering to the following process is the best way to get your work included in t
    # Work, Commit and Push to your branch repeatedly until you're done with work
    git add --all; git commit -m "<type(optional-scope): short-summary>"; git push -u origin HEAD
    ```
+
 6. [Open a Pull Request][pull_request] with a clear title and description against the `develop` branch.
 
 7. After successful merge, update local development branch:
@@ -165,6 +173,7 @@ By contributing your code, you agree to license your contribution under the [MIT
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [issue_tracker]: https://github.com/wasulabenjamin/github-templates/issues
 [report_bug]: https://github.com/wasulabenjamin/github-templates/issues/new?template=bug_report.yml
 [request_feature]: https://github.com/wasulabenjamin/github-templates/issues/new?template=feature_request.yml

@@ -3,7 +3,9 @@
 ## ⚠️ Pre-Requisites
 
 > Documentation PRs target `develop` branch only
+
 > All documentation should follow project style guides
+
 > Technical accuracy must be verified
 
 Before submitting:
@@ -15,18 +17,21 @@ Before submitting:
 
 ## 🎯 Purpose
 
-<!--- 
+<!---
 Describe the documentation changes in detail
 Include: What's being documented, Why it's needed, Target audience
 -->
 
 **Documentation Scope:**
+
 <!-- What areas does this documentation cover? -->
 
 **Audience:**
+
 <!-- Who is this documentation for? (users, developers, admins) -->
 
 **Information Gap Addressed:**
+
 <!-- What knowledge gap does this fill? -->
 
 ## 🧩 Related Issue
@@ -53,15 +58,15 @@ Closes #ISSUE_ID <!--- Link to documentation task or related issue -->
 ## 📖 Documentation Details
 
 **Sections Added/Modified:**
-- 
 
--
--
+<!-- List modified or added sections here -->
 
 **Screenshots/Examples:**
+
 <!-- Include relevant visuals if applicable -->
 
 **API Changes Documented:**
+
 <!-- If documenting API changes, list them here -->
 
 ## 🎨 Content Review

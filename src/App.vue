@@ -4,32 +4,32 @@
   -
   - Project Name  : github-templates
   - File Name     : App.vue
-  - Last Modified : 2025-11-25, 10:02pm
+  - Last Modified : 2025-12-01, 10:22am
   -->
 
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
-import { onMounted, ref } from 'vue';
+import HelloWorld from "./components/HelloWorld.vue";
+import { onMounted, ref } from "vue";
 
 const isDark = ref(false);
 
 const toggleTheme = () => {
   isDark.value = !isDark.value;
-  localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
+  localStorage.setItem("theme", isDark.value ? "dark" : "light");
   updateTheme();
 };
 
 const updateTheme = () => {
   if (isDark.value) {
-    document.documentElement.classList.add('dark-theme');
+    document.documentElement.classList.add("dark-theme");
   } else {
-    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.remove("dark-theme");
   }
 };
 
 onMounted(() => {
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  isDark.value = savedTheme === 'dark';
+  const savedTheme = localStorage.getItem("theme") || "light";
+  isDark.value = savedTheme === "dark";
   updateTheme();
 });
 </script>
@@ -51,11 +51,12 @@ onMounted(() => {
           <a href="./.github/CONTRIBUTING.md" class="nav-link">Contribute</a>
           <button
             class="theme-toggle"
-            @click="toggleTheme"
+            data-test="theme-toggle"
             :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
+            @click="toggleTheme"
           >
-            <span class="theme-icon">{{ isDark ? '☀️' : '🌙' }}</span>
-            <span class="theme-text">{{ isDark ? 'Light' : 'Dark' }}</span>
+            <span class="theme-icon">{{ isDark ? "☀️" : "🌙" }}</span>
+            <span class="theme-text" data-test="theme-text">{{ isDark ? "Light" : "Dark" }}</span>
           </button>
         </nav>
       </div>
@@ -341,7 +342,7 @@ onMounted(() => {
   color: var(--ds-text, #172b4d);
   cursor: pointer;
   transition: all 0.2s ease;
-  font: var(--ds-font-body, 400 1rem/1.5 'Inter', sans-serif);
+  font: var(--ds-font-body, 400 1rem/1.5 "Inter", sans-serif);
 }
 
 .theme-toggle:hover {

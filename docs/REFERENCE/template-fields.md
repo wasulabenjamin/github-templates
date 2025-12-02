@@ -1,13 +1,13 @@
 # Template Fields Reference
 
 This reference documents fields and structures used in issue forms, issue templates, and pull request templates
-contained in `github-templates`. It covers the supported YAML schema for GitHub Issue Forms, front matter metadata,
-and common conventions used in this repository.
+contained in `github-templates`. It covers the supported YAML schema for GitHub Issue Forms, front matter metadata, and
+common conventions used in this repository.
 
 ## Issue template front matter (legacy)
 
-Some repositories still use simple markdown templates with YAML front matter for `name`, `about`, `labels`,
-and `assignees`. Example:
+Some repositories still use simple markdown templates with YAML front matter for `name`, `about`, `labels`, and
+`assignees`. Example:
 
 ```markdown
 ---
@@ -16,8 +16,8 @@ about: Report a bug
 labels: bug
 assignees: ''
 ---
-**Describe the bug**
-A clear and concise description...
+
+**Describe the bug** A clear and concise description...
 ```
 
 If both a YAML issue form and a legacy template exist, GitHub prefers the issue form.
@@ -27,6 +27,7 @@ If both a YAML issue form and a legacy template exist, GitHub prefers the issue 
 ### Common Field Types
 
 #### Markdown Fields
+
 Used for providing instructions or information to users.
 
 ```yaml
@@ -37,94 +38,102 @@ Used for providing instructions or information to users.
       Please provide detailed information about the bug...
 ```
 
-**Purpose**: Instructional content that doesn't require user input
-**Validation**: None (display only)
+**Purpose**: Instructional content that doesn't require user input **Validation**: None (display only)
 
 #### Text Input Fields
+
 Single-line text input for short responses.
 
 ```yaml
 - type: input
   id: version
   attributes:
-    label: "Version"
-    description: "What version are you using?"
-    placeholder: "e.g., 1.2.3"
+    label: 'Version'
+    description: 'What version are you using?'
+    placeholder: 'e.g., 1.2.3'
   validations:
     required: true
 ```
 
 **Attributes**:
+
 - `label`: Field display name
 - `description`: Help text shown below the field
 - `placeholder`: Example text shown in empty field
 - `value`: Default value (optional)
 
 **Validation**:
+
 - `required`: Boolean, whether field must be filled
 
 #### Textarea Fields
+
 Multi-line text input for detailed descriptions.
 
 ```yaml
 - type: textarea
   id: description
   attributes:
-    label: "Description"
-    description: "Detailed description of the issue"
-    placeholder: "Describe what happened..."
-    render: markdown  # or text
+    label: 'Description'
+    description: 'Detailed description of the issue'
+    placeholder: 'Describe what happened...'
+    render: markdown # or text
   validations:
     required: true
 ```
 
 **Additional Attributes**:
+
 - `render`: Format for text rendering (`markdown` or `text`)
 - `value`: Default content
 
 #### Dropdown Fields
+
 Single-choice selection from predefined options.
 
 ```yaml
 - type: dropdown
   id: priority
   attributes:
-    label: "Priority"
-    description: "How urgent is this issue?"
+    label: 'Priority'
+    description: 'How urgent is this issue?'
     multiple: false
     options:
-      - "Low"
-      - "Medium"
-      - "High"
-      - "Critical"
+      - 'Low'
+      - 'Medium'
+      - 'High'
+      - 'Critical'
   validations:
     required: true
 ```
 
 **Attributes**:
+
 - `multiple`: Allow multiple selections (boolean)
 - `options`: Array of available choices
 - `default`: Default selected option (optional)
 
 #### Checkbox Fields
+
 Multiple selections from predefined options.
 
 ```yaml
 - type: checkboxes
   id: environments
   attributes:
-    label: "Affected Environments"
-    description: "Where does this issue occur?"
+    label: 'Affected Environments'
+    description: 'Where does this issue occur?'
     options:
-      - label: "Development"
+      - label: 'Development'
         required: false
-      - label: "Staging"
+      - label: 'Staging'
         required: false
-      - label: "Production"
+      - label: 'Production'
         required: true
 ```
 
 **Attributes**:
+
 - `options`: Array of checkbox items, each with:
   - `label`: Checkbox text
   - `required`: Whether this must be checked
@@ -134,7 +143,7 @@ Multiple selections from predefined options.
 ### Bug Report Specific Fields
 
 | Field ID             | Type     | Purpose                            | Required |
-|----------------------|----------|------------------------------------|----------|
+| -------------------- | -------- | ---------------------------------- | -------- |
 | `what-happened`      | textarea | Description of unexpected behavior | Yes      |
 | `expected-behavior`  | textarea | What you expected to happen        | Yes      |
 | `reproduction-steps` | textarea | Steps to reproduce the issue       | Yes      |
@@ -146,7 +155,7 @@ Multiple selections from predefined options.
 ### Feature Request Fields
 
 | Field ID         | Type     | Purpose                          | Required |
-|------------------|----------|----------------------------------|----------|
+| ---------------- | -------- | -------------------------------- | -------- |
 | `problem`        | textarea | Problem this feature would solve | Yes      |
 | `solution`       | textarea | Proposed solution                | Yes      |
 | `alternatives`   | textarea | Alternative solutions considered | No       |
@@ -156,7 +165,7 @@ Multiple selections from predefined options.
 ### Security Issue Fields
 
 | Field ID              | Type       | Purpose                       | Required |
-|-----------------------|------------|-------------------------------|----------|
+| --------------------- | ---------- | ----------------------------- | -------- |
 | `vulnerability-type`  | dropdown   | Type of security issue        | Yes      |
 | `affected-components` | checkboxes | Which parts are affected      | Yes      |
 | `impact`              | textarea   | Potential impact if exploited | Yes      |
@@ -172,8 +181,7 @@ validations:
   required: true
 ```
 
-**Effect**: User cannot submit the form without completing this field
-**Error Message**: "This field is required"
+**Effect**: User cannot submit the form without completing this field **Error Message**: "This field is required"
 
 ### Custom Validation
 
@@ -191,17 +199,17 @@ While GitHub Forms don't support native conditional validation, you can use the 
 - type: dropdown
   id: issue-type
   attributes:
-    label: "Issue Type"
-    options: ["Bug", "Feature", "Question"]
+    label: 'Issue Type'
+    options: ['Bug', 'Feature', 'Question']
   validations:
     required: true
 
 - type: textarea
   id: reproduction-steps
   attributes:
-    label: "Reproduction Steps"
+    label: 'Reproduction Steps'
   visible:
-    issue-type: ["Bug"]  # Only show for bug reports
+    issue-type: ['Bug'] # Only show for bug reports
 ```
 
 ## Advanced Field Configurations
@@ -213,7 +221,7 @@ While GitHub Forms don't support native conditional validation, you can use the 
   attributes:
     value: |
       ## Support Guidelines
-      
+
       Before submitting, please:
       - [ ] Check the [documentation](https://docs.example.com)
       - [ ] Search [existing issues](https://github.com/org/repo/issues)
@@ -226,8 +234,8 @@ While GitHub Forms don't support native conditional validation, you can use the 
 - type: input
   id: contact-email
   attributes:
-    label: "Contact Email"
-    value: "{{ GITHUB.ACTOR }}@users.noreply.github.com"
+    label: 'Contact Email'
+    value: '{{ GITHUB.ACTOR }}@users.noreply.github.com'
 ```
 
 ### Multiple Selection with Checkboxes
@@ -236,13 +244,13 @@ While GitHub Forms don't support native conditional validation, you can use the 
 - type: checkboxes
   id: acceptance-criteria
   attributes:
-    label: "Acceptance Criteria"
+    label: 'Acceptance Criteria'
     options:
-      - label: "I have read the contributing guidelines"
+      - label: 'I have read the contributing guidelines'
         required: true
-      - label: "I have searched for duplicate issues"
+      - label: 'I have searched for duplicate issues'
         required: true
-      - label: "This issue includes all relevant information"
+      - label: 'This issue includes all relevant information'
         required: true
 ```
 
@@ -257,15 +265,14 @@ GitHub automatically loads `.github/PULL_REQUEST_TEMPLATE.md`
 
 This template acts as a **gateway**, providing links to all specialized templates:
 
-* 🐛 Bugfix PR
-* 📚 Documentation PR
-* ✨ Feature PR
-* 🚑 Hotfix PR
-* 🏷️ Release PR
+- 🐛 Bugfix PR
+- 📚 Documentation PR
+- ✨ Feature PR
+- 🚑 Hotfix PR
+- 🏷️ Release PR
 
-**How it works:**
-When a contributor opens a new PR, they will see the default template. They must click the appropriate link to load the
-sub-template that matches their work. This ensures the PR is structured correctly from the start.
+**How it works:** When a contributor opens a new PR, they will see the default template. They must click the appropriate
+link to load the sub-template that matches their work. This ensures the PR is structured correctly from the start.
 
 ### Specialized Sub-Templates
 
@@ -295,6 +302,7 @@ Each sub-template contains fields relevant to PR type (e.g., bugfix details, fea
 <!-- How was the bug verified/fixed? -->
 
 ## ✅ Checklist
+
 - [ ] Branch is up-to-date with `develop`
 - [ ] Tests pass
 - [ ] Documentation updated if needed
@@ -308,26 +316,29 @@ To add a new PR type:
 2. Add the template link to `PULL_REQUEST_TEMPLATE.md`:
 
 ```markdown
-* [🚀 Improvement PR](?expand=1&template=improvement.md)
+- [🚀 Improvement PR](?expand=1&template=improvement.md)
 ```
 
 ### Recommended Template Fields
 
 All PR templates should ideally include:
 
-* **Summary & motivation:** What the change does and why.
-* **Checklist:** Tests, changelog, documentation updates.
-* **Validation steps:** How the PR was verified.
-* **Deployment notes / backward compatibility:** If relevant.
+- **Summary & motivation:** What the change does and why.
+- **Checklist:** Tests, changelog, documentation updates.
+- **Validation steps:** How the PR was verified.
+- **Deployment notes / backward compatibility:** If relevant.
 
 ### Standard PR Template Sections
 
 #### Description Section
+
 ```markdown
 ## Description
+
 <!-- Please describe your changes in detail -->
 
 **Changes included:**
+
 - [ ] Feature implementation.
 - [ ] Bug fix.
 - [ ] Documentation update.
@@ -336,20 +347,24 @@ All PR templates should ideally include:
 ```
 
 #### Related Issues Section
+
 ```markdown
 ## Related Issues
+
 <!-- Link issues that this PR addresses -->
 
-Fixes #123
-Related to #456
+Fixes #123 Related to #456
 ```
 
 #### Testing Section
+
 ```markdown
 ## Testing
+
 <!-- Describe how you tested these changes -->
 
 **Test scenarios:**
+
 - [ ] Unit tests added/updated.
 - [ ] Integration tests passing.
 - [ ] E2E tests verified.
@@ -361,7 +376,7 @@ Related to #456
 GitHub provides dynamic variables in PR templates:
 
 | Variable             | Purpose                | Example                     |
-|----------------------|------------------------|-----------------------------|
+| -------------------- | ---------------------- | --------------------------- |
 | `{{ GITHUB.REF }}`   | Branch reference       | `refs/heads/feature-branch` |
 | `{{ GITHUB.SHA }}`   | Commit hash            | `a1b2c3d4...`               |
 | `{{ GITHUB.ACTOR }}` | Username of PR creator | `octocat`                   |
@@ -372,12 +387,16 @@ While not natively supported, you can use comments to guide contributors:
 
 ```markdown
 <!-- For API changes -->
+
 ## API Changes
+
 - [ ] Backward compatible
 - [ ] Breaking changes documented
 
 <!-- For database changes -->
+
 ## Database Changes
+
 - [ ] Migrations created
 - [ ] Data migration tested
 ```
@@ -385,45 +404,50 @@ While not natively supported, you can use comments to guide contributors:
 ## Best Practices for Field Design
 
 ### 1. Keep Forms Concise
+
 - Limit to essential fields only
 - Use descriptions to explain why information is needed
 - Group related fields together
 
 ### 2. Provide Clear Examples
+
 ```yaml
 - type: input
   id: reproduction-url
   attributes:
-    label: "Reproduction URL"
-    placeholder: "https://codesandbox.io/s/..."
-    description: "Link to a minimal reproduction (CodeSandbox, StackBlitz, etc.)"
+    label: 'Reproduction URL'
+    placeholder: 'https://codesandbox.io/s/...'
+    description: 'Link to a minimal reproduction (CodeSandbox, StackBlitz, etc.)'
 ```
 
 ### 3. Use Appropriate Field Types
+
 - Use `dropdown` for mutually exclusive options
 - Use `checkboxes` for multiple selections
 - Use `textarea` for free-form descriptions
 
 ### 4. Set Sensible Defaults
+
 ```yaml
 - type: dropdown
   id: priority
   attributes:
-    label: "Priority"
-    options: ["Low", "Medium", "High", "Critical"]
-    default: 1  # Default to "Medium"
+    label: 'Priority'
+    options: ['Low', 'Medium', 'High', 'Critical']
+    default: 1 # Default to "Medium"
 ```
 
 ### 5. Validate User Input
+
 While GitHub doesn't support complex validation, use clear descriptions:
 
 ```yaml
 - type: input
   id: node-version
   attributes:
-    label: "Node.js Version"
-    placeholder: "18.17.1"
-    description: "Please provide the exact Node.js version (run `node --version`)"
+    label: 'Node.js Version'
+    placeholder: '18.17.1'
+    description: 'Please provide the exact Node.js version (run `node --version`)'
 ```
 
 ## Field Dependencies and Logic
@@ -434,15 +458,15 @@ While GitHub doesn't support complex validation, use clear descriptions:
 - type: dropdown
   id: platform
   attributes:
-    label: "Platform"
-    options: ["Web", "Mobile", "Desktop"]
+    label: 'Platform'
+    options: ['Web', 'Mobile', 'Desktop']
 
 - type: input
   id: browser-version
   attributes:
-    label: "Browser Version"
+    label: 'Browser Version'
   visible:
-    platform: ["Web"]  # Only show for a web platform
+    platform: ['Web'] # Only show for a web platform
 ```
 
 ### Complex Conditional Logic
@@ -454,12 +478,12 @@ For more complex logic, you may need multiple templates:
 - type: dropdown
   id: template-selection
   attributes:
-    label: "Issue Type"
-    options: 
-      - "Web Bug"
-      - "Mobile Bug" 
-      - "Desktop Bug"
-      - "Feature Request"
+    label: 'Issue Type'
+    options:
+      - 'Web Bug'
+      - 'Mobile Bug'
+      - 'Desktop Bug'
+      - 'Feature Request'
 ```
 
 ## Internationalization Considerations
@@ -472,14 +496,14 @@ Consider supporting multiple languages:
 - type: input
   id: title
   attributes:
-    label: 
-      en: "Title"
-      es: "Título"
-      fr: "Titre"
+    label:
+      en: 'Title'
+      es: 'Título'
+      fr: 'Titre'
     description:
-      en: "Brief description of the issue"
-      es: "Descripción breve del problema"
-      fr: "Description brève du problème"
+      en: 'Brief description of the issue'
+      es: 'Descripción breve del problema'
+      fr: 'Description brève du problème'
 ```
 
 ## Template Configuration (config.yml)
@@ -494,9 +518,7 @@ Issue forms can also be expressed as JSON; however, YAML is more readable. Examp
 {
   "name": "Bug report",
   "description": "Report a bug",
-  "body": [
-    { "type": "markdown", "attributes": { "value": "Provide details." } }
-  ]
+  "body": [{ "type": "markdown", "attributes": { "value": "Provide details." } }]
 }
 ```
 
@@ -508,25 +530,26 @@ Issue forms can also be expressed as JSON; however, YAML is more readable. Examp
 
 ## See Also
 
-* [USAGE_GUIDES/getting-started.md][getting-started]
-* [USAGE_GUIDES/customizing-templates.md][customizing-templates]
-* [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
-* [USAGE_GUIDES/deployment-setup.md][deployment-setup]
-* [REFERENCE/template-fields.md][template-fields]
-* [REFERENCE/workflow-triggers.md][workflow-triggers]
-* [REFERENCE/permissions-needed.md][permissions-needed]
-* [REFERENCE/troubleshooting.md][troubleshooting]
-* [BEST_PRACTICES/issue-triage.md][issue-triage]
-* [BEST_PRACTICES/code-review-standards.md][code-review-standards]
-* [BEST_PRACTICES/release-management.md][release-management]
-* [ROADMAP.md][ROADMAP]
-* [FAQ.md][FAQ]
-* [INTEGRATIONS.md][INTEGRATIONS]
+- [USAGE_GUIDES/getting-started.md][getting-started]
+- [USAGE_GUIDES/customizing-templates.md][customizing-templates]
+- [USAGE_GUIDES/workflow-explanations.md][workflow-explanations]
+- [USAGE_GUIDES/deployment-setup.md][deployment-setup]
+- [REFERENCE/template-fields.md][template-fields]
+- [REFERENCE/workflow-triggers.md][workflow-triggers]
+- [REFERENCE/permissions-needed.md][permissions-needed]
+- [REFERENCE/troubleshooting.md][troubleshooting]
+- [BEST_PRACTICES/issue-triage.md][issue-triage]
+- [BEST_PRACTICES/code-review-standards.md][code-review-standards]
+- [BEST_PRACTICES/release-management.md][release-management]
+- [ROADMAP.md][ROADMAP]
+- [FAQ.md][FAQ]
+- [INTEGRATIONS.md][INTEGRATIONS]
 
 <!--
 As you might notice, I'm using markdown "reference style" links for readability.
 https://www.markdownguide.org/basic-syntax/
 -->
+
 [getting-started]: ../USAGE_GUIDES/getting-started.md
 [customizing-templates]: ../USAGE_GUIDES/customizing-templates.md
 [workflow-explanations]: ../USAGE_GUIDES/workflow-explanations.md

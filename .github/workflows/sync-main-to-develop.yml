@@ -1,56 +1,56 @@
-name: 🔄 Sync main to develop          # Workflow name that appears in GitHub Actions UI
+name: 🔄 Sync main to develop # Workflow name that appears in GitHub Actions UI
 
 # IMPORTANT! Allow concurrent runs. DO NOT TRY preventing multiple runs of this workflow
 
 on:
-  workflow_run:                        # Trigger 1: When changelog workflow completes (for code changes)
-    workflows: ["📄 Auto Update Changelog"]
-    branches: [main]                   # Only run when changelog completed on the main branch
+  workflow_run: # Trigger 1: When changelog workflow completes (for code changes)
+    workflows: ['📄 Auto Update Changelog']
+    branches: [main] # Only run when changelog completed on the main branch
     types: [completed]
-  push:                                # Trigger 2: Direct push to main with doc-only changes
+  push: # Trigger 2: Direct push to main with doc-only changes
     branches: [main]
     paths:
       - '.github/**'
       - 'docs/**'
       - '**.md'
-  workflow_dispatch:                   # Allow for manual trigger if shit gets out of hand
+  workflow_dispatch: # Allow for manual trigger if shit gets out of hand
 
 # Although permissions block is no longer needed since we're using app token with explicit permissions
 permissions:
-  contents: write                      # Required for pushing to `develop` changes from `main`
+  contents: write # Required for pushing to `develop` changes from `main`
 
 env:
-  GIT_AUTHOR_NAME: "github-actions[bot]"
-  GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
-  GIT_COMMITTER_NAME: "Wasula Benjamin (via: 🔄 Sync main to develop)"
-  GIT_COMMITTER_EMAIL: "wasulabenjamin@users.noreply.github.com"
+  GIT_AUTHOR_NAME: 'github-actions[bot]'
+  GIT_AUTHOR_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
+  GIT_COMMITTER_NAME: 'Wasula Benjamin (via: 🔄 Sync main to develop)'
+  GIT_COMMITTER_EMAIL: 'wasulabenjamin@users.noreply.github.com'
 
-jobs:                                  # Defines all the major automated tasks GitHub will run
-
-  merge-main-into-develop:             # Defines a Main to Develop synchronization job
+jobs: # Defines all the major automated tasks GitHub will run
+  merge-main-into-develop: # Defines a Main to Develop synchronization job
     if: >
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
-      (github.event_name == 'push') || (github.event_name == 'workflow_dispatch')
-    name: Sync main to develop         # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
-    runs-on: ubuntu-latest             # Run this job on the latest Ubuntu Linux virtual machine.
-    timeout-minutes: 2                 # Automatically cancel an entire job if it runs longer than set minutes.
+      ${{
+        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+        (github.event_name == 'push') || (github.event_name == 'workflow_dispatch')
+      }}
+    name: Sync main to develop # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
+    runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
+    timeout-minutes: 2 # Automatically cancel an entire job if it runs longer than set minutes.
 
     steps:
-
       # 🔑 Step 1: Generate GitHub App token to bypass branch protection
       - name: Generate Changelog App token
         id: changelog-token
         uses: tibdex/github-app-token@v2
         with:
-          app_id: ${{ secrets.CHANGELOG_BOT_ID }}               # Changelog Bot ID
+          app_id: ${{ secrets.CHANGELOG_BOT_ID }} # Changelog Bot ID
           private_key: ${{ secrets.CHANGELOG_BOT_PRIVATE_KEY }} # Changelog Bot Private Key
 
       # 📥 Step 2: Downloads the repository’s code into the runner.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.changelog-token.outputs.token }}     # Uses changelog-token instead of GITHUB_TOKEN
-          fetch-depth: 0                                        # Full history for accurate changelog
+          token: ${{ steps.changelog-token.outputs.token }} # Uses changelog-token instead of GITHUB_TOKEN
+          fetch-depth: 0 # Full history for accurate changelog
 
       # 🧠 Step 3: SMART TRIGGER CHECK - Prevent duplicate runs
       - name: Determine if this is a direct doc-only push
@@ -113,9 +113,11 @@ jobs:                                  # Defines all the major automated tasks G
       # 🛑 Step 4: Skip workflow if develop branch doesn't exist
       - name: Check if develop branch exists
         id: check-develop
-        if: |
-          (github.event_name == 'push' && steps.detect.outputs.is_doc_only == 'true') || 
-          (github.event_name == 'workflow_run') || (github.event_name == 'workflow_dispatch')
+        if: >
+          ${{
+            (github.event_name == 'push' && steps.detect.outputs.is_doc_only == 'true') ||
+            (github.event_name == 'workflow_run') || (github.event_name == 'workflow_dispatch')
+          }}
         run: |
           if git ls-remote --heads origin develop | grep -q "refs/heads/develop"; then
             echo "✅ develop branch exists, continuing..."
@@ -127,7 +129,7 @@ jobs:                                  # Defines all the major automated tasks G
 
       # 🏷️ Step 5: Synchronize updated main branch to develop
       - name: Merge main into develop
-        if: steps.check-develop.outputs.exists == 'true'
+        if: ${{ steps.check-develop.outputs.exists == 'true' }}
         run: |
           echo "🔄 Starting main → develop sync..."
 

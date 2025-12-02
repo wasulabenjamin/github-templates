@@ -8,7 +8,7 @@ automated release flow.
 Our repository follows a **GitFlow-inspired branching model** optimized for CI/CD pipelines and changelog automation.
 
 | **Branch**  | **Where From** | **Merges Into** | **Purpose**                                      | **End of Life**     | **Remarks**                                                     |
-|-------------|----------------|-----------------|--------------------------------------------------|---------------------|-----------------------------------------------------------------|
+| ----------- | -------------- | --------------- | ------------------------------------------------ | ------------------- | --------------------------------------------------------------- |
 | `main`      | repository     | n/a             | Production-ready, stable releases only           | Never               | Protected branch; only `release/*` or `hotfix/*` merges allowed |
 | `develop`   | `main`         | n/a             | Continuous integration of all approved features  | Never               | Acts as a **staging** branch for integration and testing        |
 | `chore/*`   | `develop`      | `develop`       | Initial project setups (docs/, .github, etc)     | Deleted after merge | The project initial skeleton essentially                        |
@@ -88,7 +88,7 @@ git switch -c release/*; git push -u origin HEAD
 #   -  IMPORTANT! Temporarily relax Require a pull request before merging branch ruleset for this then return it after
 
 # Step 13. Wait for workflows to run, specifically the change-log, as this edits the main commit history also
-#   HACK: changelog work flow runs on: push: branches: [main], it calculate v* and auto tags automatically. 
+#   HACK: changelog work flow runs on: push: branches: [main], it calculate v* and auto tags automatically.
 #         No need to tag it manually, it would be hectic to always remember version number across projects
 
 # Step 14: Resets local main and develop to match remote exactly, remove untracked files/directories, then visually confirm merges landed correctly.
@@ -96,6 +96,9 @@ git switch -c release/*; git push -u origin HEAD
 git checkout main; git fetch origin --prune; git reset --hard origin/main; git clean -fd; git log --oneline --graph --decorate -10; git checkout develop; git fetch origin --prune; git reset --hard origin/develop; git clean -fd; git log --oneline --graph --decorate -10
 
 # Step 15: Back to Step 3
+
+# Updated .gitignore? unstage everything first, then stage again.
+#   git reset; git rm -r --cached .; git add --all;
 ```
 
 ## 🧱 Commit Strategy
@@ -104,7 +107,7 @@ We use a **semantic commit** convention (based on [Conventional Commits](https:/
 enable **automatic versioning** and **CHANGELOG** generation with [`git-cliff`](https://git-cliff.org/).
 
 | **Commit Prefix** | **Meaning**                             | **Implied Version Bump** | **Example**                                    |
-|-------------------|-----------------------------------------|--------------------------|------------------------------------------------|
+| ----------------- | --------------------------------------- | ------------------------ | ---------------------------------------------- |
 | `*!`              | Backward Incompatible API changes       | MAJOR                    | `feat!: added db column for user registration` |
 | `feat:`           | New feature                             | MINOR                    | `feat: add user registration endpoint`         |
 | `fix:`            | Bug fix                                 | PATCH                    | `fix: resolve memory leak in image processing` |
@@ -141,30 +144,18 @@ git commit -m "build: adjust vite config"
 git commit -m "ci(release): auto-tag version"
 ```
 
-### Branch Usage Examples
-
-`feat:`     ... use `feature/*` branch
-`fix:`      ... use `bugfix/*` branch
-`hotfix:`   ... use `hotfix/*` branch
-`docs:`     ... use `chore/project-setup*` branch for initial docs setup....... then later if broken or need small improvements use `bugfix/docs-*` branch
-`chore:`    ... use `chore/project-setup*` branch for initial project setup.... then later if broken or need small improvements use `bugfix/chore-*` branch
-`style:`    ... use `feature/style-*` branch for initial styling............... then later if broken or need small improvements use `bugfix/style-*` branch
-`perf:`     ... use `bugfix/performance-*` branch for all performance fixes
-`refactor:` ... use `bugfix/refactor-*` branch for all refactor fixes
-`test:`     ... use `test/*` branch for all tests.
-
 ## 🚦 Release Integration
 
 These conventions allow:
 
-* **`release.yml`** workflow to publish versions
-* **`changelog.yml`** workflow to generate `CHANGELOG.md` via `git-cliff` then automatically tag a version
-* **`develop → release → main`** merges to create predictable release artifacts
+- **`release.yml`** workflow to publish versions
+- **`changelog.yml`** workflow to generate `CHANGELOG.md` via `git-cliff` then automatically tag a version
+- **`develop → release → main`** merges to create predictable release artifacts
 
 ### 🔖 Versioning Rules
 
 | **Change Type**       | **Example Commit(s)**             | **Version Bump** | **Example New Version** |
-|-----------------------|-----------------------------------|------------------|-------------------------|
+| --------------------- | --------------------------------- | ---------------- | ----------------------- |
 | Breaking API change   | `feat!: drop support for Node 16` | `MAJOR`          | 2.0.0 → 3.0.0           |
 | New feature           | `feat: add password reset`        | `MINOR`          | 2.1.0 → 2.2.0           |
 | Bug fix or patch      | `fix: correct login redirect`     | `PATCH`          | 2.2.0 → 2.2.1           |
@@ -173,7 +164,7 @@ These conventions allow:
 ## 🧭 Example Workflow in Practice
 
 | **Stage**         | **Action**                       | **Example Command**                               |
-|-------------------|----------------------------------|---------------------------------------------------|
+| ----------------- | -------------------------------- | ------------------------------------------------- |
 | Start new feature | Create branch from `develop`     | `git checkout -b feature/add-auth`                |
 | Commit progress   | Follow commit rules              | `git commit -m "feat(auth): implement JWT login"` |
 | Merge changes     | Create PR → merge into `develop` | GitHub PR                                         |
@@ -183,6 +174,6 @@ These conventions allow:
 
 ## See Also
 
-* [CONTRIBUTING](./CONTRIBUTING.md) — General contribution workflow
-* [Release Management](../docs/BEST_PRACTICES/release-management.md) — Tagging, changelog, and versioning best practices
-* [Workflow Explanations](../docs/USAGE_GUIDES/workflow-explanations.md) — How CI/CD integrates with this policy
+- [CONTRIBUTING](./CONTRIBUTING.md) — General contribution workflow
+- [Release Management](../docs/BEST_PRACTICES/release-management.md) — Tagging, changelog, and versioning best practices
+- [Workflow Explanations](../docs/USAGE_GUIDES/workflow-explanations.md) — How CI/CD integrates with this policy

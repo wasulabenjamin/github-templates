@@ -1,11 +1,10 @@
 name: 🐛 Bug Report
 description: Create a bug report to help improve this project
-title: "bug: <brief-summary>"
-labels: ["bug", "needs triage"]
-assignees: ["wasulabenjamin"]
+title: 'bug: <brief-summary>'
+labels: ['bug', 'needs triage']
+assignees: ['wasulabenjamin']
 
 body:
-
   - type: markdown
     attributes:
       value: |
@@ -56,10 +55,10 @@ body:
       label: Severity
       description: How serious is the issue?
       options:
-        - "🟢 Low - Minor inconvenience"
-        - "🔵 Medium - Noticeable but manageable"
-        - "🟡 High - Serious impact but workaround exists"
-        - "🔴 Critical - Completely blocks usage"
+        - '🟢 Low - Minor inconvenience'
+        - '🔵 Medium - Noticeable but manageable'
+        - '🟡 High - Serious impact but workaround exists'
+        - '🔴 Critical - Completely blocks usage'
     validations:
       required: true
 
