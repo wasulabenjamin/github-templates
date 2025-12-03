@@ -10,22 +10,16 @@ on: # Defines the triggers that cause this workflow to run.
     branches: [main, develop] # Remove the 'develop' branch reference if it doesn't exist
     paths: # Only run when the below-listed folders or file types change
       - 'src/**' # Source code directories
-      - '**.{js,ts,jsx,tsx,vue}' # All code files
+      - '**.{htm,html,js,jsx,ts,tsx,vue}' # All code files
       - '**.{json,yml,yaml}' # Config files
-      - '.eslintrc.*' # Lint configs
-      - '.prettierrc.*'
-      - 'vite.config.*' # Build tool config
-      - 'vue.config.*' # Vue-specific config
+      - '.{htmlhintrc,prettierignore,prettierrc}' # Lint configs
   push: # Runs when code is pushed or merged from PR directly to these branches.
     branches: ['**'] # Flexible branch triggers — automatically runs on any branch.
     paths: # Only run when the below-listed folders or file types change
       - 'src/**' # Source code directories
-      - '**.{js,ts,jsx,tsx,vue}' # All code files
+      - '**.{htm,html,js,jsx,ts,tsx,vue}' # All code files
       - '**.{json,yml,yaml}' # Config files
-      - '.eslintrc.*' # Lint configs
-      - '.prettierrc.*'
-      - 'vite.config.*' # Build tool config
-      - 'vue.config.*' # Vue-specific config
+      - '.{htmlhintrc,prettierignore,prettierrc}' # Lint configs
 
 permissions:
   contents: read # Needed to read repository files.

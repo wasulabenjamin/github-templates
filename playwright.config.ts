@@ -4,7 +4,7 @@
  *
  * Project Name  : github-templates
  * File Name     : playwright.config.ts
- * Last Modified : 2025-12-01, 09:46am
+ * Last Modified : 2025-12-03, 03:05pm
  */
 
 import { defineConfig, devices } from '@playwright/test';

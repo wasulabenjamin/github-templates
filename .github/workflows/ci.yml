@@ -26,11 +26,8 @@ env:
 jobs: # Defines all the major automated tasks GitHub will run
   build: # Defines a build job, compiles the project or prepares production-ready output.
     if: >
-      ${{
-        (github.event_name != 'workflow_run') ||
-        (!contains(github.event.head_commit.message, '[skip ci]')) ||
-        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
-      }}
+      (github.event_name != 'workflow_run') || (!contains(github.event.head_commit.message, '[skip ci]')) ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     name: Build Project # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
     runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
     timeout-minutes: 10 # Automatically cancel an entire job if it runs longer than set minutes.
