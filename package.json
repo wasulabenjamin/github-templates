@@ -44,7 +44,7 @@
     "lint:js": "eslint \"**/*.{js,ts,vue}\" --max-warnings 0",
     "lint:js:fix": "eslint \"**/*.{js,ts,vue}\" --fix",
 
-    "format": "prettier --write .",
+    "format": "prettier --write . 2>&1 | findstr /V \"unchanged\" || exit 0",
     "format:check": "prettier --check .",
 
     "typescript": "vue-tsc --noEmit",

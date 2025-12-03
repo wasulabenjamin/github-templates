@@ -26,7 +26,7 @@
     <a href="https://app.netlify.com/projects/wb-github-templates/deploys">
       <img 
         src="https://img.shields.io/github/actions/workflow/status/wasulabenjamin/github-templates/deploy-netlify.yml?label=Deploy&logo=netlify" 
-        alt="Netify Deploy"
+        alt="Netlify Deploy"
       >
     </a> &nbsp;
     <a href="https://app.codacy.com/gh/wasulabenjamin/github-templates/dashboard">

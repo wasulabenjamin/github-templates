@@ -28,10 +28,8 @@ env:
 jobs: # Defines all the major automated tasks GitHub will run
   merge-main-into-develop: # Defines a Main to Develop synchronization job
     if: >
-      ${{
-        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
-        (github.event_name == 'push') || (github.event_name == 'workflow_dispatch')
-      }}
+      (github.event_name == 'push') || (github.event_name == 'workflow_dispatch') || 
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     name: Sync main to develop # Gives the job a human-readable name which appears in GitHub’s “Actions” UI.
     runs-on: ubuntu-latest # Run this job on the latest Ubuntu Linux virtual machine.
     timeout-minutes: 2 # Automatically cancel an entire job if it runs longer than set minutes.
@@ -55,69 +53,52 @@ jobs: # Defines all the major automated tasks GitHub will run
       # 🧠 Step 3: SMART TRIGGER CHECK - Prevent duplicate runs
       - name: Determine if this is a direct doc-only push
         id: detect
+        if: ${{ github.event_name == 'push' }}
         run: |
-          # Case 1: Triggered by workflow_run (changelog completed)
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            echo "✅ Trigger: workflow_run - exiting trigger check"
+          echo "Trigger: ${{ github.event_name }} - checking to ensure its doc-only changes..."
+
+          # If its the first commit (HEAD~1 does not exist yet)
+          if ! git rev-parse HEAD~1 >/dev/null 2>&1; then
+            echo "⚠️ First commit detected — cannot compare changes"
             echo "is_doc_only=false" >> $GITHUB_OUTPUT
 
-          # Case 2: Triggered by manual dispatch
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "✅ Trigger: workflow_dispatch - exiting trigger check"
-            echo "is_doc_only=false" >> $GITHUB_OUTPUT
+          # Compare the last commit against its parent
+          else
+            LAST=$(git rev-parse HEAD)
+            BEFORE=$(git rev-parse HEAD~1)
 
-          # Case 3: Triggered by push - Check for DOC ONLY CHANGES
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "✅ Trigger: push - checking for doc-only changes..."
+            # List all changed files
+            ALL_CHANGED_FILES=$(git diff --name-only "$BEFORE" "$LAST")
+            echo "Changed files:"
+            echo "$ALL_CHANGED_FILES"
 
-            # If its the first commit (HEAD~1 does not exist yet)
-            if ! git rev-parse HEAD~1 >/dev/null 2>&1; then
-              echo "⚠️ First commit detected — cannot compare changes"
-              echo "is_doc_only=false" >> $GITHUB_OUTPUT
+            # Identify non-doc files by excluding docs/, .github/, and any *.md files
+            NON_DOC_CHANGED_FILES=$(git diff --name-only "$BEFORE" "$LAST" -- . \
+              ':!.github/**' \
+              ':!docs/**' \
+              ':!*.md')
 
-            # Compare the last commit against its parent
+
+            # Set output based on whether there are non-doc changes
+            if [ -z "$NON_DOC_CHANGED_FILES" ]; then
+              echo "✅ Doc-only changes detected"
+              echo "is_doc_only=true" >> $GITHUB_OUTPUT
             else
-              LAST=$(git rev-parse HEAD)
-              BEFORE=$(git rev-parse HEAD~1)
-
-              # List all changed files
-              ALL_CHANGED_FILES=$(git diff --name-only "$BEFORE" "$LAST")
-              echo "Changed files:"
-              echo "$ALL_CHANGED_FILES"
-
-              # Identify non-doc files by excluding docs/, .github/, and any *.md files
-              NON_DOC_CHANGED_FILES=$(git diff --name-only "$BEFORE" "$LAST" -- . \
-                ':!.github/**' \
-                ':!docs/**' \
-                ':!*.md')
-
+              echo " "
               echo "Non-doc changed files:"
               echo "$NON_DOC_CHANGED_FILES"
-
-              # Set output based on whether there are non-doc changes
-              if [ -z "$NON_DOC_CHANGED_FILES" ]; then
-                echo "✅ Doc-only changes detected"
-                echo "is_doc_only=true" >> $GITHUB_OUTPUT
-              else
-                echo "⚠️ Mixed or code changes detected"
-                echo "is_doc_only=false" >> $GITHUB_OUTPUT
-              fi
+              echo " "
+              echo "⚠️ Mixed changes detected - docs + non-docs"
+              echo "is_doc_only=false" >> $GITHUB_OUTPUT
             fi
-
-          # Case 4: Unknown trigger
-          else
-            echo "❓ Unknown trigger - defaulting to skip"
-            echo "is_doc_only=false" >> $GITHUB_OUTPUT
           fi
 
       # 🛑 Step 4: Skip workflow if develop branch doesn't exist
       - name: Check if develop branch exists
         id: check-develop
         if: >
-          ${{
-            (github.event_name == 'push' && steps.detect.outputs.is_doc_only == 'true') ||
-            (github.event_name == 'workflow_run') || (github.event_name == 'workflow_dispatch')
-          }}
+          (github.event_name == 'workflow_run') || (github.event_name == 'workflow_dispatch') || 
+          (github.event_name == 'push' && steps.detect.outputs.is_doc_only == 'true')
         run: |
           if git ls-remote --heads origin develop | grep -q "refs/heads/develop"; then
             echo "✅ develop branch exists, continuing..."
@@ -180,10 +161,10 @@ jobs: # Defines all the major automated tasks GitHub will run
           echo "**Merge Status:** ${{ env.status }}"
           echo ""
 
-          if [[ "${{ steps.check-develop.outputs.exists }}" != "true" ]]; then
-            echo "ℹ️ Develop branch does not exist — workflow skipped."
-          elif [[ "${{ steps.detect.outputs.is_doc_only }}" == "false" && "${{ github.event_name }}" == "push" ]]; then
+          if [[ "${{ steps.detect.outputs.is_doc_only }}" == "false" && "${{ github.event_name }}" == "push" ]]; then
             echo "⚠️ Mixed changes detected in push — sync skipped in favor of workflow_run trigger."
+          elif [[ "${{ steps.check-develop.outputs.exists }}" != "true" ]]; then
+            echo "ℹ️ Develop branch does not exist — workflow skipped."
           elif [[ "${{ env.status }}" == "already-up-to-date" ]]; then
             echo "✅ Develop is already up-to-date with main."
           elif [[ "${{ env.status }}" == "success" ]]; then
