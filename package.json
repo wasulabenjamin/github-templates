@@ -1,6 +1,6 @@
 {
   "name": "github-templates",
-  "description": "GitHub workflow templates and automation",
+  "description": "Predefined GitHub Templates to automate and standardize repos.",
   "keywords": ["CI/CD", "git", "github", "github-automations", "github-templates", "github-workflow"],
   "version": "0.0.0",
   "private": true,
