@@ -4,7 +4,7 @@
  *
  * Project Name  : github-templates
  * File Name     : vite.config.ts
- * Last Modified : 2025-11-30, 05:21pm
+ * Last Modified : 2025-12-03, 03:05pm
  */
 
 import { defineConfig } from 'vitest/config';

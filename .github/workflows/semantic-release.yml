@@ -93,7 +93,7 @@ jobs: # Defines all the major automated tasks GitHub will run
 
           # Copy additional project files if they exist
           echo "📄 Adding project metadata..."
-          [ -f "README.md" ] && cp README.md dist-package/ && echo "  ✅ README.md" 
+          [ -f "README.md" ] && cp README.md dist-package/ && echo "  ✅ README.md"
           [ -f "LICENSE" ] && cp LICENSE dist-package/ && echo "  ✅ LICENSE"
           [ -f "CHANGELOG.md" ] && cp CHANGELOG.md dist-package/ && echo "  ✅ CHANGELOG.md"
 
@@ -122,8 +122,7 @@ jobs: # Defines all the major automated tasks GitHub will run
             - Built assets from ${{ steps.verify.outputs.build_dir }}
             - Includes project metadata (README, LICENSE, CHANGELOG)
 
-            See CHANGELOG.md for detailed release notes.
-          #generate_release_notes: true  # GitHub will still auto-generate notes
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/${{ steps.get_tag.outputs.tag }}/CHANGELOG.md) for detailed release notes.
           draft: false
           prerelease: ${{ contains(steps.get_tag.outputs.tag, '-') }}
           files: release-assets.tar.gz
