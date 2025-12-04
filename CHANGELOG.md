@@ -3,9 +3,32 @@
 All notable changes to this project will be documented in this file.
 
 
+## v0.3.0 - 2025-12-04
+
+[ed9eb9d](ed9eb9daaeb7431ecae85575e711f081a47adb1d)...[1b32600](1b3260015a9c77a0d64384359155f5b2044da3a7)
+
+### ✨ Features
+
+- Automatically update version package.json ([79364ae](79364ae5b39261f2cf6132746250860e93566f4b))
+
+### 🐛 Bug Fixes
+
+- Correct conditional logic and improve automation ([ad456cb](ad456cb01bf6b67958fb2363a6b7957969a78f34))
+
+### 🧰 Chores
+
+- Sync changes from main [skip ci] ([906480b](906480b1327dd1d9b0962cf290cbbf14b90e9ff5))
+- Minor updates and fixes ([8196314](8196314bf1ececbda1e3b8d605609c84aafb12a1))
+
+### 🧹 Miscellaneous Tasks
+
+- Merge pull request #12 from wasulabenjamin/bugfix/workflows-conditional-logic ([2a9a496](2a9a496d37160e54e409df49c6ff4641d06fb8c9))
+- Merge pull request #13 from wasulabenjamin/release/2025-12-03 ([1b32600](1b3260015a9c77a0d64384359155f5b2044da3a7))
+
+
 ## v0.2.0 - 2025-12-02
 
-[0eb0c6b](0eb0c6b73f7d78558be49304fa96e687c87ad118)...[9b4b0fd](9b4b0fd6b315d24158288d5c0656a56f29c67014)
+[0eb0c6b](0eb0c6b73f7d78558be49304fa96e687c87ad118)...[ed9eb9d](ed9eb9daaeb7431ecae85575e711f081a47adb1d)
 
 ### ✨ Features
 
@@ -23,6 +46,8 @@ All notable changes to this project will be documented in this file.
 ### 🧰 Chores
 
 - Sync changes from main [skip ci] ([052e9ee](052e9eec2e93371dc3e276f1d580f2d7c982aa9d))
+- Sync changes from main [skip ci] ([3a65bb9](3a65bb9c7cbecc8f7414e2b9d11b59b2aaa414a6))
+- Update changelog for v0.2.0 [skip ci] ([ed9eb9d](ed9eb9daaeb7431ecae85575e711f081a47adb1d))
 
 ### 🧹 Miscellaneous Tasks
 

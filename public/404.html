@@ -45,9 +45,10 @@
     <meta name="twitter:creator" content="@wasulabenjamin" />
     <meta name="twitter:domain" content="github.com/wasulabenjamin/github-templates" />
 
-    <!-- PWA SUPPORT AND BROWSER UI ENHANCEMENTS -->
+    <!-- THEME FALLBACK DEFAULT FOR OLDER BROWSERS -->
     <meta name="theme-color" content="#fafafa" />
-    <!-- fallback default for older browsers -->
+
+    <!-- PWA SUPPORT AND BROWSER UI ENHANCEMENTS -->
     <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
@@ -121,7 +122,11 @@
       const timer = setInterval(() => {
         countdown--;
         document.getElementById('countdown').textContent = countdown.toString();
-        if (countdown <= 0) clearInterval(timer);
+
+        if (countdown <= 0) {
+          clearInterval(timer);
+          window.location.replace('/'); // Use replace() to prevent back button issues
+        }
       }, 1000);
     </script>
 

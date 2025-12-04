@@ -5,7 +5,7 @@
 
 User-agent: *
 
-# Allow all learning and public assets
+# Permit crawlers index source code and main entry
 # ---------------------------------------------------------
 
 Allow: /src/
